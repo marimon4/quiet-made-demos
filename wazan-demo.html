@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和山 WAZAN — 波佐見焼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --ink: #1a1714;
+  --paper: #f7f4ef;
+  --stone: #9a9590;
+  --clay: #c4b8a8;
+  --moss: #6b7a5e;
+  --warm: #e8e2d8;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Serif JP', serif;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  background: transparent;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 2px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.nav-links a:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.9);
+}
+
+/* ── HERO ── */
+.hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-img {
+  position: absolute;
+  inset: 0;
+  background: url('wazan-hero.jpg') center center / cover no-repeat;
+}
+
+.hero-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(247,244,239,0) 0%,
+    rgba(247,244,239,0) 40%,
+    rgba(247,244,239,0.6) 75%,
+    rgba(247,244,239,1) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 3rem 5rem;
+  width: 100%;
+}
+
+.hero-subtitle {
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.3s forwards;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  opacity: 0;
+  animation: fadeUp 1.2s ease 0.5s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+}
+
+.hero-en {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-style: italic;
+  color: var(--stone);
+  margin-top: 0.8rem;
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.8s forwards;
+}
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid rgba(26,23,20,0.08);
+  border-bottom: 1px solid rgba(26,23,20,0.08);
+  padding: 1.2rem 0;
+  background: var(--paper);
+}
+
+.marquee {
+  display: flex;
+  gap: 4rem;
+  animation: marquee 18s linear infinite;
+  white-space: nowrap;
+}
+
+.marquee-item {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  color: var(--clay);
+  flex-shrink: 0;
+}
+
+.marquee-dot {
+  color: var(--moss);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ── INTRO ── */
+.intro {
+  padding: 9rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.intro-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 2rem;
+}
+
+.intro-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.intro-heading em {
+  font-style: italic;
+}
+
+.intro-body {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--stone);
+  font-weight: 300;
+  margin-top: 2rem;
+  letter-spacing: 0.05em;
+}
+
+.intro-right {
+  position: relative;
+}
+
+.intro-img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+}
+
+.intro-caption {
+  position: absolute;
+  bottom: -2rem;
+  right: 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--clay);
+  writing-mode: vertical-rl;
+}
+
+/* ── GALLERY ── */
+.gallery {
+  padding: 0 3rem 9rem;
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+
+.gallery-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.gallery-link {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--stone);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: color 0.3s;
+}
+.gallery-link:hover { color: var(--ink); }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery-item:nth-child(1) { grid-column: span 7; }
+.gallery-item:nth-child(2) { grid-column: span 5; }
+.gallery-item:nth-child(3) { grid-column: span 4; grid-row: 2; margin-top: 3rem; }
+.gallery-item:nth-child(4) { grid-column: span 4; }
+.gallery-item:nth-child(5) { grid-column: span 4; margin-top: -3rem; }
+
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.02);
+}
+
+.gallery-item { overflow: hidden; }
+
+/* ── PHILOSOPHY ── */
+.philosophy {
+  background: var(--ink);
+  padding: 10rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.philosophy::before {
+  content: '器';
+  position: absolute;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 40vw;
+  color: rgba(255,255,255,0.02);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.philosophy-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(247,244,239,0.3);
+  margin-bottom: 3rem;
+}
+
+.philosophy-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--paper);
+  max-width: 800px;
+  margin: 0 auto;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+.philosophy-author {
+  margin-top: 3rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(247,244,239,0.35);
+}
+
+/* ── WORKS ── */
+.works {
+  padding: 9rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.works-header {
+  margin-bottom: 5rem;
+}
+
+.works-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.works-title em { font-style: italic; }
+
+.works-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.work-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(26,23,20,0.08);
+  transition: background 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.work-item:hover { background: var(--warm); margin: 0 -2rem; padding-left: 2rem; padding-right: 2rem; }
+
+.work-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  color: var(--clay);
+  letter-spacing: 0.2em;
+}
+
+.work-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.work-name-ja {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--stone);
+  margin-top: 0.2rem;
+  font-weight: 300;
+}
+
+.work-arrow {
+  font-size: 1.2rem;
+  color: var(--clay);
+  transition: transform 0.3s;
+}
+
+.work-item:hover .work-arrow { transform: translateX(6px); }
+
+/* ── CONTACT ── */
+.contact {
+  background: var(--warm);
+  padding: 9rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: center;
+}
+
+.contact-left {
+  max-width: 500px;
+}
+
+.contact-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 2rem;
+}
+
+.contact-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+}
+
+.contact-heading em { font-style: italic; }
+
+.contact-body {
+  font-size: 0.9rem;
+  line-height: 2;
+  color: var(--stone);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.contact-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-field label {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.contact-field input,
+.contact-field textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(26,23,20,0.2);
+  padding: 0.8rem 0;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.3s;
+  letter-spacing: 0.05em;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+  border-color: var(--ink);
+}
+
+.contact-field textarea {
+  height: 100px;
+  resize: none;
+}
+
+.contact-submit {
+  margin-top: 1rem;
+  align-self: flex-start;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 1rem 2.5rem;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  font-weight: 300;
+}
+.contact-submit:hover { opacity: 0.75; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(26,23,20,0.08);
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+}
+
+.footer-copy {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--clay);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 1.5rem; }
+  .nav-links { display: none; }
+  .hero-content { padding: 0 1.5rem 4rem; }
+  .intro { grid-template-columns: 1fr; gap: 3rem; padding: 6rem 1.5rem; }
+  .gallery { padding: 0 1.5rem 6rem; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item:nth-child(n) { grid-column: span 1; margin: 0; }
+  .contact { grid-template-columns: 1fr; gap: 3rem; padding: 6rem 1.5rem; }
+  footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+  .works { padding: 6rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">和山</a>
+  <ul class="nav-links">
+    <li><a href="#works">作品</a></li>
+    <li><a href="#philosophy">工房について</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+    <li><a href="#contact">English</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-content">
+    <p class="hero-subtitle">WAZAN — Hasami, Nagasaki</p>
+    <h1 class="hero-title">
+      現代の食卓に、<br><em>波佐見の美</em>
+    </h1>
+    <p class="hero-en">Hasami Ware. Modern design. Everyday beauty.</p>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item">和山</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">WAZAN</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">長崎</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">Handmade Ceramics</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">Since 1987</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">和山</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">WAZAN</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">長崎</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">Handmade Ceramics</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">Since 1987</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">和山</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">WAZAN</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">長崎</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">Handmade Ceramics</span>
+    <span class="marquee-dot">◦</span>
+    <span class="marquee-item">Since 1987</span>
+    <span class="marquee-dot">◦</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="intro-left reveal">
+    <p class="intro-label">Our Story</p>
+    <h2 class="intro-heading">
+      日常の食卓を、<br>少しだけ豊かに。<br><em>それが波佐見焼です。</em>
+    </h2>
+    <p class="intro-body">
+      長崎県波佐見町に、和山の窯元があります。<br>
+      400年の歴史を持つ波佐見焼の伝統を受け継ぎながら、<br>
+      カフェやレストランのような食卓を家庭で実現するデザインを追求。<br>
+      マットな質感、シンプルなフォルム——<br>
+      毎日使うからこそ、美しくあってほしいという思いが込められています。
+    </p>
+  </div>
+  <div class="intro-right reveal">
+    <img class="intro-img" src="wazan-story.jpg" alt="茶道具">
+    <span class="intro-caption">WAZAN Studio, Hasami</span>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="works">
+  <div class="gallery-header reveal">
+    <h2 class="gallery-title">作品</h2>
+    <a href="#" class="gallery-link">すべて見る</a>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <img src="wazan-1.jpg" alt="器セット">
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.1s">
+      <img src="wazan-2.jpg" alt="茶碗">
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.15s">
+      <img src="wazan-3.jpg" alt="茶道具">
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.2s">
+      <img src="wazan-4.jpg" alt="茶碗">
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.25s">
+      <img src="wazan-4.jpg" alt="器">
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="philosophy">
+  <p class="philosophy-label reveal">Philosophy</p>
+  <blockquote class="philosophy-quote reveal">
+    「どこか懐かしくもあり、優しく包み込んでくれるような器。<br>
+    古来からのデザインを現代風にアレンジし、<br>
+    日常の食卓に溶け込む美しさを追求しています。」
+  </blockquote>
+  <p class="philosophy-author reveal">— 和山 デザインチーム</p>
+</section>
+
+<!-- WORKS LIST -->
+<section class="works">
+  <div class="works-header reveal">
+    <h2 class="works-title">
+      Collections<br><em>コレクション一覧</em>
+    </h2>
+  </div>
+  <div class="works-list">
+    <a href="#" class="work-item reveal">
+      <span class="work-num">01</span>
+      <div>
+        <div class="work-name">日常の器</div>
+        <div class="work-name-ja">Modern Matte</div>
+      </div>
+      <span class="work-arrow">→</span>
+    </a>
+    <a href="#" class="work-item reveal" style="transition-delay:0.05s">
+      <span class="work-num">02</span>
+      <div>
+        <div class="work-name">茶道具</div>
+        <div class="work-name-ja">En-Poire</div>
+      </div>
+      <span class="work-arrow">→</span>
+    </a>
+    <a href="#" class="work-item reveal" style="transition-delay:0.1s">
+      <span class="work-num">03</span>
+      <div>
+        <div class="work-name">一点もの</div>
+        <div class="work-name-ja">RONDE</div>
+      </div>
+      <span class="work-arrow">→</span>
+    </a>
+    <a href="#" class="work-item reveal" style="transition-delay:0.15s">
+      <span class="work-num">04</span>
+      <div>
+        <div class="work-name">受注制作</div>
+        <div class="work-name-ja">Custom Orders</div>
+      </div>
+      <span class="work-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-left reveal">
+    <p class="contact-label">Contact</p>
+    <h2 class="contact-heading">
+      波佐見焼との<br><em>出会いを、</em><br>ここから。
+    </h2>
+    <p class="contact-body">
+      ご購入のご相談、展示会のご案内、<br>
+      受注制作のお問い合わせなど、<br>
+      お気軽にご連絡ください。
+    </p>
+  </div>
+  <div class="contact-right reveal">
+    <div class="contact-field">
+      <label>お名前</label>
+      <input type="text" placeholder="山田 花子">
+    </div>
+    <div class="contact-field">
+      <label>メールアドレス</label>
+      <input type="email" placeholder="hello@example.com">
+    </div>
+    <div class="contact-field">
+      <label>メッセージ</label>
+      <textarea placeholder="ご用件をお書きください"></textarea>
+    </div>
+    <button class="contact-submit">送信する</button>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">和山</span>
+  <span class="footer-copy">© 2025 和山 WAZAN. All rights reserved.</span>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

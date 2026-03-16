@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiet Made — Demo Sites</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0e0e0e;
+    color: #e8e0d4;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+  header {
+    padding: 3rem 4rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: #c9a96e;
+  }
+  .tagline {
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 4rem;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  .subtitle {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 4rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 2rem 2rem 1.6rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .card:hover { border-color: rgba(201,169,110,0.4); transform: translateY(-3px); }
+  .card:hover::before { opacity: 1; }
+  .card-style {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 0.8rem;
+  }
+  .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    margin-bottom: 0.4rem;
+  }
+  .card-desc {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  .card-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .card-link span {
+    display: inline-block;
+    transition: transform 0.2s, color 0.2s;
+  }
+  .card:hover .card-link span { transform: translateX(4px); color: #c9a96e; }
+  footer {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(255,255,255,0.2);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  @media (max-width: 600px) {
+    header, main { padding: 2rem 1.5rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Quiet Made</div>
+  <div class="tagline">Japanese Craft — Web Demo Portfolio</div>
+</header>
+
+<main>
+  <h1>工房デモサイト一覧</h1>
+  <p class="subtitle">各工房のウェブサイトリニューアル提案デモです。</p>
+
+  <div class="grid">
+
+    <a class="card" href="tsujiwa-demo.html">
+      <div class="card-style">技・職人感 / Dark</div>
+      <div class="card-name">辻和金網</div>
+      <div class="card-desc">京都・中京区。明治から続く金網細工の工房。</div>
+      <div class="card-link"><span>デモを見る →</span></div>
+    </a>
+
+    <a class="card" href="showen-demo.html">
+      <div class="card-style">華・伝統工芸 / Dark</div>
+      <div class="card-name">昇苑くみひも</div>
+      <div class="card-desc">京都・宇治。京くみひもの老舗工房。</div>
+      <div class="card-link"><span>デモを見る →</span></div>
+    </a>
+
+    <a class="card" href="suzuemon-demo.html">
+      <div class="card-style">洋・モダン和 / Dark</div>
+      <div class="card-name">京都錫右衛門</div>
+      <div class="card-desc">京都。職人歴45年、純錫器の工房。</div>
+      <div class="card-link"><span>デモを見る →</span></div>
+    </a>
+
+    <a class="card" href="mori-demo.html">
+      <div class="card-style">静・ミニマル / Light</div>
+      <div class="card-name">森陶器</div>
+      <div class="card-desc">徳島・鳴門。国登録有形文化財の登窯を持つ大谷焼の窯元。</div>
+      <div class="card-link"><span>デモを見る →</span></div>
+    </a>
+
+    <a class="card" href="wazan-demo.html">
+      <div class="card-style">静・ミニマル / Light</div>
+      <div class="card-name">和山</div>
+      <div class="card-desc">長崎・波佐見。現代の食卓に寄り添う波佐見焼の窯元。</div>
+      <div class="card-link"><span>デモを見る →</span></div>
+    </a>
+
+    <a class="card" href="hiromi-demo.html">
+      <div class="card-style">華・伝統工芸 / Dark</div>
+      <div class="card-name">京七宝 ヒロミ・アート</div>
+      <div class="card-desc">京都・東山。七宝焼の制作・販売・体験教室。</div>
+      <div class="card-link"><span>デモを見る →</span></div>
+    </a>
+
+  </div>
+</main>
+
+<footer>© 2026 Quiet Made — All demos are proposals for web renewal.</footer>
+
+</body>
+</html>
