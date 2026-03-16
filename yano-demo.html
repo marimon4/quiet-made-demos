@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YANO KOBO — 本藍染矢野工場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080b0e;
+    --bg-2: #0b0e12;
+    --bg-3: #0f1318;
+    --surface: #141820;
+    --copper: #b87333;
+    --copper-dim: rgba(184, 115, 51, 0.55);
+    --text: #c4bdb4;
+    --text-dim: #626068;
+    --border: rgba(184, 115, 51, 0.13);
+    --border-bright: rgba(184, 115, 51, 0.35);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: rgba(8, 11, 14, 0.93);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo em {
+    font-style: normal;
+    color: var(--copper);
+  }
+
+  .nav-logo span {
+    font-size: 0.7rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    display: block;
+    margin-top: 0.1rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.78rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--copper); }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    min-height: 600px;
+    background-color: #1a1a1a;
+    background-image: url('yano-hero01.jpg'); background-size: cover; background-position: center; 
+    display: flex;
+    align-items: flex-end;
+    padding: 5rem 3rem;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 60px,
+      rgba(184, 115, 51, 0.02) 60px,
+      rgba(184, 115, 51, 0.02) 61px
+    );
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,11,14,0.9) 0%, rgba(8,11,14,0.3) 50%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.38em;
+    color: rgba(184, 115, 51, 0.65);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--copper);
+  }
+
+  .hero-catch {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.92rem;
+    font-weight: 200;
+    color: rgba(196, 189, 180, 0.58);
+    letter-spacing: 0.22em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-sub {
+    font-size: 0.72rem;
+    color: rgba(98, 96, 104, 0.6);
+    letter-spacing: 0.12em;
+  }
+
+  /* SECTION COMMON */
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 1.4rem;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--copper);
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--copper);
+    opacity: 0.4;
+    margin-bottom: 2rem;
+  }
+
+  /* STORY */
+  #story {
+    padding: 7rem 3rem;
+    background: var(--bg-2);
+  }
+
+  .story-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .story-text p {
+    font-size: 0.88rem;
+    color: #726c64;
+    line-height: 2.15;
+    margin-bottom: 1.2rem;
+  }
+
+  .story-emphasis {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--copper-dim);
+    letter-spacing: 0.06em;
+    margin: 1.5rem 0;
+    line-height: 1.5;
+  }
+
+  .img-placeholder {
+    background: var(--surface);
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+  }
+
+  .img-placeholder span {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+  }
+
+  .img-placeholder.tall { aspect-ratio: 3/4; }
+
+  /* WORKS */
+  #works {
+    padding: 7rem 3rem;
+    background: var(--bg);
+  }
+
+  .works-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .work-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .work-card:hover {
+    border-color: var(--border-bright);
+  }
+
+  .work-card-img {
+    background: #12151a;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .work-card-img span {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+  }
+
+  .work-card-body { padding: 1.2rem; }
+
+  .work-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.04em;
+  }
+
+  .work-card-sub {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* PROCESS */
+  #process {
+    padding: 7rem 3rem;
+    background: var(--bg-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .process-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(184, 115, 51, 0.16);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+
+  .step-border {
+    width: 24px;
+    height: 1px;
+    background: var(--copper);
+    opacity: 0.38;
+    margin-bottom: 1rem;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  .step-desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.95;
+  }
+
+  /* CONTACT */
+  #contact {
+    padding: 7rem 3rem;
+    background: var(--bg-2);
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  #contact .divider { margin: 0 auto 2rem; }
+
+  .contact-sub {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 2.2rem;
+    line-height: 2.2;
+  }
+
+  .contact-info {
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-info p {
+    font-size: 0.8rem;
+    color: rgba(98, 96, 104, 0.6);
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  .btn-contact {
+    display: inline-block;
+    padding: 0.9rem 3rem;
+    border: 1px solid var(--border-bright);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .btn-contact:hover {
+    background: rgba(184, 115, 51, 0.1);
+    border-color: var(--copper);
+    color: var(--copper);
+  }
+
+  footer {
+    background: var(--bg);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 2rem 3rem;
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 0.7rem;
+    color: rgba(98, 96, 104, 0.35);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    #story, #works, #process, #contact { padding: 4rem 1.5rem; }
+    .story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .process-steps { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <em>YANO</em> KOBO
+    <span>本藍染矢野工場 / 職人の手仕事</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#works">作品</a></li>
+    <li><a href="#story">工房について</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Japan — Hon-Ai-Zome / Master Craftsman</p>
+    <h1 class="hero-title">YANO<br><em>KOBO</em></h1>
+    <p class="hero-catch">本藍染、職人の手仕事</p>
+    <p class="hero-sub">本藍染矢野工場</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section id="story">
+  <div class="story-inner">
+    <div class="story-text">
+      <p class="section-label">Story</p>
+      <h2 class="section-title">本藍染という<br><em>揺るぎない道</em></h2>
+      <div class="divider"></div>
+      <p>本藍染矢野工場は、天然の藍を用いた本藍染の技術を守り、職人の手仕事で一点一点を染め上げてきた工房です。化学染料が普及した現代においても、発酵藍による本染めの道を貫いています。</p>
+      <p class="story-emphasis">本藍染の深さは、職人の時間の深さ。</p>
+      <p>天然藍（すくも）を発酵させた藍甕は、その工房の歴史そのものです。染め重ねるごとに増す色の深みと、使うほどに増す布への風合いは、本藍染でなければ生まれません。矢野工場の職人は、その時間の積み重ねを一針一滴に込めています。</p>
+      <p>海外からの問い合わせも増えており、日本の天然染色に対する国際的な関心の高まりとともに、本藍染の価値が改めて注目されています。</p>
+    </div>
+    <div class="img-placeholder tall"><span>photo</span></div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="works-inner">
+    <p class="section-label">Works</p>
+    <h2 class="section-title">本藍染の手仕事</h2>
+    <div class="divider"></div>
+    <div class="works-grid">
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">本藍染 風呂敷</p>
+          <p class="work-card-sub">天然藍（すくも）/ 本藍染</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">本藍染 暖簾</p>
+          <p class="work-card-sub">天然藍（すくも）/ 本藍染</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">本藍染 手ぬぐい</p>
+          <p class="work-card-sub">天然藍（すくも）/ 本藍染</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">本藍染 のれん・壁掛け</p>
+          <p class="work-card-sub">天然藍（すくも）/ 本藍染</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">本藍染 ストール</p>
+          <p class="work-card-sub">天然藍（すくも）/ 本藍染</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">本藍染 着尺・帯地</p>
+          <p class="work-card-sub">天然藍（すくも）/ 本藍染</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <p class="section-label">Process</p>
+    <h2 class="section-title">本藍染の工程</h2>
+    <div class="divider"></div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-border"></div>
+        <p class="step-title">藍建て</p>
+        <p class="step-desc">天然藍（すくも）を藍甕に仕込み、灰汁・ふすま・石灰などを加えて発酵を促します。職人が毎日甕の状態を確認しながら、染色に最適な藍液を育てます。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-border"></div>
+        <p class="step-title">繰り返し染め</p>
+        <p class="step-desc">布を何度も藍甕に浸し、空気中で酸化させることを繰り返します。この「浸染と酸化」の反復こそが本藍染の核心であり、職人の経験と感覚が色の深さを決定します。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-border"></div>
+        <p class="step-title">水洗い・仕上げ</p>
+        <p class="step-desc">染め終わった布を丁寧に水洗いし、余分な藍を落とします。本藍染の色は洗うたびに落ち着き、長年の使用とともに独特の風合いを増していきます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Contact</p>
+  <h2 class="section-title">お問い合わせ</h2>
+  <div class="divider"></div>
+  <p class="contact-sub">作品のご購入・海外向けオーダー・卸のご相談は<br>下記よりお気軽にご連絡ください。</p>
+  <div class="contact-info">
+    <p>本藍染矢野工場 / YANO KOBO</p>
+  </div>
+  <a href="mailto:info@yanokobo.jp" class="btn-contact">Get in Touch</a>
+</section>
+
+<footer>
+  <p>© 2024 本藍染矢野工場 / YANO KOBO. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

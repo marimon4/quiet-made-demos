@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAMPUYA — 織工房 藍布屋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0a08;
+    --bg-2: #100c09;
+    --bg-3: #161009;
+    --surface: #1c1510;
+    --red: #8b1a1a;
+    --indigo: #1a3a5c;
+    --gold: #c9a96e;
+    --text: #d4c8b8;
+    --text-dim: #7a6e62;
+    --border: rgba(26, 58, 92, 0.3);
+    --border-warm: rgba(201, 169, 110, 0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: rgba(13, 10, 8, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo em {
+    font-style: normal;
+    color: #4a7fb5;
+  }
+
+  .nav-logo span {
+    font-size: 0.7rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    display: block;
+    margin-top: 0.1rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.78rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: #4a7fb5; }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    min-height: 600px;
+    background-color: #1a1a1a;
+    background-image: url('rampuya-hero01.jpg'); background-size: cover; background-position: center; 
+    display: flex;
+    align-items: flex-end;
+    padding: 5rem 3rem;
+    position: relative;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,6,3,0.85) 0%, rgba(10,6,3,0.2) 55%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.38em;
+    color: rgba(26, 58, 92, 0.9);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: #4a7fb5;
+  }
+
+  .hero-catch {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.9rem;
+    font-weight: 200;
+    color: rgba(212, 200, 184, 0.6);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-sub {
+    font-size: 0.73rem;
+    color: rgba(122, 110, 98, 0.65);
+    letter-spacing: 0.12em;
+  }
+
+  /* SECTION COMMON */
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: #4a7fb5;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 1.4rem;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: #1a3a5c;
+    opacity: 0.7;
+    margin-bottom: 2rem;
+  }
+
+  /* STORY */
+  #story {
+    padding: 7rem 3rem;
+    background: var(--bg-2);
+  }
+
+  .story-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .story-text p {
+    font-size: 0.88rem;
+    color: #8a7e72;
+    line-height: 2.15;
+    margin-bottom: 1.2rem;
+  }
+
+  .story-badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border: 1px solid rgba(26, 58, 92, 0.5);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: #4a7fb5;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+  }
+
+  .img-placeholder {
+    background: var(--surface);
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+  }
+
+  .img-placeholder span {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+  }
+
+  .img-placeholder.tall { aspect-ratio: 3/4; }
+
+  /* WORKS */
+  #works {
+    padding: 7rem 3rem;
+    background: var(--bg);
+  }
+
+  .works-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .work-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .work-card:hover {
+    border-color: rgba(74, 127, 181, 0.45);
+  }
+
+  .work-card-img {
+    background: #181410;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .work-card-img span {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+  }
+
+  .work-card-body { padding: 1.2rem; }
+
+  .work-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.04em;
+  }
+
+  .work-card-sub {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* PROCESS */
+  #process {
+    padding: 7rem 3rem;
+    background: var(--bg-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .process-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(26, 58, 92, 0.25);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+
+  .step-border {
+    width: 24px;
+    height: 1px;
+    background: #1a3a5c;
+    opacity: 0.6;
+    margin-bottom: 1rem;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  .step-desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.95;
+  }
+
+  /* CONTACT */
+  #contact {
+    padding: 7rem 3rem;
+    background: var(--bg-2);
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  #contact .divider { margin: 0 auto 2rem; }
+
+  .contact-sub {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 2.2rem;
+    line-height: 2.2;
+  }
+
+  .contact-info {
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-info p {
+    font-size: 0.8rem;
+    color: rgba(122, 110, 98, 0.65);
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  .btn-contact {
+    display: inline-block;
+    padding: 0.9rem 3rem;
+    border: 1px solid rgba(26, 58, 92, 0.5);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .btn-contact:hover {
+    background: rgba(26, 58, 92, 0.15);
+    border-color: #1a3a5c;
+    color: #4a7fb5;
+  }
+
+  footer {
+    background: var(--bg);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 2rem 3rem;
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 0.7rem;
+    color: rgba(122, 110, 98, 0.38);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    #story, #works, #process, #contact { padding: 4rem 1.5rem; }
+    .story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .process-steps { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <em>藍</em>布屋 RAMPUYA
+    <span>株式会社岡本織布工場 / 徳島・阿波正藍染</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#works">作品</a></li>
+    <li><a href="#story">工房について</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Tokushima, Japan — Awa Shoai Shijira-ori</p>
+    <h1 class="hero-title">RAM<br><em>PUYA</em></h1>
+    <p class="hero-catch">阿波正藍染・しじら織の伝統を、現代へ</p>
+    <p class="hero-sub">徳島県徳島市国府町和田161 — 創業 大正元年（1912年）</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section id="story">
+  <div class="story-inner">
+    <div class="story-text">
+      <p class="section-label">Story</p>
+      <h2 class="section-title">大正元年から続く<br><em>阿波の藍と織の心</em></h2>
+      <div class="divider"></div>
+      <div class="story-badge">Est. 1912 — 大正元年創業</div>
+      <p>徳島県徳島市に拠点を置く株式会社岡本織布工場。織工房「藍布屋（らんぷや）」の屋号のもと、大正元年（1912年）の創業から100年以上にわたり、阿波正藍染・しじら織の技術を継承してきました。</p>
+      <p>しじら織とは、縦糸と横糸の張力差を巧みに利用することで布面に自然なシボ（凹凸）を生み出す織法です。この立体的な凹凸が通気性を高め、日本の高温多湿な夏でも肌触りよく着用できる特性を持ちます。</p>
+      <p>阿波正藍染との組み合わせにより、深い藍の色と涼感あるしじら織の風合いが融合した、藍布屋ならではの布地が生まれています。</p>
+    </div>
+    <div class="img-placeholder tall"><span>photo</span></div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="works-inner">
+    <p class="section-label">Works</p>
+    <h2 class="section-title">作品・商品ラインナップ</h2>
+    <div class="divider"></div>
+    <div class="works-grid">
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">阿波正藍しじら織 生地</p>
+          <p class="work-card-sub">しじら織 / デニム生地</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">メンズシャツ</p>
+          <p class="work-card-sub">阿波正藍しじら織 / 阿波藍染</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">甚平・作務衣・浴衣</p>
+          <p class="work-card-sub">阿波正藍しじら織</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">スカーフ・ストール</p>
+          <p class="work-card-sub">阿波正藍しじら織</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">テーブルセンター・風呂敷</p>
+          <p class="work-card-sub">阿波正藍しじら織</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-card-img"><span>photo</span></div>
+        <div class="work-card-body">
+          <p class="work-card-name">暖簾（のれん）</p>
+          <p class="work-card-sub">阿波正藍しじら織 / 阿波藍染</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <p class="section-label">Process</p>
+    <h2 class="section-title">阿波正藍しじら織の工程</h2>
+    <div class="divider"></div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-border"></div>
+        <p class="step-title">阿波正藍染め</p>
+        <p class="step-desc">徳島産の阿波藍（すくも）を用いた天然発酵による本藍染。化学染料では出せない深みある藍色と、洗うほどに増す風合いが特徴です。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-border"></div>
+        <p class="step-title">しじら織の技法</p>
+        <p class="step-desc">縦糸と横糸の張力差を意図的に設けることで、布面に自然なシボ（凹凸）を生み出します。この独特の立体感が、藍布屋のしじら織を特徴づけています。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-border"></div>
+        <p class="step-title">仕立て・仕上げ</p>
+        <p class="step-desc">織り上がった生地を、甚平・浴衣・暖簾など用途に合わせて仕立てます。シボの凹凸は肌離れを良くし、日本の夏を快適に過ごすための機能美を備えています。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Contact</p>
+  <h2 class="section-title">お問い合わせ</h2>
+  <div class="divider"></div>
+  <p class="contact-sub">作品のご購入・生地の卸・オーダーのご相談は<br>下記よりお気軽にご連絡ください。</p>
+  <div class="contact-info">
+    <p>織工房 藍布屋 / RAMPUYA</p>
+    <p>株式会社岡本織布工場</p>
+    <p>徳島県徳島市国府町和田161</p>
+  </div>
+  <a href="mailto:info@rampuya.jp" class="btn-contact">Get in Touch</a>
+</section>
+
+<footer>
+  <p>© 2024 株式会社岡本織布工場 / 織工房 藍布屋 RAMPUYA. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
