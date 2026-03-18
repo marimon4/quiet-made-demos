@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漆 / Urushi — 華正工房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --void: #080706;
+  --deep: #111009;
+  --ink: #1c1a17;
+  --paper: #f0ece4;
+  --warm: #e8e2d6;
+  --stone: #7a7570;
+  --ash: #4a4640;
+  --gold: #b89a5a;
+}
+
+body {
+  background: var(--void);
+  color: var(--paper);
+  font-family: 'Noto Serif JP', serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom cursor */
+.cursor {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--paper);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, opacity 0.3s;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(240,236,228,0.3);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease, width 0.3s, height 0.3s, opacity 0.3s;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 2.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  color: var(--paper);
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.nav-logo sub {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.55rem;
+  font-style: normal;
+  letter-spacing: 0.3em;
+  color: var(--stone);
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.4);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--paper); }
+
+.nav-lang {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: rgba(240,236,228,0.3);
+  border: 1px solid rgba(240,236,228,0.15);
+  padding: 0.4rem 0.8rem;
+}
+
+/* ── HERO ── */
+.hero {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 3rem 5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(8rem, 18vw, 18rem);
+  line-height: 1;
+  color: rgba(240,236,228,0.06);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.hero-title-group {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeUp 1.2s ease 0.5s forwards;
+}
+
+.hero-en {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+}
+
+.hero-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  color: rgba(240,236,228,0.45);
+  margin-top: 1.2rem;
+}
+
+.hero-desc {
+  font-size: 0.85rem;
+  line-height: 2;
+  color: rgba(240,236,228,0.45);
+  font-weight: 300;
+  margin-top: 2rem;
+  max-width: 36ch;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.9s forwards;
+}
+
+.hero-cta {
+  margin-top: 3rem;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.1s forwards;
+}
+
+.hero-cta a {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(240,236,228,0.3);
+  padding-bottom: 4px;
+  transition: border-color 0.3s;
+}
+.hero-cta a:hover { border-color: var(--paper); }
+
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-img {
+  position: absolute;
+  inset: 0;
+  background: url('kasyo-hero.jpg') center / cover no-repeat;
+  opacity: 0;
+  animation: fadeIn 1.5s ease 0.2s forwards;
+}
+
+.hero-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--void) 0%, transparent 30%);
+  z-index: 1;
+}
+
+/* Vertical text right side */
+.hero-vertical {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.2);
+  z-index: 2;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
+}
+
+/* ── SCROLL KANJI ── */
+.scroll-kanji {
+  overflow: hidden;
+  padding: 4rem 0;
+  border-top: 1px solid rgba(240,236,228,0.04);
+  border-bottom: 1px solid rgba(240,236,228,0.04);
+  position: relative;
+}
+
+.scroll-kanji-track {
+  display: flex;
+  gap: 3rem;
+  animation: scrollLeft 20s linear infinite;
+  white-space: nowrap;
+}
+
+.scroll-kanji-item {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-shrink: 0;
+}
+
+.scroll-kanji-char {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 3.5rem;
+  color: rgba(240,236,228,0.08);
+  line-height: 1;
+}
+
+.scroll-kanji-en {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(240,236,228,0.12);
+  letter-spacing: 0.1em;
+}
+
+@keyframes scrollLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ── CONCEPT ── */
+.concept {
+  padding: 10rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.concept-left {
+  position: relative;
+}
+
+.concept-img-main {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.88);
+}
+
+.concept-img-accent {
+  position: absolute;
+  width: 55%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  bottom: -3rem;
+  right: -3rem;
+  border: 4px solid var(--void);
+  filter: brightness(0.82);
+}
+
+.concept-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.concept-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.concept-label::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.concept-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+}
+
+.concept-heading-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: rgba(240,236,228,0.35);
+  margin-top: 0.8rem;
+}
+
+.concept-body {
+  font-size: 0.88rem;
+  line-height: 2.2;
+  color: rgba(240,236,228,0.45);
+  font-weight: 300;
+  margin-top: 2.5rem;
+  letter-spacing: 0.05em;
+}
+
+/* ── GALLERY GRID ── */
+.gallery {
+  padding: 0 3rem 10rem;
+}
+
+.gallery-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.25);
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1300px;
+  margin: 0 auto 3rem;
+}
+.gallery-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(240,236,228,0.06);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto auto;
+  gap: 3px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.g1 { grid-column: 1 / 6; grid-row: 1; }
+.g2 { grid-column: 6 / 9; grid-row: 1; }
+.g3 { grid-column: 9 / 13; grid-row: 1 / 3; }
+.g4 { grid-column: 1 / 4; grid-row: 2; }
+.g5 { grid-column: 4 / 9; grid-row: 2; }
+
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.78);
+  transition: filter 0.6s ease, transform 0.7s ease;
+}
+
+.gallery-item:hover img {
+  filter: brightness(0.95);
+  transform: scale(1.03);
+}
+
+/* ── PHILOSOPHY ── */
+.philosophy {
+  padding: 10rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.philosophy-bg-char {
+  position: absolute;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 50vw;
+  color: rgba(240,236,228,0.018);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.philosophy-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.philosophy-quote-en {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(240,236,228,0.85);
+  letter-spacing: -0.01em;
+}
+
+.philosophy-quote-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.82rem;
+  line-height: 2.2;
+  letter-spacing: 0.2em;
+  color: rgba(240,236,228,0.3);
+  margin-top: 2.5rem;
+  writing-mode: horizontal-tb;
+}
+
+.philosophy-author {
+  margin-top: 3rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.2);
+}
+
+/* ── WORKS ── */
+.works {
+  padding: 0 3rem 10rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.works-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(240,236,228,0.05);
+  margin-bottom: 4rem;
+}
+
+.works-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-style: italic;
+  color: var(--paper);
+  line-height: 1;
+}
+
+.works-title-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: rgba(240,236,228,0.25);
+  margin-top: 0.5rem;
+}
+
+.works-see {
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.3);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.works-see:hover { color: var(--paper); }
+
+.works-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.work-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 100px 60px;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.8rem 0;
+  border-bottom: 1px solid rgba(240,236,228,0.04);
+  text-decoration: none;
+  color: inherit;
+  transition: padding 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.work-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: rgba(240,236,228,0.025);
+  transition: width 0.4s ease;
+}
+.work-row:hover::before { width: 100%; }
+
+.work-row-num {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: rgba(240,236,228,0.2);
+  letter-spacing: 0.1em;
+}
+
+.work-row-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+}
+
+.work-row-name-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: rgba(240,236,228,0.25);
+  margin-top: 0.25rem;
+}
+
+.work-row-tag {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.2);
+  border: 1px solid rgba(240,236,228,0.08);
+  padding: 0.3rem 0.7rem;
+  text-align: center;
+}
+
+.work-row-arrow {
+  font-size: 1rem;
+  color: rgba(240,236,228,0.2);
+  text-align: right;
+  transition: color 0.3s, transform 0.3s;
+}
+.work-row:hover .work-row-arrow {
+  color: var(--paper);
+  transform: translateX(4px);
+}
+
+/* ── CONTACT ── */
+.contact {
+  padding: 10rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: start;
+  border-top: 1px solid rgba(240,236,228,0.04);
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.contact-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-style: italic;
+  line-height: 1.2;
+  color: var(--paper);
+  margin-top: 2rem;
+}
+
+.contact-body {
+  font-size: 0.85rem;
+  line-height: 2.2;
+  color: rgba(240,236,228,0.4);
+  font-weight: 300;
+  margin-top: 2rem;
+  letter-spacing: 0.05em;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-top: 1rem;
+}
+
+.form-field label {
+  display: block;
+  font-size: 0.58rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.25);
+  margin-bottom: 0.8rem;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(240,236,228,0.1);
+  padding: 0.8rem 0;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--paper);
+  outline: none;
+  letter-spacing: 0.05em;
+  transition: border-color 0.3s;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: rgba(240,236,228,0.35);
+}
+
+.form-field textarea {
+  height: 90px;
+  resize: none;
+}
+
+.form-submit {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid rgba(240,236,228,0.2);
+  color: rgba(240,236,228,0.6);
+  padding: 1rem 2.5rem;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  font-weight: 300;
+}
+.form-submit:hover {
+  background: rgba(240,236,228,0.06);
+  color: var(--paper);
+  border-color: rgba(240,236,228,0.4);
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(240,236,228,0.04);
+}
+
+.footer-logo {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(240,236,228,0.5);
+}
+
+.footer-copy {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: rgba(240,236,228,0.15);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.img-placeholder {
+  background: var(--ink);
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.img-placeholder span {
+  color: var(--ash);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="#" class="nav-logo">華清工房</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#concept">コンセプト</a></li>
+      <li><a href="#works">作品</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+    <span class="nav-lang">EN / JA</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-kanji">間</div>
+  <div class="hero-left">
+    <div class="hero-title-group">
+      <h1 class="hero-en">
+        余白に宿る、<br>
+        <em>うつわの美学。</em>
+      </h1>
+      <p class="hero-ja">余白に宿る、美しさ。</p>
+    </div>
+    <p class="hero-desc">
+      石川県山中温泉に、よした華正工房があります。<br>
+山中漆器の蒔絵技法で茶道具と和アクセサリーを作り続ける漆芸の工房。<br>
+漆は、塗るたびに深みを増す。磨くたびに光を宿す。<br><br>
+その静かな輝きに魅せられた職人が、一筆一筆、金粉を置いていく。</p>
+    <div class="hero-cta">
+      <a href="#works">コレクションを見る →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img"></div>
+    <div class="hero-img-overlay"></div>
+    <span class="hero-vertical">Kasyo Studio — Yamanaka, Since 1986</span>
+  </div>
+</section>
+
+<!-- SCROLL KANJI -->
+<div class="scroll-kanji">
+  <div class="scroll-kanji-track">
+    <div class="scroll-kanji-item">
+      <span class="scroll-kanji-char">間</span>
+      <span class="scroll-kanji-en">Urushi — Living Lacquer</span>
+      <span class="scroll-kanji-char">静</span>
+      <span class="scroll-kanji-en">Sei — Stillness</span>
+      <span class="scroll-kanji-char">美</span>
+      <span class="scroll-kanji-en">Bi — Beauty</span>
+      <span class="scroll-kanji-char">器</span>
+      <span class="scroll-kanji-en">Utsuwa — Vessel</span>
+    </div>
+    <div class="scroll-kanji-item">
+      <span class="scroll-kanji-char">間</span>
+      <span class="scroll-kanji-en">Urushi — Living Lacquer</span>
+      <span class="scroll-kanji-char">静</span>
+      <span class="scroll-kanji-en">Sei — Stillness</span>
+      <span class="scroll-kanji-char">美</span>
+      <span class="scroll-kanji-en">Bi — Beauty</span>
+      <span class="scroll-kanji-char">器</span>
+      <span class="scroll-kanji-en">Utsuwa — Vessel</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONCEPT -->
+<section class="concept" id="concept">
+  <div class="concept-left reveal">
+    <div class="img-placeholder concept-img-main"><span>photo</span></div>
+    <div class="img-placeholder concept-img-accent"><span>photo</span></div>
+  </div>
+  <div class="concept-right reveal">
+    <p class="concept-label">Our Philosophy</p>
+    <h2 class="concept-heading">
+      The vessel holds<br>
+      <em>what words cannot.</em>
+    </h2>
+    <p class="concept-heading-ja">言葉にできないものを、器は受け止める。</p>
+    <p class="concept-body">
+      漆は、塗るほどに深みを増す素材です。<br>
+      空間に「間」を生み出すための存在です。<br><br>
+      華正工房は、山中漆器の蒔絵技法を現代に伝えます。<br>
+      過剰ではなく、不足でもなく——ちょうどいい静けさ。<br>
+      その一点を、ひとつひとつ手で作り続けています。
+    </p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+  <p class="gallery-label">Gallery</p>
+  <div class="gallery-grid">
+    <div class="gallery-item g1 reveal">
+      <div class="img-placeholder"><span>photo</span></div>
+    </div>
+    <div class="gallery-item g2 reveal" style="transition-delay:0.1s">
+      <div class="img-placeholder"><span>photo</span></div>
+    </div>
+    <div class="gallery-item g3 reveal" style="transition-delay:0.15s">
+      <div class="img-placeholder"><span>photo</span></div>
+    </div>
+    <div class="gallery-item g4 reveal" style="transition-delay:0.2s">
+      <div class="img-placeholder"><span>photo</span></div>
+    </div>
+    <div class="gallery-item g5 reveal" style="transition-delay:0.25s">
+      <div class="img-placeholder"><span>photo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="philosophy-bg-char">間</div>
+  <div class="philosophy-inner">
+    <blockquote class="philosophy-quote-en reveal">
+      「漆は生きている。<br>
+    塗るたびに表情が変わり、<br>
+    使うほどに艶が増す。<br>
+    それが山中漆器の醍醐味です。」
+    </blockquote>
+    <p class="philosophy-quote-ja reveal">
+      器を作るのではない。<br>
+      花を包む、沈黙を作る。
+    </p>
+    <p class="philosophy-author reveal">— 吉田 華正</p>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section class="works" id="works">
+  <div class="works-header reveal">
+    <div>
+      <h2 class="works-title">作品</h2>
+      <p class="works-title-ja">コレクション</p>
+    </div>
+    <a href="#" class="works-see">すべて見る →</a>
+  </div>
+  <div class="works-list">
+    <a href="#" class="work-row reveal">
+      <span class="work-row-num">I</span>
+      <div>
+        <div class="work-row-name">Silence Series</div>
+        <div class="work-row-name-ja">沈黙シリーズ</div>
+      </div>
+      <span class="work-row-tag">Ceramic</span>
+      <span class="work-row-arrow">→</span>
+    </a>
+    <a href="#" class="work-row reveal" style="transition-delay:0.05s">
+      <span class="work-row-num">II</span>
+      <div>
+        <div class="work-row-name">Morning Light</div>
+        <div class="work-row-name-ja">朝の光</div>
+      </div>
+      <span class="work-row-tag">Stoneware</span>
+      <span class="work-row-arrow">→</span>
+    </a>
+    <a href="#" class="work-row reveal" style="transition-delay:0.1s">
+      <span class="work-row-num">III</span>
+      <div>
+        <div class="work-row-name">Wabi Form</div>
+        <div class="work-row-name-ja">侘びの形</div>
+      </div>
+      <span class="work-row-tag">Hand-built</span>
+      <span class="work-row-arrow">→</span>
+    </a>
+    <a href="#" class="work-row reveal" style="transition-delay:0.15s">
+      <span class="work-row-num">IV</span>
+      <div>
+        <div class="work-row-name">Bespoke</div>
+        <div class="work-row-name-ja">蒔絵体験</div>
+      </div>
+      <span class="work-row-tag">Custom</span>
+      <span class="work-row-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="reveal">
+    <p class="concept-label">お問い合わせ</p>
+    <h2 class="contact-heading">
+      あなただけの<br>
+      <em>うつわを、探しに。</em>
+    </h2>
+    <p class="contact-body">
+      作品のご購入、受注制作のご相談、<br>
+      展示会・取材のお問い合わせはこちらから。<br><br>
+      For international inquiries,<br>
+      English correspondence is welcome.
+    </p>
+  </div>
+  <div class="reveal">
+    <div class="contact-form">
+      <div class="form-field">
+        <label>Name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" placeholder="hello@example.com">
+      </div>
+      <div class="form-field">
+        <label>Message</label>
+        <textarea placeholder="Tell us what you're looking for..."></textarea>
+      </div>
+      <button class="form-submit">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">華正工房</span>
+  <span class="footer-copy">© 2025 華清工房. 京都, Japan.</span>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
