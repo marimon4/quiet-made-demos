@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>青波染織 — Aonami Indigo Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Shippori+Mincho+B1:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --dark:   #0D0B09;
+      --wood:   #1A120A;
+      --indigo: #1B2F4A;
+      --blue:   #2C5F8A;
+      --noren:  #3A6E9A;
+      --white:  #F2EEE9;
+      --cream:  #E8DDD0;
+      --wave:   #D0DFF0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 1.8rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      mix-blend-mode: difference;
+    }
+
+    .logo {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .logo-ja {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--white);
+    }
+
+    .logo-en {
+      font-size: 0.48rem;
+      letter-spacing: 0.4em;
+      color: rgba(242,238,233,0.5);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: -15% 0;
+      width: 100%;
+      height: 130%;
+      object-fit: cover;
+      object-position: center center;
+      will-change: transform;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      will-change: transform;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(13,11,9,0.6) 0%, transparent 38%, transparent 62%, rgba(13,11,9,0.45) 100%),
+        linear-gradient(to bottom, rgba(13,11,9,0.35) 0%, transparent 30%, transparent 65%, rgba(13,11,9,0.75) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 5rem;
+      left: 3rem;
+      z-index: 10;
+    }
+
+    .hero-tag {
+      font-size: 0.55rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--wave);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--noren);
+    }
+
+    .hero-title {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 1s 0.7s forwards;
+    }
+
+    .hero-title span {
+      display: block;
+      font-size: 0.38em;
+      font-weight: 400;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 0.2em;
+      color: var(--wave);
+      margin-top: 0.8rem;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 5rem;
+      right: 3rem;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      opacity: 0;
+      animation: fadeUp 1s 1.2s forwards;
+    }
+
+    .hero-scroll p {
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(242,238,233,0.4);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-bar {
+      width: 1px;
+      height: 64px;
+      background: rgba(242,238,233,0.15);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scroll-bar::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--wave);
+      animation: scrollDrop 2s ease-in-out 1.5s infinite;
+    }
+
+    @keyframes scrollDrop {
+      0%   { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    /* ─── STATEMENT ─── */
+    .statement {
+      background: var(--indigo);
+      background-image: url('some-stat.png');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: luminosity;
+      padding: 10rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .statement-kanji {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: clamp(10rem, 20vw, 18rem);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(44,95,138,0.2);
+      position: absolute;
+      right: -2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .statement-content { position: relative; z-index: 1; }
+
+    .section-eyebrow {
+      font-size: 0.55rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--wave);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      width: 2rem;
+      height: 1px;
+      background: var(--noren);
+      flex-shrink: 0;
+    }
+
+    .statement-title {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: 0.05em;
+      margin-bottom: 2.5rem;
+    }
+
+    .statement-text {
+      font-size: 0.88rem;
+      line-height: 2.2;
+      color: rgba(242,238,233,0.6);
+    }
+
+    .statement-right {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .stat-card {
+      padding: 2rem;
+      border: 1px solid rgba(44,95,138,0.3);
+      background: rgba(27,47,74,0.5);
+    }
+
+    .stat-card-num {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--wave);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: rgba(242,238,233,0.35);
+    }
+
+    /* ─── WORKS ─── */
+    .works {
+      background: var(--dark);
+      padding: 7rem 3rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-top: 0.8rem;
+    }
+
+    .section-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(242,238,233,0.4);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: color 0.3s, gap 0.3s;
+    }
+
+    .section-link:hover { color: var(--white); gap: 1rem; }
+    .section-link::after { content: '→'; }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+    }
+
+    .work-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .work-item:nth-child(1) { grid-column: 1 / 7; }
+    .work-item:nth-child(2) { grid-column: 7 / 10; }
+    .work-item:nth-child(3) { grid-column: 10 / 13; }
+    .work-item:nth-child(4) { grid-column: 1 / 5; }
+    .work-item:nth-child(5) { grid-column: 5 / 13; }
+
+    .work-thumb {
+      width: 100%;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25,0.1,0.25,1);
+    }
+
+    .work-item:nth-child(1) .work-thumb { aspect-ratio: 16/9; background: linear-gradient(135deg, #1B2F4A 0%, #2C5F8A 60%, #1A2840 100%); }
+    .work-item:nth-child(2) .work-thumb { aspect-ratio: 3/4;  background: linear-gradient(200deg, #0D1A2A, #1B3A5C); }
+    .work-item:nth-child(3) .work-thumb { aspect-ratio: 3/4;  background: linear-gradient(160deg, #152A45, #2A5070); }
+    .work-item:nth-child(4) .work-thumb { aspect-ratio: 4/5;  background: linear-gradient(220deg, #1A2F4A, #0D1E35); }
+    .work-item:nth-child(5) .work-thumb { aspect-ratio: 16/7; background: linear-gradient(110deg, #0A1828, #1B3A5C, #0D2040); }
+
+    .work-item:hover .work-thumb { transform: scale(1.05); }
+
+    .work-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(13,11,9,0);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+      transition: background 0.4s;
+    }
+
+    .work-item:hover .work-overlay { background: rgba(13,11,9,0.65); }
+
+    .work-info {
+      opacity: 0;
+      transform: translateY(0.8rem);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+
+    .work-item:hover .work-info { opacity: 1; transform: translateY(0); }
+
+    .work-name {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 1rem;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+
+    .work-meta {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wave);
+    }
+
+    /* ─── PROCESS ─── */
+    .process {
+      background: var(--white);
+      color: var(--dark);
+      padding: 8rem 3rem;
+    }
+
+    .process .section-eyebrow { color: var(--blue); }
+    .process .section-eyebrow::before { background: var(--blue); }
+    .process .section-title { color: var(--dark); }
+
+    .process-list {
+      margin-top: 5rem;
+    }
+
+    .process-item {
+      display: grid;
+      grid-template-columns: 7rem 1fr 38%;
+      gap: 3rem;
+      align-items: start;
+      padding: 3.5rem 0;
+      border-top: 1px solid rgba(13,11,9,0.08);
+    }
+
+    .process-item:last-child { border-bottom: 1px solid rgba(13,11,9,0.08); }
+
+    .process-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: rgba(13,11,9,0.07);
+      line-height: 1;
+    }
+
+    .process-title {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      margin-top: 0.3rem;
+    }
+
+    .process-text {
+      font-size: 0.85rem;
+      line-height: 2.1;
+      color: rgba(13,11,9,0.5);
+    }
+
+    .process-img {
+      aspect-ratio: 4/3;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .process-img-1 { background: linear-gradient(135deg, #1B2F4A, #2C5F8A); }
+    .process-img-2 { background: linear-gradient(200deg, #2A4F7A, #1B3A5C); }
+    .process-img-3 { background: linear-gradient(160deg, #1A2F4A, #3A6E9A); }
+    .process-img-4 { background: linear-gradient(220deg, #0D1E35, #2C5F8A); }
+
+    /* ─── ABOUT ─── */
+    .about {
+      background: var(--indigo);
+      display: grid;
+      grid-template-columns: 55% 45%;
+      min-height: 75vh;
+    }
+
+    .about-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-img-placeholder {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #1A2F4A 0%, #0D1E35 50%, #2A4060 100%);
+      /* 写真差し込みエリア */
+    }
+
+    .about-content {
+      padding: 6rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-content .section-title { margin-bottom: 2.5rem; }
+
+    .about-text {
+      font-size: 0.85rem;
+      line-height: 2.2;
+      color: rgba(242,238,233,0.55);
+      margin-bottom: 3rem;
+    }
+
+    .about-signature {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 1.1rem;
+      color: var(--wave);
+      letter-spacing: 0.15em;
+      border-top: 1px solid rgba(44,95,138,0.3);
+      padding-top: 1.5rem;
+    }
+
+    .about-signature span {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: rgba(242,238,233,0.3);
+      margin-top: 0.3rem;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact {
+      background: var(--dark);
+      padding: 8rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: start;
+    }
+
+    .contact-left .section-title {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      margin-bottom: 2rem;
+    }
+
+    .contact-left > p {
+      font-size: 0.85rem;
+      line-height: 2.1;
+      color: rgba(242,238,233,0.4);
+      margin-bottom: 3rem;
+    }
+
+    .contact-info {
+      border-top: 1px solid rgba(44,95,138,0.2);
+      padding-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .contact-info-label {
+      font-size: 0.5rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--noren);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .contact-info-value {
+      font-size: 0.82rem;
+      color: rgba(242,238,233,0.55);
+    }
+
+    .contact-form {
+      padding-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .form-label {
+      font-size: 0.5rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(242,238,233,0.3);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(44,95,138,0.3);
+      padding: 0.8rem 0;
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+    }
+
+    .form-select { cursor: pointer; }
+    .form-select option { background: var(--indigo); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-bottom-color: var(--noren); }
+    .form-textarea { resize: none; height: 110px; }
+
+    .form-submit {
+      background: var(--noren);
+      color: var(--white);
+      border: none;
+      padding: 1.1rem 2.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .form-submit:hover { background: var(--blue); transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--wood);
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(44,95,138,0.1);
+    }
+
+    .footer-logo {
+      font-family: 'Shippori Mincho B1', serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      color: rgba(242,238,233,0.65);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.52rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(242,238,233,0.22);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: rgba(242,238,233,0.65); }
+
+    .footer-copy {
+      font-size: 0.52rem;
+      letter-spacing: 0.15em;
+      color: rgba(242,238,233,0.18);
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s cubic-bezier(0.25,0.1,0.25,1),
+                  transform 0.9s cubic-bezier(0.25,0.1,0.25,1);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.12s; }
+    .reveal-d2 { transition-delay: 0.22s; }
+    .reveal-d3 { transition-delay: 0.32s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">
+      <span class="logo-ja">青波染織</span>
+      <span class="logo-en">Aonami Indigo Studio</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#works">作品</a></li>
+      <li><a href="#process">工程</a></li>
+      <li><a href="#about">工房</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <video class="hero-video" autoplay muted playsinline>
+      <source src="NOREN HERO.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Indigo Dyeing · 京都府 · Est. 1948</p>
+      <h1 class="hero-title">
+        暮らしに藍を、<br>纏わせる。
+        <span>Draping everyday life in the depth of natural indigo.</span>
+      </h1>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-bar"></div>
+      <p>Scroll</p>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement">
+    <div class="statement-content">
+      <p class="section-eyebrow reveal">Philosophy</p>
+      <h2 class="statement-title reveal reveal-d1">藍は、染めるのではなく<br>対話するものだ。</h2>
+      <p class="statement-text reveal reveal-d2">天然の藍は生きています。発酵する藍壺と向き合い、気温と湿度を読み、布の繊維と対話する。同じ工程でも、二度と同じ色は生まれない。それが藍染めの本質であり、私たちが手放せない理由です。</p>
+    </div>
+    <div class="statement-right reveal reveal-d1">
+      <div class="stat-card"><p class="stat-card-num">76</p><p class="stat-card-label">年の歴史</p></div>
+      <div class="stat-card"><p class="stat-card-num">藍</p><p class="stat-card-label">天然素材のみ</p></div>
+      <div class="stat-card"><p class="stat-card-num">18</p><p class="stat-card-label">か国へ出荷</p></div>
+      <div class="stat-card"><p class="stat-card-num">手</p><p class="stat-card-label">全工程手仕事</p></div>
+    </div>
+    <div class="statement-kanji" aria-hidden="true">藍</div>
+  </section>
+
+  <!-- WORKS -->
+  <section class="works" id="works">
+    <div class="section-header">
+      <div>
+        <p class="section-eyebrow reveal">Works</p>
+        <h2 class="section-title reveal reveal-d1">作品一覧</h2>
+      </div>
+      <a href="#" class="section-link reveal">すべて見る</a>
+    </div>
+    <div class="works-grid">
+      <div class="work-item reveal visible">
+        <img class="work-thumb" src="some-w01.png" alt="絞り染め" style="object-fit:cover;">
+      </div>
+      <div class="work-item reveal reveal-d1">
+        <img class="work-thumb" src="some-w02.png" alt="藍染め布" style="object-fit:cover;">
+      </div>
+      <div class="work-item reveal reveal-d2">
+        <img class="work-thumb" src="some-w03.png" alt="絞り染め" style="object-fit:cover;">
+      </div>
+      <div class="work-item reveal reveal-d1">
+        <img class="work-thumb" src="some-w04.png" alt="型染め" style="object-fit:cover;">
+      </div>
+      <div class="work-item reveal reveal-d2">
+        <img class="work-thumb" src="some-w05.png" alt="型染め" style="object-fit:cover;">
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <p class="section-eyebrow reveal">Process</p>
+    <h2 class="section-title reveal reveal-d1">制作工程</h2>
+    <div class="process-list">
+      <div class="process-item reveal">
+        <p class="process-num">01</p>
+        <div><h3 class="process-title">藍の仕込み</h3><p class="process-text">蓼藍の葉を乾燥・発酵させ「すくも」を作ります。灰汁・石灰・ふすまとともに甕に仕込み、温度管理しながら数週間かけて染料として育てます。</p></div>
+        <img class="process-img" src="some-p04.png" alt="藍の仕込み" style="object-fit:cover;">
+      </div>
+      <div class="process-item reveal">
+        <p class="process-num">02</p>
+        <div><h3 class="process-title">糸・布の準備</h3><p class="process-text">天然繊維（木綿・麻・絹）の油分や不純物を取り除き、藍の色素が均一に定着するよう精錬・下処理を行います。</p></div>
+        <img class="process-img" src="some-p02.png" alt="布の準備" style="object-fit:cover;">
+      </div>
+      <div class="process-item reveal">
+        <p class="process-num">03</p>
+        <div><h3 class="process-title">浸染と酸化</h3><p class="process-text">藍壺に布を浸し、引き上げて空気に触れさせる「酸化」を繰り返します。この浸染と酸化の繰り返しが、深みのある藍色を生み出します。</p></div>
+        <img class="process-img" src="some-p03.png" alt="浸染" style="object-fit:cover;">
+      </div>
+      <div class="process-item reveal">
+        <p class="process-num">04</p>
+        <div><h3 class="process-title">水元・仕上げ</h3><p class="process-text">染め上がった布を丁寧に水洗いし、余分な藍を落とします。乾燥・整形を経て、一点一点ていねいに仕上げ、完成となります。</p></div>
+        <img class="process-img" src="some-p01.png" alt="仕上げ" style="object-fit:cover;">
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-img-wrap">
+      <img src="some-about.png" alt="工房" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85;">
+    </div>
+    <div class="about-content">
+      <p class="section-eyebrow reveal">About</p>
+      <h2 class="section-title reveal reveal-d1">工房について</h2>
+      <p class="about-text reveal reveal-d2">1948年、京都西陣にて創業。初代・中村宗藍が天然藍染めの復興に生涯を捧げ、現在は三代目が伝統技法を継承しながら現代の感性で新たな作品を生み出しています。国内外のギャラリー・百貨店への納品のほか、アーティストとのコラボレーションも積極的に行っています。</p>
+      <div class="about-signature reveal reveal-d3">
+        三代目 中村藍道
+        <span>Raido Nakamura, 3rd Generation</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-left">
+      <p class="section-eyebrow reveal">Contact</p>
+      <h2 class="section-title reveal reveal-d1">お問い合わせ</h2>
+      <p class="reveal reveal-d2">作品のご購入、オーダーメイド、企業・ブランドとのコラボレーション、取材のご依頼など、お気軽にお問い合わせください。</p>
+      <div class="contact-info reveal reveal-d3">
+        <div><span class="contact-info-label">Address</span><span class="contact-info-value">京都府京都市上京区西陣町 12-4</span></div>
+        <div><span class="contact-info-label">Hours</span><span class="contact-info-value">火〜土 10:00 – 17:00（要予約）</span></div>
+        <div><span class="contact-info-label">Email</span><span class="contact-info-value">info@aonami-indigo.jp</span></div>
+      </div>
+    </div>
+    <form class="contact-form reveal">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">お名前</label><input type="text" class="form-input" placeholder="山田 太郎"></div>
+        <div class="form-group"><label class="form-label">メールアドレス</label><input type="email" class="form-input" placeholder="your@email.com"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">お問い合わせの種類</label>
+        <select class="form-select">
+          <option>選択してください</option>
+          <option>作品のご購入</option>
+          <option>オーダーメイド</option>
+          <option>コラボレーション</option>
+          <option>取材・メディア</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">メッセージ</label><textarea class="form-textarea" placeholder="ご質問・ご要望をお書きください"></textarea></div>
+      <button type="submit" class="form-submit">送信する — Send</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-logo">青波染織</p>
+    <ul class="footer-links">
+      <li><a href="#">Works</a></li>
+      <li><a href="#">Process</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+    <p class="footer-copy">© 2024 青波染織. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Hero parallax on scroll
+    const heroImg = document.querySelector('.hero-video') || document.getElementById('heroImg');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < window.innerHeight * 1.2) {
+        heroImg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+      }
+    }, { passive: true });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }).observe
+    === undefined || reveals.forEach(el =>
+      new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }).observe(el)
+    );
+  </script>
+</body>
+</html>
