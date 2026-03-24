@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiet Made — Demo Portfolio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Georgia', serif;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 60px 60px 40px;
+      border-bottom: 1px solid #222;
+    }
+
+    header h1 {
+      font-size: 13px;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    header p {
+      margin-top: 12px;
+      font-size: 28px;
+      font-weight: 400;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1px;
+      background: #222;
+      margin-top: 1px;
+    }
+
+    .card {
+      background: #0a0a0a;
+      padding: 48px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background 0.3s;
+    }
+
+    .card:hover {
+      background: #111;
+    }
+
+    .card-number {
+      font-size: 11px;
+      font-family: 'Helvetica Neue', sans-serif;
+      letter-spacing: 0.15em;
+      color: #444;
+    }
+
+    .card-craft {
+      font-size: 11px;
+      font-family: 'Helvetica Neue', sans-serif;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #666;
+    }
+
+    .card-title {
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      font-family: 'Helvetica Neue', sans-serif;
+      color: #555;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    .card-arrow {
+      margin-top: auto;
+      padding-top: 32px;
+      font-size: 11px;
+      font-family: 'Helvetica Neue', sans-serif;
+      letter-spacing: 0.15em;
+      color: #444;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s, gap 0.3s;
+    }
+
+    .card:hover .card-arrow {
+      color: #fff;
+      gap: 14px;
+    }
+
+    .card-arrow::after {
+      content: '→';
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'Helvetica Neue', sans-serif;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid #333;
+      color: #555;
+      border-radius: 2px;
+      width: fit-content;
+    }
+
+    footer {
+      padding: 40px 60px;
+      border-top: 1px solid #222;
+      font-size: 11px;
+      font-family: 'Helvetica Neue', sans-serif;
+      color: #444;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Quiet Made — Demo Sites</h1>
+    <p>日本工芸、海外へ。<br>5つの工房デモサイト。</p>
+  </header>
+
+  <div class="grid">
+
+    <a class="card" href="some-demo.html">
+      <span class="card-number">01</span>
+      <span class="card-craft">Indigo Dyeing</span>
+      <div class="card-title">青波染織</div>
+      <div class="card-sub">藍染・のれん・染め物工房</div>
+      <span class="tag">HTML / Claude</span>
+      <div class="card-arrow">VIEW DEMO</div>
+    </a>
+
+    <a class="card" href="take-zoom.html">
+      <span class="card-number">02</span>
+      <span class="card-craft">Bamboo Craft</span>
+      <div class="card-title">青竹舎</div>
+      <div class="card-sub">別府竹細工・籠・照明</div>
+      <span class="tag">HTML / Claude</span>
+      <div class="card-arrow">VIEW DEMO</div>
+    </a>
+
+    <a class="card" href="https://giving-takeaways-942890.framer.app" target="_blank">
+      <span class="card-number">03</span>
+      <span class="card-craft">Ceramics</span>
+      <div class="card-title">清火窯</div>
+      <div class="card-sub">陶芸・茶碗・器</div>
+      <span class="tag">Framer / Marika</span>
+      <div class="card-arrow">VIEW DEMO</div>
+    </a>
+
+    <a class="card" href="https://rich-lily-668402.framer.app" target="_blank">
+      <span class="card-number">04</span>
+      <span class="card-craft">Lacquerware</span>
+      <div class="card-title">深黒工房</div>
+      <div class="card-sub">漆器・金継ぎ・蒔絵</div>
+      <span class="tag">Framer / Marika</span>
+      <div class="card-arrow">VIEW DEMO</div>
+    </a>
+
+    <a class="card" href="https://clear-usability-804809.framer.app" target="_blank">
+      <span class="card-number">05</span>
+      <span class="card-craft">Woodcraft</span>
+      <div class="card-title">MOKUME</div>
+      <div class="card-sub">木工・器・カトラリー</div>
+      <span class="tag">Framer / Marika</span>
+      <div class="card-arrow">VIEW DEMO</div>
+    </a>
+
+  </div>
+
+  <footer>
+    © 2026 Quiet Made — Marika Kotani
+  </footer>
+
+</body>
+</html>
