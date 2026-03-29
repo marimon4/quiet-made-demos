@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蒔絵堂 — 漆芸工房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Shippori+Mincho+B1:wght@400;500;600;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white:  #FAF9F6;
+  --cream:  #F0E8DC;
+  --black:  #18100A;
+  --urushi: #7A1200;
+  --urushi-hi: #A01800;
+  --gold:   #BF955A;
+  --sand:   #C4B49A;
+  --grey:   #887870;
+  --border: rgba(24,16,10,0.08);
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ══ NAV ══════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 2rem 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.5s, padding 0.4s, border-color 0.5s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(250,249,246,0.94);
+  backdrop-filter: blur(14px);
+  padding: 1.2rem 3.5rem;
+  border-bottom-color: var(--border);
+}
+
+.nav-logo {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+.nav-logo-ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: 0.18em;
+}
+.nav-logo-en {
+  font-size: 0.52rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.8rem;
+  list-style: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.nav-links a {
+  font-size: 0.63rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--black); }
+
+.nav-cta {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--urushi);
+  padding: 0.75rem 1.6rem;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s;
+}
+.nav-cta:hover { background: var(--urushi-hi); transform: translateY(-1px); }
+
+
+/* ══ HERO ══════════════════════════════════ */
+.hero {
+  height: 100vh;
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: 42% 58%;
+  position: relative;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 9rem 4rem 5rem 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--urushi);
+  margin-bottom: 2.8rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s cubic-bezier(0.25,0.1,0.25,1) forwards;
+}
+.hero-label::before {
+  content: '';
+  width: 2.2rem;
+  height: 1px;
+  background: var(--urushi);
+  flex-shrink: 0;
+}
+
+.hero-title-ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.55s cubic-bezier(0.25,0.1,0.25,1) forwards;
+}
+
+.hero-title-en {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--sand);
+  letter-spacing: 0.06em;
+  margin-bottom: 3.2rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.75s cubic-bezier(0.25,0.1,0.25,1) forwards;
+}
+
+.hero-desc {
+  font-size: 0.84rem;
+  line-height: 2.1;
+  color: var(--grey);
+  max-width: 27rem;
+  margin-bottom: 3.8rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.95s cubic-bezier(0.25,0.1,0.25,1) forwards;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 1.15s cubic-bezier(0.25,0.1,0.25,1) forwards;
+}
+
+.btn-primary {
+  background: var(--urushi);
+  color: var(--white);
+  padding: 1.05rem 2.4rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--urushi-hi); transform: translateY(-2px); }
+
+.btn-ghost {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: color 0.3s, gap 0.3s;
+}
+.btn-ghost:hover { color: var(--black); gap: 0.9rem; }
+.btn-ghost::after { content: '→'; font-size: 0.9rem; }
+
+/* Hero image */
+.hero-image {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ★ 写真差し込みエリア：img タグに置き換えてください
+   例: <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover"> */
+.hero-img-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, #180800 0%, #3D0A00 30%, #5C1008 55%, #2A0400 80%, #0A0200 100%);
+  transform: scale(1.06);
+  transition: transform 0s;
+}
+/* lacquer sheen */
+.hero-img-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    108deg,
+    transparent 25%,
+    rgba(191,149,90,0.07) 42%,
+    rgba(191,149,90,0.16) 50%,
+    rgba(191,149,90,0.07) 58%,
+    transparent 72%
+  );
+}
+
+.hero-img-caption {
+  position: absolute;
+  bottom: 2.8rem;
+  right: -0.3rem;
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(250,249,246,0.3);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Scroll indicator */
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  opacity: 0;
+  animation: fadeUp 1s 1.6s forwards;
+  z-index: 2;
+}
+.hero-scroll-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--sand);
+  writing-mode: vertical-rl;
+}
+.scroll-bar {
+  width: 1px;
+  height: 56px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-bar::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--urushi);
+  animation: scrollDown 2.2s 2.2s infinite ease-in-out;
+}
+
+/* Decorative red line */
+.hero-line {
+  position: absolute;
+  left: 42%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent 0%, var(--urushi) 30%, var(--urushi) 70%, transparent 100%);
+  opacity: 0.15;
+  z-index: 3;
+}
+
+
+/* ══ TICKER ══════════════════════════════════ */
+.ticker {
+  background: var(--black);
+  padding: 0.9rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-inner {
+  display: inline-flex;
+  animation: ticker 28s linear infinite;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.8rem;
+  padding: 0 1.8rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(250,249,246,0.38);
+}
+.ticker-dot {
+  width: 3px;
+  height: 3px;
+  background: var(--urushi);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ticker-item.accent { color: rgba(191,149,90,0.6); }
+
+
+/* ══ CONCEPT ══════════════════════════════════ */
+.concept {
+  padding: 10rem 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7rem;
+  align-items: center;
+}
+
+.concept-text-side {}
+
+.concept-eyebrow {
+  font-size: 0.58rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--urushi);
+  margin-bottom: 1.8rem;
+}
+
+.concept-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 7rem;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: -1.5rem;
+  display: block;
+}
+
+.concept-title {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  margin-bottom: 2.2rem;
+}
+
+.concept-body {
+  font-size: 0.86rem;
+  line-height: 2.2;
+  color: var(--grey);
+  max-width: 36rem;
+}
+
+.concept-image-side {
+  position: relative;
+}
+
+/* ★ 写真差し込みエリア */
+.concept-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: linear-gradient(200deg, #F0E4D0 0%, #D4C0A0 45%, #B89870 100%);
+  display: block;
+}
+
+.concept-img-frame {
+  position: absolute;
+  bottom: -2.5rem;
+  right: -2.5rem;
+  width: 78%;
+  height: 78%;
+  border: 1px solid var(--border);
+  z-index: -1;
+}
+
+.concept-caption {
+  margin-top: 1.2rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+
+
+/* ══ WORKS ══════════════════════════════════ */
+.works {
+  padding: 7rem 3.5rem;
+  background: var(--cream);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4.5rem;
+}
+.section-eyebrow {
+  font-size: 0.58rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--urushi);
+  margin-bottom: 0.8rem;
+}
+.section-title {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.link-arrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s, gap 0.3s;
+  padding-bottom: 0.5rem;
+}
+.link-arrow:hover { color: var(--black); gap: 0.85rem; }
+.link-arrow::after { content: '→'; }
+
+/* Masonry-ish grid */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: auto;
+  gap: 1.2rem;
+}
+
+.work-card { position: relative; overflow: hidden; cursor: pointer; }
+.work-card:nth-child(1) { grid-column: 1 / 6; }
+.work-card:nth-child(2) { grid-column: 6 / 9; }
+.work-card:nth-child(3) { grid-column: 9 / 13; }
+.work-card:nth-child(4) { grid-column: 1 / 5; }
+.work-card:nth-child(5) { grid-column: 5 / 13; }
+
+/* ★ 写真差し込みエリア（各カード） */
+.work-img {
+  width: 100%;
+  display: block;
+  transition: transform 0.65s cubic-bezier(0.25,0.1,0.25,1);
+}
+.work-card:nth-child(1) .work-img { aspect-ratio: 4/3;  background: linear-gradient(140deg, #180800, #4A1200); }
+.work-card:nth-child(2) .work-img { aspect-ratio: 3/4;  background: linear-gradient(200deg, #2A0A02, #5C1A08); }
+.work-card:nth-child(3) .work-img { aspect-ratio: 3/4;  background: linear-gradient(160deg, #0A0400, #3C0C04); }
+.work-card:nth-child(4) .work-img { aspect-ratio: 4/5;  background: linear-gradient(220deg, #150800, #4C1A04); }
+.work-card:nth-child(5) .work-img { aspect-ratio: 16/7; background: linear-gradient(110deg, #200C02, #5A1800, #2C0800); }
+
+.work-card:hover .work-img { transform: scale(1.05); }
+
+.work-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18,8,4,0);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.6rem;
+  transition: background 0.45s;
+}
+.work-card:hover .work-overlay { background: rgba(18,8,4,0.62); }
+
+.work-info {
+  transform: translateY(0.8rem);
+  opacity: 0;
+  transition: transform 0.4s, opacity 0.4s;
+}
+.work-card:hover .work-info { transform: translateY(0); opacity: 1; }
+
+.work-name {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 0.95rem;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+}
+.work-meta {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: rgba(250,249,246,0.55);
+  text-transform: uppercase;
+}
+
+
+/* ══ PROCESS ══════════════════════════════════ */
+.process {
+  padding: 10rem 3.5rem;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.8rem;
+  margin-top: 5rem;
+}
+
+.step {
+  padding-top: 2rem;
+  position: relative;
+}
+/* top rule that animates in */
+.step::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+.step-line {
+  position: absolute;
+  top: 0; left: 0;
+  height: 1px;
+  width: 0;
+  background: var(--urushi);
+  transition: width 0.9s cubic-bezier(0.25,0.1,0.25,1);
+}
+.step.revealed .step-line { width: 100%; }
+
+.step-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.68rem;
+  color: var(--sand);
+  letter-spacing: 0.12em;
+  margin-bottom: 1.6rem;
+}
+.step-title {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+.step-body {
+  font-size: 0.8rem;
+  line-height: 2.1;
+  color: var(--grey);
+}
+
+
+/* ══ ABOUT ══════════════════════════════════ */
+.about {
+  background: var(--black);
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: 72vh;
+}
+
+.about-image {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+}
+/* ★ 写真差し込みエリア */
+.about-img-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(185deg, #1A0800 0%, #3A1208 55%, #0A0400 100%);
+}
+.about-img-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    118deg,
+    transparent 38%,
+    rgba(191,149,90,0.09) 52%,
+    transparent 64%
+  );
+}
+
+.about-content {
+  padding: 7rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.about-content .section-eyebrow { color: var(--gold); margin-bottom: 0.8rem; }
+.about-content .section-title { color: var(--white); margin-bottom: 2.8rem; }
+
+.about-body {
+  font-size: 0.84rem;
+  line-height: 2.3;
+  color: rgba(250,249,246,0.45);
+  margin-bottom: 4rem;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding-top: 2.8rem;
+  border-top: 1px solid rgba(250,249,246,0.07);
+}
+.stat-val {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 2.2rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: rgba(250,249,246,0.28);
+  margin-top: 0.5rem;
+}
+
+
+/* ══ CONTACT ══════════════════════════════════ */
+.contact {
+  padding: 10rem 3.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+.contact .section-eyebrow { display: block; margin-bottom: 1rem; }
+.contact .section-title { margin-bottom: 1.6rem; }
+.contact-sub {
+  font-size: 0.84rem;
+  line-height: 2.1;
+  color: var(--grey);
+  margin-bottom: 4.5rem;
+}
+
+.contact-form {
+  display: grid;
+  gap: 1.8rem;
+  text-align: left;
+}
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.form-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 0;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--black);
+  outline: none;
+  transition: border-color 0.35s;
+  -webkit-appearance: none;
+}
+.form-input:focus,
+.form-textarea:focus { border-bottom-color: var(--urushi); }
+.form-textarea { resize: none; height: 90px; }
+
+.form-submit {
+  background: var(--urushi);
+  color: var(--white);
+  border: none;
+  padding: 1.1rem 3rem;
+  font-family: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+.form-submit:hover { background: var(--urushi-hi); transform: translateY(-2px); }
+
+
+/* ══ FOOTER ══════════════════════════════════ */
+footer {
+  background: var(--black);
+  padding: 2.8rem 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(250,249,246,0.05);
+}
+.footer-logo {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(250,249,246,0.75);
+}
+.footer-nav {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.footer-nav a {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(250,249,246,0.28);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-nav a:hover { color: rgba(250,249,246,0.65); }
+.footer-copy {
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: rgba(250,249,246,0.18);
+}
+
+
+/* ══ ANIMATIONS ══════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollDown {
+  0%   { top: -100%; }
+  100% { top: 200%; }
+}
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.85s cubic-bezier(0.25,0.1,0.25,1),
+              transform 0.85s cubic-bezier(0.25,0.1,0.25,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.3s; }
+.reveal-d4 { transition-delay: 0.42s; }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-ja">蒔絵堂</span>
+    <span class="nav-logo-en">Makie-Do Lacquerware</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#works">作品</a></li>
+    <li><a href="#process">制作工程</a></li>
+    <li><a href="#about">工房について</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">お問い合わせ</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-label">Since 1952 · Kyoto</p>
+    <h1 class="hero-title-ja">漆が語る、<br>時の記憶。</h1>
+    <p class="hero-title-en">The memory of time, spoken through lacquer.</p>
+    <p class="hero-desc">
+      三代にわたり受け継がれてきた蒔絵の技。自然の素材と職人の手が生み出す、唯一無二の漆芸品を世界へ。
+    </p>
+    <div class="hero-actions">
+      <a href="#works" class="btn-primary">作品を見る</a>
+      <a href="#about" class="btn-ghost">工房を知る</a>
+    </div>
+  </div>
+
+  <div class="hero-image">
+    <!-- ★ 写真差し込みエリア：img src="" に置き換えてください -->
+    <div class="hero-img-bg" id="heroParallax"></div>
+    <p class="hero-img-caption">© 蒔絵堂 2025</p>
+  </div>
+
+  <div class="hero-line" aria-hidden="true"></div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="scroll-bar"></div>
+    <span class="hero-scroll-label">Scroll</span>
+  </div>
+</section>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item"><span class="ticker-dot"></span>漆芸</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Lacquerware</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>蒔絵</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Makie</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>螺鈿</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Raden</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>京都</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Kyoto</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>伝統工芸</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Traditional Craft</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="ticker-dot"></span>漆芸</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Lacquerware</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>蒔絵</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Makie</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>螺鈿</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Raden</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>京都</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Kyoto</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>伝統工芸</span>
+    <span class="ticker-item accent"><span class="ticker-dot"></span>Traditional Craft</span>
+  </div>
+</div>
+
+<!-- ══ CONCEPT ══ -->
+<section class="concept" id="concept">
+  <div class="concept-text-side">
+    <p class="concept-eyebrow reveal">Philosophy</p>
+    <span class="concept-num reveal">01</span>
+    <h2 class="concept-title reveal reveal-d1">
+      自然と人の手が<br>溶け合う場所で
+    </h2>
+    <p class="concept-body reveal reveal-d2">
+      漆は生きています。木の樹液から生まれ、空気の湿度と対話しながら硬化する。その不思議な素材と向き合い続けて七十年余り。機械では再現できない深みと艶を、私たちは一点一点、手で生み出しています。
+    </p>
+  </div>
+  <div class="concept-image-side">
+    <!-- ★ 写真差し込みエリア -->
+    <div class="concept-img reveal reveal-d1"></div>
+    <div class="concept-img-frame"></div>
+    <p class="concept-caption reveal reveal-d2">漆工・三代目 山岡 健一</p>
+  </div>
+</section>
+
+<!-- ══ WORKS ══ -->
+<section class="works" id="works">
+  <div class="section-head">
+    <div>
+      <p class="section-eyebrow reveal">Works</p>
+      <h2 class="section-title reveal reveal-d1">作品一覧</h2>
+    </div>
+    <a href="#" class="link-arrow reveal">すべて見る</a>
+  </div>
+
+  <div class="works-grid">
+    <div class="work-card reveal">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-overlay">
+        <div class="work-info">
+          <p class="work-name">秋草蒔絵 盆</p>
+          <p class="work-meta">Makie Tray · ¥85,000</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal reveal-d1">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-overlay">
+        <div class="work-info">
+          <p class="work-name">螺鈿 菓子器</p>
+          <p class="work-meta">Raden Box · ¥120,000</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal reveal-d2">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-overlay">
+        <div class="work-info">
+          <p class="work-name">溜塗 椀</p>
+          <p class="work-meta">Lacquer Bowl · ¥42,000</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal reveal-d1">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-overlay">
+        <div class="work-info">
+          <p class="work-name">朱塗 重箱</p>
+          <p class="work-meta">Lacquer Jubako · ¥98,000</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal reveal-d2">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-overlay">
+        <div class="work-info">
+          <p class="work-name">金箔 文箱</p>
+          <p class="work-meta">Gold Document Box · ¥68,000</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section class="process" id="process">
+  <div class="section-head">
+    <div>
+      <p class="section-eyebrow reveal">Process</p>
+      <h2 class="section-title reveal reveal-d1">制作工程</h2>
+    </div>
+  </div>
+
+  <div class="process-grid">
+    <div class="step reveal">
+      <div class="step-line"></div>
+      <p class="step-num">01 / 04</p>
+      <h3 class="step-title">木地作り</h3>
+      <p class="step-body">素材となる木地を選び、削り出す。木の年輪と対話しながら、最適な形を引き出します。</p>
+    </div>
+    <div class="step reveal reveal-d1">
+      <div class="step-line"></div>
+      <p class="step-num">02 / 04</p>
+      <h3 class="step-title">下地塗り</h3>
+      <p class="step-body">生漆を何層にも重ね、丈夫な下地を作ります。乾燥に数週間かかることも。</p>
+    </div>
+    <div class="step reveal reveal-d2">
+      <div class="step-line"></div>
+      <p class="step-num">03 / 04</p>
+      <h3 class="step-title">中塗り・上塗り</h3>
+      <p class="step-body">砥ぎと塗りを繰り返し、深みある艶を出していきます。この工程が最も時間を要します。</p>
+    </div>
+    <div class="step reveal reveal-d3">
+      <div class="step-line"></div>
+      <p class="step-num">04 / 04</p>
+      <h3 class="step-title">蒔絵・仕上げ</h3>
+      <p class="step-body">金粉や螺鈿で文様を描き、最後の艶出しで完成。一点一点が唯一無二の作品となります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="about" id="about">
+  <div class="about-image">
+    <!-- ★ 写真差し込みエリア -->
+    <div class="about-img-bg"></div>
+  </div>
+  <div class="about-content">
+    <p class="section-eyebrow reveal">About</p>
+    <h2 class="section-title reveal reveal-d1">工房について</h2>
+    <p class="about-body reveal reveal-d2">
+      1952年、京都・東山の地に創業。初代から三代にわたり、伝統的な蒔絵・螺鈿の技法を継承しながら、現代の暮らしに溶け込む漆芸品を制作しています。国内外の美術館・コレクターへの納品実績も多数。
+    </p>
+    <div class="about-stats reveal reveal-d3">
+      <div>
+        <p class="stat-val">70+</p>
+        <p class="stat-label">年の歴史</p>
+      </div>
+      <div>
+        <p class="stat-val">3</p>
+        <p class="stat-label">代目職人</p>
+      </div>
+      <div>
+        <p class="stat-val">12</p>
+        <p class="stat-label">か国へ納品</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section class="contact" id="contact">
+  <p class="section-eyebrow reveal">Contact</p>
+  <h2 class="section-title reveal reveal-d1">お問い合わせ</h2>
+  <p class="contact-sub reveal reveal-d2">
+    作品のご購入・オーダーメイド・取材のご依頼など、<br>お気軽にお問い合わせください。
+  </p>
+  <form class="contact-form reveal reveal-d3" onsubmit="return false;">
+    <div class="form-group">
+      <label class="form-label">お名前</label>
+      <input type="text" class="form-input" placeholder="山田 太郎">
+    </div>
+    <div class="form-group">
+      <label class="form-label">メールアドレス</label>
+      <input type="email" class="form-input" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">お問い合わせ内容</label>
+      <textarea class="form-textarea" placeholder="ご質問・ご要望をお書きください"></textarea>
+    </div>
+    <button type="submit" class="form-submit">送信する</button>
+  </form>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p class="footer-logo">蒔絵堂</p>
+  <ul class="footer-nav">
+    <li><a href="#works">作品</a></li>
+    <li><a href="#process">工程</a></li>
+    <li><a href="#about">工房</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 蒔絵堂 All rights reserved.</p>
+</footer>
+
+
+<script>
+/* ── NAV scroll ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── Reveal on scroll ── */
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => revealObs.observe(el));
+
+/* ── Step line reveal ── */
+const steps = document.querySelectorAll('.step');
+const stepObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      // stagger each step's line
+      const idx = [...steps].indexOf(e.target);
+      setTimeout(() => e.target.classList.add('revealed'), idx * 120);
+    }
+  });
+}, { threshold: 0.25 });
+steps.forEach(s => stepObs.observe(s));
+
+/* ── Hero parallax ── */
+const heroParallax = document.getElementById('heroParallax');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (y < window.innerHeight && heroParallax) {
+    heroParallax.style.transform = `scale(1.06) translateY(${y * 0.28}px)`;
+  }
+}, { passive: true });
+</script>
+
+</body>
+</html>

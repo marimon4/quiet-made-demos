@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>土楽窯 — 陶芸工房</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #28333D;
+      --text: #F2EDE6;
+      --text-dim: rgba(242,237,230,0.45);
+      --accent: #C8A87A;
+    }
+
+    html { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Shippori Mincho B1', serif;
+      height: 500vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── CANVAS ─── */
+    canvas#bg {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 0;
+      display: block;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 2.2rem 2.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      color: rgba(242,237,230,0.88);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .logo-sub {
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      color: var(--text-dim);
+      font-weight: 400;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: rgba(242,237,230,0.6);
+      transition: width 0.3s;
+    }
+
+    .hamburger span:last-child { width: 18px; }
+    .hamburger:hover span { width: 28px; }
+
+    /* ─── HERO TEXT (bottom-right like ZOOM) ─── */
+    .hero-text {
+      position: fixed;
+      bottom: 4rem;
+      right: 3rem;
+      text-align: right;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .hero-tagline {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+      display: block;
+      font-weight: 400;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.4;
+      letter-spacing: 0.05em;
+      color: rgba(242,237,230,0.9);
+    }
+
+    /* ─── SCROLL INDICATOR (bottom-left) ─── */
+    .scroll-ui {
+      position: fixed;
+      bottom: 3.5rem;
+      left: 3rem;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      pointer-events: none;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 56px;
+      background: rgba(242,237,230,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(242,237,230,0.5);
+      animation: slideLine 2.2s ease-in-out infinite;
+    }
+
+    @keyframes slideLine {
+      0% { top: -100%; opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .scroll-label {
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      color: var(--text-dim);
+      writing-mode: vertical-rl;
+      font-weight: 400;
+    }
+
+    /* ─── SECTION TEXTS (appear mid-scroll) ─── */
+    .section-overlay {
+      position: fixed;
+      top: 50%;
+      left: 3rem;
+      transform: translateY(-50%);
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+      max-width: 380px;
+    }
+
+    .section-overlay.visible { opacity: 1; }
+
+    .section-overlay .label {
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .section-overlay h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: 0.05em;
+      color: rgba(242,237,230,0.9);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-overlay p {
+      font-size: 0.82rem;
+      line-height: 2.1;
+      color: var(--text-dim);
+      font-weight: 400;
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    #progress {
+      position: fixed;
+      bottom: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: rgba(242,237,230,0.25);
+      z-index: 200;
+      transition: width 0.15s;
+    }
+
+    /* ─── ARROW (right side, like ZOOM) ─── */
+    .next-arrow {
+      position: fixed;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      color: var(--text-dim);
+      font-size: 1.2rem;
+      writing-mode: vertical-rl;
+      letter-spacing: 0.3em;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg"></canvas>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">
+      土楽窯
+      <span class="logo-sub">DORAKU — Ceramics</span>
+    </a>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <!-- HERO TEXT -->
+  <div class="hero-text" id="heroText">
+    <span class="hero-tagline">Since 1890 · 愛知県常滑市</span>
+    <h1 class="hero-title">土が語る、<br>静寂の形。</h1>
+  </div>
+
+  <!-- SCROLL -->
+  <div class="scroll-ui">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Scroll</span>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section-overlay" id="sec2">
+    <span class="label">Philosophy</span>
+    <h2>土と手が<br>溶け合う瞬間</h2>
+    <p>ろくろの上で形が生まれるとき、<br>土は職人の手と語り合います。<br>百年変わらぬその対話が、<br>ひとつの器になります。</p>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section-overlay" id="sec3">
+    <span class="label">Craft</span>
+    <h2>炎が与える<br>偶然の美</h2>
+    <p>窯の中では、職人の意図を超えた<br>色と景色が生まれます。<br>その一期一会を、私たちは大切にしています。</p>
+  </div>
+
+  <!-- RIGHT ARROW -->
+  <div class="next-arrow">→</div>
+
+  <!-- PROGRESS -->
+  <div id="progress"></div>
+
+  <!-- THREE.JS -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+  <script>
+    // ─── RENDERER ───
+    const canvas = document.getElementById('bg');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.4;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // ─── SCENE ───
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x28333D);
+    scene.fog = new THREE.FogExp2(0x28333D, 0.022);
+
+    // ─── CAMERA ───
+    const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 60);
+    camera.position.set(0, 0, 11);
+
+    // ─── LIGHTS ───
+    scene.add(new THREE.AmbientLight(0xffeedd, 0.8));
+
+    // Key: warm, front-right-top
+    const keyLight = new THREE.PointLight(0xfff5e0, 18, 45);
+    keyLight.position.set(5, 7, 12);
+    scene.add(keyLight);
+
+    // Fill: cool, left
+    const fillLight = new THREE.PointLight(0x99bbdd, 8, 35);
+    fillLight.position.set(-8, 2, 9);
+    scene.add(fillLight);
+
+    // Rim: blue, bottom
+    const rimLight = new THREE.PointLight(0x7799cc, 5, 25);
+    rimLight.position.set(2, -7, 7);
+    scene.add(rimLight);
+
+    // Accent: top
+    const accentLight = new THREE.PointLight(0xffffff, 4, 22);
+    accentLight.position.set(0, 11, 6);
+    scene.add(accentLight);
+
+    // ─── POTTERY SHAPES via LatheGeometry ───
+    function lathe(profile, segs = 48) {
+      const pts = profile.map(([x, y]) => new THREE.Vector2(x, y));
+      return new THREE.LatheGeometry(pts, segs);
+    }
+
+    function bowl() {
+      const pts = [];
+      for (let i = 0; i <= 18; i++) {
+        const t = i / 18;
+        const x = Math.pow(Math.sin(t * Math.PI * 0.5), 0.6) * 1.35 + 0.05;
+        const y = t * 1.4 - 0.7;
+        pts.push([Math.max(x, 0.05), y]);
+      }
+      return lathe(pts);
+    }
+
+    function cup() {
+      const pts = [];
+      for (let i = 0; i <= 14; i++) {
+        const t = i / 14;
+        const x = 0.38 + t * 0.28 + Math.sin(t * Math.PI) * 0.06;
+        const y = t * 2.2 - 1.1;
+        pts.push([x, y]);
+      }
+      return lathe(pts, 36);
+    }
+
+    function vase() {
+      return lathe([
+        [0.12, -1.6],
+        [0.55, -1.1],
+        [0.95, -0.4],
+        [1.1,   0.1],
+        [0.9,   0.6],
+        [0.55,  1.0],
+        [0.38,  1.4],
+        [0.28,  1.7],
+      ]);
+    }
+
+    function plate() {
+      const pts = [];
+      for (let i = 0; i <= 12; i++) {
+        const t = i / 12;
+        const x = t * 1.7 + 0.01;
+        const y = Math.pow(t, 2.5) * 0.3 - 0.15;
+        pts.push([x, y]);
+      }
+      return lathe(pts, 56);
+    }
+
+    function tallVase() {
+      return lathe([
+        [0.08, -2.0],
+        [0.35, -1.4],
+        [0.65, -0.6],
+        [0.75, -0.1],
+        [0.62,  0.5],
+        [0.35,  1.1],
+        [0.22,  1.6],
+        [0.18,  2.0],
+      ]);
+    }
+
+    function wideBowl() {
+      const pts = [];
+      for (let i = 0; i <= 14; i++) {
+        const t = i / 14;
+        const x = Math.pow(t, 0.45) * 1.9 + 0.04;
+        const y = t * 0.9 - 0.45;
+        pts.push([Math.max(x, 0.04), y]);
+      }
+      return lathe(pts, 52);
+    }
+
+    // ─── MATERIALS (Phong = visible highlights without env map) ───
+    const mats = [
+      new THREE.MeshPhongMaterial({ color: 0xD8C4A0, specular: 0x886644, shininess: 18, side: THREE.DoubleSide }),   // warm clay matte
+      new THREE.MeshPhongMaterial({ color: 0xB09878, specular: 0xffffff, shininess: 120, side: THREE.DoubleSide }),  // glazed brown
+      new THREE.MeshPhongMaterial({ color: 0xF0E8D8, specular: 0x998866, shininess: 12, side: THREE.DoubleSide }),   // pale clay
+      new THREE.MeshPhongMaterial({ color: 0x8ABCB8, specular: 0xffffff, shininess: 200, side: THREE.DoubleSide }),  // celadon glaze
+      new THREE.MeshPhongMaterial({ color: 0xC89878, specular: 0xddaa88, shininess: 60, side: THREE.DoubleSide }),   // terracotta semi-glaze
+      new THREE.MeshPhongMaterial({ color: 0xECE0CC, specular: 0x776655, shininess: 10, side: THREE.DoubleSide }),   // white slip matte
+      new THREE.MeshPhongMaterial({ color: 0x7AADA0, specular: 0xffffff, shininess: 180, side: THREE.DoubleSide }),  // teal glaze shiny
+    ];
+
+    // ─── PLACE OBJECTS ───
+    const defs = [
+      { geo: bowl(),     mat: 0, p: [-4.2,  1.8, -1.5], r: [0.2,  0.0,  0.1 ], s: 1.05 },
+      { geo: cup(),      mat: 3, p: [ 3.8, -0.8,  1.2], r: [-0.1, 0.4,  0.15], s: 0.90 },
+      { geo: vase(),     mat: 6, p: [ 0.5,  2.5, -3.5], r: [0.05, 0.0,  0.0 ], s: 0.88 },
+      { geo: plate(),    mat: 2, p: [ 5.5,  2.8, -2.0], r: [0.9,  0.2,  0.3 ], s: 1.10 },
+      { geo: wideBowl(), mat: 4, p: [-5.8, -1.5, -1.0], r: [0.25, 0.5,  0.1 ], s: 0.78 },
+      { geo: cup(),      mat: 1, p: [ 2.2, -2.8,  0.5], r: [-0.2, 0.1, -0.3 ], s: 0.72 },
+      { geo: tallVase(), mat: 5, p: [-2.5,  3.8, -4.5], r: [0.05, 0.3,  0.08], s: 0.68 },
+      { geo: bowl(),     mat: 3, p: [ 6.5,  0.2, -5.0], r: [0.15, 0.0, -0.1 ], s: 0.92 },
+      { geo: plate(),    mat: 6, p: [-6.5,  1.2, -6.0], r: [1.1,  0.3,  0.2 ], s: 0.80 },
+      { geo: vase(),     mat: 0, p: [ 1.0, -4.0, -2.0], r: [0.0,  0.0,  0.05], s: 0.65 },
+    ];
+
+    const meshes = defs.map(d => {
+      const m = new THREE.Mesh(d.geo, mats[d.mat]);
+      m.position.set(...d.p);
+      m.rotation.set(...d.r);
+      m.scale.setScalar(d.s);
+      m.castShadow = true;
+      m.receiveShadow = true;
+      m.userData = {
+        basePos: { x: d.p[0], y: d.p[1], z: d.p[2] },
+        rSpeed:  { x: (Math.random() - 0.5) * 0.004, y: (Math.random() - 0.5) * 0.006, z: (Math.random() - 0.5) * 0.003 },
+        fOffset: Math.random() * Math.PI * 2,
+        fSpeed:  0.28 + Math.random() * 0.32,
+        fAmp:    0.07 + Math.random() * 0.10,
+        sFactor: 0.25 + Math.random() * 0.75,
+        xDrift:  (Math.random() - 0.5) * 0.4,
+      };
+      scene.add(m);
+      return m;
+    });
+
+    // ─── STATE ───
+    let mouseX = 0, mouseY = 0;
+    let tMouseX = 0, tMouseY = 0;
+    let scrollY = 0;
+
+    document.addEventListener('mousemove', e => {
+      tMouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+      tMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const pct = scrollY / maxScroll;
+
+      // Progress bar
+      document.getElementById('progress').style.width = (pct * 100) + '%';
+
+      // Fade hero text out
+      const heroText = document.getElementById('heroText');
+      heroText.style.opacity = Math.max(0, 1 - pct * 5);
+
+      // Section 2 (25%–50%)
+      const sec2 = document.getElementById('sec2');
+      if (pct > 0.22 && pct < 0.52) sec2.classList.add('visible');
+      else sec2.classList.remove('visible');
+
+      // Section 3 (60%–85%)
+      const sec3 = document.getElementById('sec3');
+      if (pct > 0.58 && pct < 0.88) sec3.classList.add('visible');
+      else sec3.classList.remove('visible');
+    });
+
+    // ─── ANIMATE ───
+    const clock = new THREE.Clock();
+
+    function tick() {
+      requestAnimationFrame(tick);
+
+      const t = clock.getElapsedTime();
+
+      // Smooth mouse
+      mouseX += (tMouseX - mouseX) * 0.05;
+      mouseY += (tMouseY - mouseY) * 0.05;
+
+      // Camera drift from mouse
+      camera.position.x += (mouseX * 0.6 - camera.position.x) * 0.025;
+      camera.position.y += (-mouseY * 0.35 - camera.position.y) * 0.025;
+      camera.lookAt(0, 0.5, 0);
+
+      const scroll = scrollY * 0.0022;
+
+      meshes.forEach((m, i) => {
+        const d = m.userData;
+
+        // Spin
+        m.rotation.x += d.rSpeed.x;
+        m.rotation.y += d.rSpeed.y;
+        m.rotation.z += d.rSpeed.z;
+
+        // Float
+        const floatY = Math.sin(t * d.fSpeed + d.fOffset) * d.fAmp;
+
+        // Scroll: objects drift upward at different rates
+        m.position.y = d.basePos.y + floatY - scroll * d.sFactor;
+
+        // Subtle x-drift from mouse
+        m.position.x = d.basePos.x + mouseX * 0.25 + d.xDrift * Math.sin(t * 0.15 + i);
+      });
+
+      // Subtle key light animation
+      keyLight.position.x = 5 + Math.sin(t * 0.2) * 1.5;
+      keyLight.position.y = 7 + Math.cos(t * 0.15) * 1.0;
+
+      renderer.render(scene, camera);
+    }
+
+    tick();
+
+    // ─── RESIZE ───
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+
+</body>
+</html>

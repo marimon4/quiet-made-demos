@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="dark" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quiet Made — 日本の職人技を、世界へ。</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-surface-variant": "#c6c6c6",
+        "on-surface": "#e2e2e2",
+        "on-primary": "#000000",
+        "background": "#000000",
+        "primary": "#ffffff",
+        "surface": "#131313",
+        "outline-variant": "#474747",
+        "surface-container": "#1f1f1f",
+        "gold": "#c9a96e",
+      },
+      fontFamily: {
+        "headline": ["Instrument Serif", "serif"],
+        "body": ["Barlow", "sans-serif"],
+        "jp": ["Noto Serif JP", "serif"],
+      },
+      borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+    },
+  },
+}
+</script>
+<style>
+body {
+  background-color: #000000;
+  color: #e2e2e2;
+  overflow-x: hidden;
+}
+.liquid-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.1) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.video-fade-top { background: linear-gradient(to bottom, #000 0%, transparent 200px); }
+.video-fade-bottom { background: linear-gradient(to top, #000 0%, transparent 200px); }
+.instrument-italic { font-family: 'Instrument Serif', serif; font-style: italic; }
+.gold-text { color: #c9a96e; }
+.noto { font-family: 'Noto Serif JP', serif; }
+
+/* Reveal animations */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* Browser mockup */
+.browser-bar { height: 36px; background: #1a1a24; display: flex; align-items: center; padding: 0 14px; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+.browser-url { flex: 1; background: rgba(255,255,255,0.05); border-radius: 4px; height: 18px; margin-left: 8px; display: flex; align-items: center; padding: 0 8px; font-size: 0.65rem; color: rgba(255,255,255,0.3); overflow: hidden; white-space: nowrap; }
+</style>
+</head>
+<body class="font-body antialiased">
+
+<!-- Navigation -->
+<nav class="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50 flex justify-between items-center px-6 py-3 liquid-glass rounded-full border border-white/10 shadow-[0px_24px_80px_rgba(0,0,0,0.5)]">
+  <span class="text-xl font-medium instrument-italic text-white">Quiet Made</span>
+  <div class="hidden md:flex items-center gap-8">
+    <a class="text-gray-400 hover:text-white transition-colors text-sm" href="#services">サービス</a>
+    <a class="text-gray-400 hover:text-white transition-colors text-sm" href="#works">制作実績</a>
+    <a class="text-gray-400 hover:text-white transition-colors text-sm" href="#pricing">料金</a>
+    <a class="text-gray-400 hover:text-white transition-colors text-sm" href="#faq">FAQ</a>
+  </div>
+  <a href="#contact" class="bg-white text-black px-6 py-2.5 rounded-full font-semibold hover:scale-95 active:scale-90 transition-all text-sm tracking-wide">
+    無料相談
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="relative w-full min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img src="HERO NEW.png" class="w-full h-full object-cover opacity-80" alt="hero"/>
+    <div class="video-fade-top absolute inset-0"></div>
+    <div class="video-fade-bottom absolute inset-0"></div>
+    <div class="absolute inset-0 bg-black/40"></div>
+  </div>
+  <div class="relative z-10 max-w-4xl space-y-8 mt-20">
+    <p class="text-xs tracking-[0.35em] uppercase text-gold-text noto opacity-80">Japan Craft × Global Web</p>
+    <h1 class="text-6xl md:text-8xl instrument-italic text-white leading-none tracking-tight">
+      職人の技術が、<br/>サイトに<span class="gold-text">負けていませんか？</span>
+    </h1>
+    <p class="text-lg md:text-xl noto text-on-surface-variant font-light max-w-xl mx-auto leading-loose" style="font-weight:200;letter-spacing:0.08em">
+      工房の世界観を、正しくウェブで表現する。<br/>
+      英語サイトがない。海外に売る方法がわからない。<br/>
+      その壁を、私たちが丸ごと越えます。
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-5 pt-4">
+      <a href="#contact" class="bg-white text-black px-10 py-4 rounded-full font-semibold text-base hover:scale-95 transition-all shadow-[0_0_40px_rgba(255,255,255,0.15)]">
+        無料でサイト診断を依頼する
+      </a>
+      <a href="#services" class="liquid-glass px-10 py-4 rounded-full text-white font-medium text-base hover:bg-white/10 transition-all border border-white/10">
+        サービスを見る
+      </a>
+    </div>
+  </div>
+  <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-40">
+    <div class="w-px h-10 bg-gradient-to-b from-white to-transparent animate-bounce"></div>
+    <span class="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+  </div>
+</section>
+
+<!-- Craft Types -->
+<section class="py-20 bg-black flex flex-col items-center gap-10">
+  <span class="uppercase tracking-[0.3em] text-[10px] text-gray-500 font-semibold">制作実績のある工芸ジャンル</span>
+  <div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 px-6 opacity-60">
+    <span class="text-2xl instrument-italic text-white">陶芸</span>
+    <span class="text-gray-600">·</span>
+    <span class="text-2xl instrument-italic text-white">漆芸</span>
+    <span class="text-gray-600">·</span>
+    <span class="text-2xl instrument-italic text-white">藍染め</span>
+    <span class="text-gray-600">·</span>
+    <span class="text-2xl instrument-italic text-white">竹細工</span>
+    <span class="text-gray-600">·</span>
+    <span class="text-2xl instrument-italic text-white">木工</span>
+    <span class="text-gray-600">·</span>
+    <span class="text-2xl instrument-italic text-white">織物</span>
+    <span class="text-gray-600">·</span>
+    <span class="text-2xl instrument-italic text-white">金工</span>
+  </div>
+</section>
+
+<!-- Problem Statement -->
+<section class="relative py-40 bg-black overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black"></div>
+  </div>
+  <div class="relative z-10 max-w-4xl mx-auto px-10 text-center space-y-8">
+    <h2 class="text-5xl md:text-7xl instrument-italic text-white leading-tight">腕は一流。<br/>でも、サイトは10年前のまま。</h2>
+    <p class="text-xl text-on-surface-variant max-w-2xl mx-auto font-light leading-relaxed noto" style="font-weight:200;letter-spacing:0.08em">
+      海外からの問い合わせがゼロ。英語ページがない。検索しても出てこない。<br/>
+      技術は本物なのに、デジタルで機会損失が続いています。
+    </p>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="py-40 bg-black space-y-24 px-6 md:px-12" id="services">
+  <!-- Row 1 -->
+  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center reveal">
+    <div class="space-y-6">
+      <p class="text-xs tracking-[0.3em] uppercase gold-text">Phase 01</p>
+      <h3 class="text-4xl md:text-5xl instrument-italic text-white leading-tight">HP制作・リニューアル<br/>工房の世界観を、正しく伝える</h3>
+      <p class="text-lg text-on-surface-variant font-light leading-relaxed max-w-md noto" style="font-weight:200;letter-spacing:0.05em">
+        工房の世界観を正しく表現するWebサイトを制作。デザイン・コピー・構成を一からつくり直し、国内外のお客様に届く「工房の顔」を整えます。
+      </p>
+      <ul class="space-y-2 text-sm text-gray-400">
+        <li class="flex items-center gap-3"><span class="w-4 h-px bg-gold inline-block" style="background:#c9a96e"></span>デザイン・コーディング一式</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#c9a96e"></span>工房の世界観を引き出すコピーライティング</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#c9a96e"></span>スマホ・タブレット完全最適化</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#c9a96e"></span>問い合わせ導線の整備</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#c9a96e"></span>SEO基本対策・Google Analytics設定</li>
+      </ul>
+      <p class="text-2xl font-light text-white">¥150,000<span class="text-sm text-gray-500">〜 / 制作一式（税別）</span></p>
+    </div>
+    <div class="liquid-glass rounded-xl overflow-hidden border border-white/5">
+      <img src="screenshots/demo-urushi.jpg" alt="漆デモ" class="w-full object-cover object-top" style="height:380px"/>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center reveal">
+    <div class="lg:order-2 space-y-6">
+      <p class="text-xs tracking-[0.3em] uppercase" style="color:#5a6e4a">Phase 02</p>
+      <h3 class="text-4xl md:text-5xl instrument-italic text-white leading-tight">英語対応・導線整理<br/>EN Support / Page Structure</h3>
+      <p class="text-lg text-on-surface-variant font-light leading-relaxed max-w-md noto" style="font-weight:200;letter-spacing:0.05em">
+        まずはホームページ改善を主役にしながら、必要に応じて英語ページ、英語導線、海外に向けた見せ方の整理まで対応します。
+      </p>
+      <ul class="space-y-2 text-sm text-gray-400">
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#5a6e4a"></span>英語ページの設計</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#5a6e4a"></span>英語導線の追加</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#5a6e4a"></span>問い合わせ導線の整理</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#5a6e4a"></span>海外向けの見せ方の調整</li>
+        <li class="flex items-center gap-3"><span class="w-4 h-px inline-block" style="background:#5a6e4a"></span>将来の展開を見据えた地下づくり</li>
+      </ul>
+      <p class="text-2xl font-light text-white">¥150,000<span class="text-sm text-gray-500">〜 / 英語対応込み（税別）</span></p>
+    </div>
+    <div class="lg:order-1 liquid-glass rounded-xl overflow-hidden border border-white/5">
+      <img src="screenshots/demo-shirakage.jpg" alt="白影香房デモ" class="w-full object-cover object-top" style="height:380px"/>
+    </div>
+  </div>
+</section>
+
+<!-- Features Grid -->
+<section class="py-40 bg-black">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-20 reveal">
+      <h2 class="text-4xl md:text-5xl instrument-italic text-white">なぜ、Quiet Madeなのか。</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="liquid-glass p-8 rounded-lg space-y-4 hover:bg-white/5 transition-all reveal">
+        <p class="text-3xl">🏺</p>
+        <h4 class="text-xl font-medium text-white">工芸専門</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed noto" style="font-weight:200">汎用制作会社と違い、伝統工芸の美学と文化的背景を深く理解した上でデザインします。</p>
+      </div>
+      <div class="liquid-glass p-8 rounded-lg space-y-4 hover:bg-white/5 transition-all reveal reveal-delay-1">
+        <p class="text-3xl">🌏</p>
+        <h4 class="text-xl font-medium text-white">英語対応込み</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed noto" style="font-weight:200">英語ページ・コピーライティングを標準装備。海外からの問い合わせを受け取れる状態で納品。</p>
+      </div>
+      <div class="liquid-glass p-8 rounded-lg space-y-4 hover:bg-white/5 transition-all reveal reveal-delay-2">
+        <p class="text-3xl">📱</p>
+        <h4 class="text-xl font-medium text-white">全てオンライン</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed noto" style="font-weight:200">打ち合わせ・制作・納品まですべてオンラインで完結。全国どこの工房様も対応。</p>
+      </div>
+      <div class="liquid-glass p-8 rounded-lg space-y-4 hover:bg-white/5 transition-all reveal reveal-delay-3">
+        <p class="text-3xl">🤝</p>
+        <h4 class="text-xl font-medium text-white">伴走サポート</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed noto" style="font-weight:200">納品で終わらない。海外からの最初の注文が入るまで、一緒に動き続けます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="relative py-40 overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-zinc-950"></div>
+  </div>
+  <div class="relative z-10 max-w-5xl mx-auto px-6">
+    <div class="liquid-glass p-12 md:p-20 rounded-xl grid grid-cols-2 lg:grid-cols-4 gap-12 text-center reveal">
+      <div class="space-y-2">
+        <span class="text-5xl md:text-6xl text-white font-medium block instrument-italic">5+</span>
+        <span class="text-xs uppercase tracking-widest text-gray-500 noto">制作ジャンル</span>
+      </div>
+      <div class="space-y-2">
+        <span class="text-5xl md:text-6xl text-white font-medium block instrument-italic">4wks</span>
+        <span class="text-xs uppercase tracking-widest text-gray-500 noto">平均納期</span>
+      </div>
+      <div class="space-y-2">
+        <span class="text-5xl md:text-6xl text-white font-medium block instrument-italic">¥0</span>
+        <span class="text-xs uppercase tracking-widest text-gray-500 noto">サイト診断</span>
+      </div>
+      <div class="space-y-2">
+        <span class="text-5xl md:text-6xl text-white font-medium block instrument-italic">全国</span>
+        <span class="text-xs uppercase tracking-widest text-gray-500 noto">オンライン対応</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Works -->
+<section class="py-40 bg-black" id="works">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-20 reveal">
+      <p class="text-xs tracking-[0.3em] uppercase text-gray-500 mb-4">Works</p>
+      <h2 class="text-4xl md:text-5xl instrument-italic text-white">制作実績</h2>
+      <p class="text-on-surface-variant mt-4 noto font-light" style="font-weight:200;letter-spacing:0.08em">各工房の世界観に合わせ、ゼロからデザインした英語サイトの例です。</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Wide card -->
+      <div class="lg:col-span-2 liquid-glass rounded-xl overflow-hidden border border-white/5 hover:-translate-y-1 transition-all reveal">
+        <img src="screenshots/demo-some.jpg" alt="藍染デモ" class="w-full object-cover object-top" style="height:280px"/>
+        <div class="p-5 flex justify-between items-center">
+          <span class="instrument-italic text-white text-lg">Indigo Dyeing — 藍染め</span>
+          <span class="text-xs text-gray-500 noto">テキスタイル</span>
+        </div>
+      </div>
+      <!-- Lacquer -->
+      <div class="liquid-glass rounded-xl overflow-hidden border border-white/5 hover:-translate-y-1 transition-all reveal reveal-delay-1">
+        <img src="screenshots/demo-urushi.jpg" alt="漆デモ" class="w-full object-cover object-top" style="height:280px"/>
+        <div class="p-5 flex justify-between items-center">
+          <span class="instrument-italic text-white">Lacquerware — 漆芸</span>
+          <span class="text-xs text-gray-500 noto">工芸品</span>
+        </div>
+      </div>
+      <!-- Ceramics -->
+      <div class="liquid-glass rounded-xl overflow-hidden border border-white/5 hover:-translate-y-1 transition-all reveal">
+        <img src="screenshots/demo-toki.jpg" alt="陶器デモ" class="w-full object-cover object-top" style="height:220px"/>
+        <div class="p-5 flex justify-between items-center">
+          <span class="instrument-italic text-white">Ceramics — 陶芸</span>
+          <span class="text-xs text-gray-500 noto">焼き物</span>
+        </div>
+      </div>
+      <!-- Bamboo -->
+      <div class="liquid-glass rounded-xl overflow-hidden border border-white/5 hover:-translate-y-1 transition-all reveal reveal-delay-1">
+        <img src="screenshots/demo-take.jpg" alt="竹細工デモ" class="w-full object-cover object-top" style="height:220px"/>
+        <div class="p-5 flex justify-between items-center">
+          <span class="instrument-italic text-white">Bamboo Craft — 竹細工</span>
+          <span class="text-xs text-gray-500 noto">伝統工芸</span>
+        </div>
+      </div>
+      <!-- Wood -->
+      <div class="liquid-glass rounded-xl overflow-hidden border border-white/5 hover:-translate-y-1 transition-all reveal reveal-delay-2">
+        <img src="screenshots/demo-moku.jpg" alt="木工デモ" class="w-full object-cover object-top" style="height:220px"/>
+        <div class="p-5 flex justify-between items-center">
+          <span class="instrument-italic text-white">Woodcraft — 木工</span>
+          <span class="text-xs text-gray-500 noto">木芸品</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="py-40 bg-black" id="pricing">
+  <div class="max-w-5xl mx-auto px-6 space-y-16">
+    <div class="text-center reveal">
+      <p class="text-xs tracking-[0.3em] uppercase text-gray-500 mb-4">Pricing</p>
+      <h2 class="text-4xl md:text-5xl instrument-italic text-white">シンプルな料金体系</h2>
+      <p class="text-on-surface-variant mt-4 noto font-light" style="font-weight:200">初期費用を抑えてスタートし、成果を見ながら拡張できます。</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Starter -->
+      <div class="liquid-glass p-10 rounded-xl space-y-6 flex flex-col justify-between reveal">
+        <div class="space-y-4">
+          <p class="text-xs tracking-widest uppercase text-gray-500">HP制作</p>
+          <p class="noto text-sm text-gray-400" style="font-weight:200">HP制作・改善</p>
+          <p class="text-5xl instrument-italic text-white">¥150,000</p>
+          <p class="text-xs text-gray-500">〜 / 制作一式（税別）</p>
+          <ul class="space-y-3 text-sm text-gray-400 pt-4">
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>英語 1ページLP</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>工房紹介・作品写真掲載</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>問い合わせフォーム</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>スマホ対応</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>SNSリンク設置</li>
+          </ul>
+        </div>
+        <a href="#contact" class="liquid-glass w-full py-3 rounded-full text-white font-medium text-sm text-center hover:bg-white/10 transition-all border border-white/10 block">
+          相談する
+        </a>
+      </div>
+      <!-- Standard -->
+      <div class="liquid-glass p-10 rounded-xl space-y-6 flex flex-col justify-between reveal reveal-delay-1" style="border-color:rgba(201,169,110,0.3);background:rgba(201,169,110,0.04)">
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <p class="text-xs tracking-widest uppercase text-gray-500">英語対応</p>
+            <span class="text-xs bg-white text-black px-3 py-1 rounded-full font-semibold">おすすめ</span>
+          </div>
+          <p class="noto text-sm text-gray-400" style="font-weight:200">英語対応・導線整理</p>
+          <p class="text-5xl instrument-italic text-white">¥150,000</p>
+          <p class="text-xs text-gray-500">〜 / 英語対応込み（税別）</p>
+          <ul class="space-y-3 text-sm text-gray-400 pt-4">
+            <li class="flex items-start gap-3"><span style="color:#c9a96e" class="mt-0.5">✓</span>英語ページの設計</li>
+            <li class="flex items-start gap-3"><span style="color:#c9a96e" class="mt-0.5">✓</span>英語導線の追加</li>
+            <li class="flex items-start gap-3"><span style="color:#c9a96e" class="mt-0.5">✓</span>問い合わせ導線の整理</li>
+            <li class="flex items-start gap-3"><span style="color:#c9a96e" class="mt-0.5">✓</span>海外向けの見せ方の調整</li>
+            <li class="flex items-start gap-3"><span style="color:#c9a96e" class="mt-0.5">✓</span>将来の展開を見据えた地下づくり</li>
+          </ul>
+        </div>
+        <a href="#contact" class="bg-white text-black w-full py-3 rounded-full font-semibold text-sm text-center hover:scale-95 transition-all block">
+          相談する
+        </a>
+      </div>
+      <!-- Growth -->
+      <div class="liquid-glass p-10 rounded-xl space-y-6 flex flex-col justify-between reveal reveal-delay-2">
+        <div class="space-y-4">
+          <p class="text-xs tracking-widest uppercase text-gray-500">継続サポート</p>
+          <p class="noto text-sm text-gray-400" style="font-weight:200">Ongoing Support</p>
+          <p class="text-5xl instrument-italic text-white">¥30,000</p>
+          <p class="text-xs text-gray-500">〜 / 月（税別）</p>
+          <ul class="space-y-3 text-sm text-gray-400 pt-4">
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>公開後の見直し相談</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>更新や改善のご提案</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>英語対応の追加相談</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>今後の発信や導線の整理</li>
+            <li class="flex items-start gap-3"><span class="text-white mt-0.5">✓</span>必要な範囲での継続フォロー</li>
+          </ul>
+        </div>
+        <a href="#contact" class="liquid-glass w-full py-3 rounded-full text-white font-medium text-sm text-center hover:bg-white/10 transition-all border border-white/10 block">
+          相談する
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-40 bg-black" id="faq">
+  <div class="max-w-2xl mx-auto px-6 space-y-12">
+    <div class="text-center reveal">
+      <h2 class="text-4xl md:text-5xl instrument-italic text-white">よくある質問</h2>
+    </div>
+    <div class="space-y-0 reveal">
+      <div class="faq-item border-t border-white/10 py-6 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex justify-between items-start gap-4">
+          <span class="noto text-white font-light" style="font-weight:300;letter-spacing:0.05em">英語が全くできなくても大丈夫ですか？</span>
+          <span class="faq-icon text-white text-2xl leading-none transition-transform duration-300" style="flex-shrink:0">+</span>
+        </div>
+        <p class="faq-answer noto text-gray-400 text-sm leading-relaxed mt-0 max-h-0 overflow-hidden transition-all duration-300" style="font-weight:200;letter-spacing:0.05em">まったく問題ありません。英語対応はすべて私たちが担当します。ヒアリングや打ち合わせはすべて日本語で行います。</p>
+      </div>
+      <div class="faq-item border-t border-white/10 py-6 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex justify-between items-start gap-4">
+          <span class="noto text-white font-light" style="font-weight:300;letter-spacing:0.05em">制作期間はどのくらいかかりますか？</span>
+          <span class="faq-icon text-white text-2xl leading-none transition-transform duration-300" style="flex-shrink:0">+</span>
+        </div>
+        <p class="faq-answer noto text-gray-400 text-sm leading-relaxed mt-0 max-h-0 overflow-hidden transition-all duration-300" style="font-weight:200">通常4〜6週間です。工房様からの素材提供（写真・情報など）のタイミングにより前後します。</p>
+      </div>
+      <div class="faq-item border-t border-white/10 py-6 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex justify-between items-start gap-4">
+          <span class="noto text-white font-light" style="font-weight:300;letter-spacing:0.05em">まずサイトだけ作って、ECは後でもいいですか？</span>
+          <span class="faq-icon text-white text-2xl leading-none transition-transform duration-300" style="flex-shrink:0">+</span>
+        </div>
+        <p class="faq-answer noto text-gray-400 text-sm leading-relaxed mt-0 max-h-0 overflow-hidden transition-all duration-300" style="font-weight:200">はい。Starterまたは Standardのみのご依頼も承っています。段階的なスタートをおすすめしています。</p>
+      </div>
+      <div class="faq-item border-t border-white/10 py-6 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex justify-between items-start gap-4">
+          <span class="noto text-white font-light" style="font-weight:300;letter-spacing:0.05em">地方の工房でも対応できますか？</span>
+          <span class="faq-icon text-white text-2xl leading-none transition-transform duration-300" style="flex-shrink:0">+</span>
+        </div>
+        <p class="faq-answer noto text-gray-400 text-sm leading-relaxed mt-0 max-h-0 overflow-hidden transition-all duration-300" style="font-weight:200">すべてオンラインで完結するため、全国どこでも対応可能です。Zoom + メールで進めています。</p>
+      </div>
+      <div class="faq-item border-t border-white/10 border-b border-white/10 py-6 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex justify-between items-start gap-4">
+          <span class="noto text-white font-light" style="font-weight:300;letter-spacing:0.05em">無料サイト診断とは何をするのですか？</span>
+          <span class="faq-icon text-white text-2xl leading-none transition-transform duration-300" style="flex-shrink:0">+</span>
+        </div>
+        <p class="faq-answer noto text-gray-400 text-sm leading-relaxed mt-0 max-h-0 overflow-hidden transition-all duration-300" style="font-weight:200">今のサイトURLを教えていただくだけ。現状の問題点・改善案を無料でフィードバックします。費用は一切かかりません。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="relative py-60 overflow-hidden bg-black" id="contact">
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-zinc-950 to-black"></div>
+  </div>
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center space-y-12">
+    <h2 class="text-5xl md:text-8xl instrument-italic text-white leading-tight">
+      まず、話して<br/>みませんか
+    </h2>
+    <p class="noto text-on-surface-variant font-light leading-relaxed" style="font-weight:200;letter-spacing:0.1em">
+      無料相談（30分）では、工房の現状・目標をお聞きした上で、<br/>
+      具体的なプランをご提案します。費用は一切かかりません。
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <a href="mailto:revarise18@gmail.com" class="bg-white text-black px-12 py-5 rounded-full text-xl font-semibold hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+        無料相談を予約する
+      </a>
+      <a href="#pricing" class="liquid-glass px-12 py-5 rounded-full text-white font-medium text-xl hover:bg-white/10 transition-all border border-white/10">
+        料金を見る
+      </a>
+    </div>
+    <p class="text-xs text-gray-600 noto">revarise18@gmail.com ／ 返信は通常2営業日以内</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-black py-16 px-10 border-t border-white/5">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+    <div class="flex flex-col items-center md:items-start gap-3">
+      <span class="text-xl instrument-italic text-white">Quiet Made</span>
+      <p class="text-gray-500 text-sm noto" style="font-weight:200">© 2025 Quiet Made / Revarise Inc. All rights reserved.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-8">
+      <a class="text-gray-500 hover:text-white transition-all text-sm" href="#">プライバシーポリシー</a>
+      <a class="text-gray-500 hover:text-white transition-all text-sm" href="#">特定商取引法</a>
+      <a class="text-gray-500 hover:text-white transition-all text-sm" href="mailto:revarise18@gmail.com">お問い合わせ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-answer').style.maxHeight = '0px';
+      i.querySelector('.faq-answer').style.marginTop = '0';
+      i.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      const ans = item.querySelector('.faq-answer');
+      ans.style.maxHeight = '200px';
+      ans.style.marginTop = '1rem';
+      item.querySelector('.faq-icon').style.transform = 'rotate(45deg)';
+    }
+  });
+});
+</script>
+</body>
+</html>

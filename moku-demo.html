@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>木縁工房 — 木工芸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white:  #F8F6F1;
+  --ivory:  #EDE8DE;
+  --wood:   #5C3D1A;
+  --wood2:  #7A5530;
+  --dark:   #1A150A;
+  --grey:   #7A7060;
+  --lgrey:  #B0A898;
+  --border: rgba(26,21,10,0.08);
+}
+
+body {
+  background: var(--white);
+  color: var(--dark);
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ══ NAV ══ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.5s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(248,246,241,0.94);
+  backdrop-filter: blur(12px);
+  padding: 1.2rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+.logo-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: var(--dark);
+}
+.logo-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.72rem;
+  color: var(--lgrey);
+  letter-spacing: 0.08em;
+}
+.nav-links {
+  display: flex;
+  gap: 3rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--dark); }
+.nav-end {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--dark);
+  padding-bottom: 0.15rem;
+  text-decoration: none;
+  color: var(--dark);
+  transition: opacity 0.3s;
+}
+.nav-end:hover { opacity: 0.5; }
+
+
+/* ══ HERO — TEXT ONLY ══ */
+.hero {
+  min-height: 100vh;
+  padding: 14rem 4rem 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+.hero-number {
+  position: absolute;
+  top: 8rem;
+  right: 4rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22vw;
+  font-weight: 300;
+  color: var(--ivory);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--wood);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.4s forwards;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(5rem, 10vw, 10rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: slideUp 1s 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--wood);
+}
+.hero-title-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.8rem, 3.5vw, 3.5rem);
+  font-weight: 200;
+  letter-spacing: 0.12em;
+  color: var(--grey);
+  margin-bottom: 5rem;
+  opacity: 0;
+  animation: fadeIn 0.9s 1s forwards;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  opacity: 0;
+  animation: fadeIn 0.9s 1.3s forwards;
+}
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.hero-meta-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-style: italic;
+  color: var(--dark);
+  line-height: 1;
+}
+.hero-meta-lbl {
+  font-size: 0.56rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--lgrey);
+}
+.hero-divider {
+  width: 1px;
+  height: 2.5rem;
+  background: var(--border);
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 4rem;
+  right: 4rem;
+  writing-mode: vertical-rl;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.5rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--lgrey);
+  opacity: 0;
+  animation: fadeIn 0.8s 1.8s forwards;
+}
+.hero-scroll-line {
+  width: 1px;
+  height: 45px;
+  background: var(--border);
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+.hero-scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--wood);
+  animation: drip 2s 2.2s infinite;
+}
+
+
+/* ══ LONG READ INTRO ══ */
+.longread {
+  padding: 6rem 4rem 6rem;
+  max-width: 820px;
+  border-top: 1px solid var(--border);
+}
+.lr-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--wood);
+  margin-bottom: 2.5rem;
+}
+.lr-body {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.05rem;
+  font-weight: 200;
+  line-height: 2.5;
+  color: var(--grey);
+}
+.lr-body strong {
+  font-weight: 400;
+  color: var(--dark);
+}
+
+
+/* ══ WORKS — STRUCTURED GRID ══ */
+.works {
+  padding: 7rem 4rem;
+  background: var(--ivory);
+}
+.works-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 5rem;
+  align-items: end;
+}
+.works-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.works-title em { font-style: italic; color: var(--wood); }
+.works-desc {
+  font-size: 0.84rem;
+  line-height: 2.2;
+  color: var(--grey);
+  padding-top: 1rem;
+}
+
+/* Grid: architect-style, structured */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.work-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+/* ★ 写真差し込みエリア */
+.work-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  display: block;
+  transition: transform 0.7s cubic-bezier(0.25,0.1,0.25,1);
+}
+.work-item:nth-child(1) .work-img { background: linear-gradient(155deg, #2A1A08, #5C3D1A); }
+.work-item:nth-child(2) .work-img { background: linear-gradient(175deg, #3D2810, #7A5530); aspect-ratio: 3/5; }
+.work-item:nth-child(3) .work-img { background: linear-gradient(135deg, #1A1008, #3D2810); }
+.work-item:nth-child(4) .work-img { background: linear-gradient(160deg, #5C3D1A, #3D2810); }
+.work-item:nth-child(5) .work-img { background: linear-gradient(140deg, #3D2810, #1A1008); aspect-ratio: 3/5; }
+.work-item:nth-child(6) .work-img { background: linear-gradient(180deg, #2A1A08, #5C3D1A); }
+
+.work-item:hover .work-img { transform: scale(1.04); }
+.work-caption {
+  padding: 1rem 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  background: var(--ivory);
+}
+.work-name {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+.work-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--wood);
+}
+
+
+/* ══ CRAFT STORY — Text + small images ══ */
+.story {
+  padding: 8rem 4rem;
+}
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  padding: 4rem 0;
+  border-top: 1px solid var(--border);
+}
+.story-row:first-child { border-top: none; padding-top: 0; }
+.story-row.reverse { direction: rtl; }
+.story-row.reverse > * { direction: ltr; }
+
+.story-text-side {}
+.story-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.65rem;
+  color: var(--lgrey);
+  letter-spacing: 0.12em;
+  margin-bottom: 1.5rem;
+}
+.story-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  margin-bottom: 1.8rem;
+}
+.story-title em { font-style: italic; color: var(--wood); }
+.story-body {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.84rem;
+  font-weight: 200;
+  line-height: 2.4;
+  color: var(--grey);
+}
+.story-img-side {
+  position: relative;
+}
+/* ★ 写真差し込みエリア */
+.story-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: block;
+}
+.story-row:nth-child(1) .story-img { background: linear-gradient(155deg, #2A1A08, #5C3D1A); }
+.story-row:nth-child(2) .story-img { background: linear-gradient(175deg, #3D2810, #7A5530); }
+.story-row:nth-child(3) .story-img { background: linear-gradient(135deg, #5C3D1A, #2A1A08); }
+.story-img-credit {
+  margin-top: 0.8rem;
+  font-size: 0.52rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lgrey);
+}
+
+
+/* ══ CONTACT ══ */
+.contact {
+  padding: 9rem 4rem;
+  background: var(--dark);
+  display: grid;
+  grid-template-columns: 45% 55%;
+  gap: 6rem;
+  align-items: start;
+}
+.contact-left {}
+.c-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--wood2);
+  margin-bottom: 1.5rem;
+}
+.c-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--white);
+  margin-bottom: 2.5rem;
+}
+.c-body {
+  font-size: 0.84rem;
+  line-height: 2.2;
+  color: rgba(248,246,241,0.38);
+}
+.contact-right {}
+.c-form { display: flex; flex-direction: column; gap: 1.8rem; }
+.c-row { display: flex; flex-direction: column; gap: 0.45rem; }
+.c-lbl {
+  font-size: 0.54rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--wood2);
+}
+.c-field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(248,246,241,0.1);
+  padding: 0.85rem 0;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--white);
+  outline: none;
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+.c-field::placeholder { color: rgba(248,246,241,0.2); }
+.c-field:focus { border-bottom-color: var(--wood2); }
+.c-area { resize: none; height: 80px; }
+.c-submit {
+  background: transparent;
+  border: 1px solid rgba(248,246,241,0.25);
+  color: var(--white);
+  padding: 1rem 2.8rem;
+  font-family: inherit;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}
+.c-submit:hover { background: rgba(248,246,241,0.08); border-color: rgba(248,246,241,0.5); }
+
+/* ══ FOOTER ══ */
+footer {
+  background: var(--dark);
+  padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(248,246,241,0.05);
+}
+.f-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  color: rgba(248,246,241,0.5);
+}
+.f-copy {
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  color: rgba(248,246,241,0.18);
+}
+
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes drip {
+  0%   { top: -100%; }
+  100% { top: 200%; }
+}
+.rv {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.25,0.1,0.25,1),
+              transform 0.9s cubic-bezier(0.25,0.1,0.25,1);
+}
+.rv.visible { opacity: 1; transform: translateY(0); }
+.rd1 { transition-delay: 0.12s; }
+.rd2 { transition-delay: 0.24s; }
+.rd3 { transition-delay: 0.36s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <span class="logo-ja">木縁工房</span>
+    <span class="logo-en">Koen Kobo · Woodcraft</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#works">作品</a></li>
+    <li><a href="#story">素材と技</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+  <a href="#contact" class="nav-end">制作依頼</a>
+</nav>
+
+<!-- HERO: TEXT ONLY, no image -->
+<section class="hero">
+  <p class="hero-number" aria-hidden="true">木</p>
+  <p class="hero-eyebrow">Nara · Woodcraft · Since 1961</p>
+  <h1 class="hero-title">Wood<em>craft.</em></h1>
+  <p class="hero-title-ja">木と向き合う、六十余年</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-val">63</span>
+      <span class="hero-meta-lbl">年の歴史</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-val">12</span>
+      <span class="hero-meta-lbl">種の木材</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-val">9</span>
+      <span class="hero-meta-lbl">か国へ</span>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span class="hero-scroll-line"></span>
+    Scroll
+  </div>
+</section>
+
+<!-- LONG READ -->
+<div class="longread">
+  <p class="lr-label rv">About</p>
+  <p class="lr-body rv rd1">
+    木は、<strong>生きた時間を持っています</strong>。年輪に刻まれた何十年、何百年の記憶。私たちはその時間を尊重しながら、鑿と鉋でゆっくりと形を引き出します。<strong>奈良の吉野杉、樫、欅</strong>——それぞれの木が持つ固有の表情を、できる限りそのまま手元に届けることが、木縁工房の仕事です。
+  </p>
+</div>
+
+<!-- WORKS -->
+<section class="works" id="works">
+  <div class="works-head">
+    <h2 class="works-title rv">Selected<br><em>Works</em></h2>
+    <p class="works-desc rv rd1">
+      一点一点、木の性質を見極めながら制作しています。量産はしません。あなたの手元に届くのは、世界にひとつだけの作品です。
+    </p>
+  </div>
+  <div class="works-grid">
+    <div class="work-item rv">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-caption">
+        <span class="work-name">欅 小皿</span>
+        <span class="work-price">¥12,000</span>
+      </div>
+    </div>
+    <div class="work-item rv rd1">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-caption">
+        <span class="work-name">吉野杉 一輪挿し</span>
+        <span class="work-price">¥18,500</span>
+      </div>
+    </div>
+    <div class="work-item rv rd2">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-caption">
+        <span class="work-name">樫 スツール</span>
+        <span class="work-price">¥88,000</span>
+      </div>
+    </div>
+    <div class="work-item rv rd1">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-caption">
+        <span class="work-name">胡桃 箸置き</span>
+        <span class="work-price">¥3,800</span>
+      </div>
+    </div>
+    <div class="work-item rv rd2">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-caption">
+        <span class="work-name">楠 菓子盆</span>
+        <span class="work-price">¥45,000</span>
+      </div>
+    </div>
+    <div class="work-item rv rd3">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="work-img"></div>
+      <div class="work-caption">
+        <span class="work-name">欅 飾り棚</span>
+        <span class="work-price">¥240,000</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRAFT STORY -->
+<section class="story" id="story">
+  <div class="story-row">
+    <div class="story-text-side">
+      <p class="story-num rv">01 / 03</p>
+      <h3 class="story-title rv rd1">木を<em>選ぶ</em>ことから、<br>すべては始まる</h3>
+      <p class="story-body rv rd2">
+        制作の第一歩は、山での木選びです。樹齢、育ち方、年輪の詰まり具合——同じ樹種でも、一本一本まったく違う表情を持っています。良い木に出会うことが、良い作品の条件です。
+      </p>
+    </div>
+    <div class="story-img-side rv rd1">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="story-img"></div>
+      <p class="story-img-credit">奈良県吉野の山にて</p>
+    </div>
+  </div>
+
+  <div class="story-row reverse">
+    <div class="story-text-side">
+      <p class="story-num rv">02 / 03</p>
+      <h3 class="story-title rv rd1">乾燥に、<em>時間をかける</em></h3>
+      <p class="story-body rv rd2">
+        伐採後の木材は、自然乾燥に2〜5年かけます。急ぐと割れや狂いが生じ、長く使える家具にはなりません。時間をかけることが、品質への唯一の近道です。
+      </p>
+    </div>
+    <div class="story-img-side rv rd1">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="story-img"></div>
+      <p class="story-img-credit">工房内 乾燥棚</p>
+    </div>
+  </div>
+
+  <div class="story-row">
+    <div class="story-text-side">
+      <p class="story-num rv">03 / 03</p>
+      <h3 class="story-title rv rd1">手道具で、<em>仕上げる</em></h3>
+      <p class="story-body rv rd2">
+        最後の仕上げは、すべて手鉋と手研ぎで行います。機械では出せない、木の肌のなめらかさがあります。触れるたびに、素材の良さを感じていただけるよう。
+      </p>
+    </div>
+    <div class="story-img-side rv rd1">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="story-img"></div>
+      <p class="story-img-credit">職人 手作業の様子</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-left">
+    <p class="c-label rv">Contact</p>
+    <h2 class="c-title rv rd1">木との<br>出会いを</h2>
+    <p class="c-body rv rd2">
+      オーダーメイド・作品のご購入・法人様の家具制作まで。まずはご相談ください。
+    </p>
+  </div>
+  <div class="contact-right">
+    <form class="c-form rv rd1" onsubmit="return false;">
+      <div class="c-row">
+        <label class="c-lbl">お名前</label>
+        <input type="text" class="c-field" placeholder="山田 太郎">
+      </div>
+      <div class="c-row">
+        <label class="c-lbl">メールアドレス</label>
+        <input type="email" class="c-field" placeholder="your@email.com">
+      </div>
+      <div class="c-row">
+        <label class="c-lbl">お問い合わせ内容</label>
+        <textarea class="c-field c-area" placeholder="ご質問・ご要望をお書きください"></textarea>
+      </div>
+      <button type="submit" class="c-submit">送信する</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p class="f-logo">木縁工房</p>
+  <p class="f-copy">© 2025 木縁工房 Koen Kobo. All rights reserved.</p>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+const rvs = document.querySelectorAll('.rv');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+rvs.forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

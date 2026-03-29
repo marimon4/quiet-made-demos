@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蒔絵堂 — MAKIE-DO Lacquerware</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────── RESET + ROOT */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --void:       #050403;
+  --lacquer:    #0C0806;
+  --surface:    #131008;
+  --lift:       #1C1610;
+  --gold:       #C8A84B;
+  --gold-hi:    #E2C470;
+  --gold-dim:   rgba(200,168,75,0.18);
+  --gold-line:  rgba(200,168,75,0.14);
+  --shell:      #F0EBE2;
+  --shell-mid:  rgba(240,235,226,0.5);
+  --shell-dim:  rgba(240,235,226,0.22);
+  --vermil:     #6B0800;
+  --border:     rgba(200,168,75,0.1);
+}
+
+body {
+  background: var(--void);
+  color: var(--shell);
+  font-family: 'Crimson Pro', serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─────────────────────────────── GRAIN OVERLAY */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
+
+/* ─────────────────────────────── CUSTOM CURSOR */
+#cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s, background 0.25s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.12s ease-out;
+}
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor { width: 14px; height: 14px; }
+
+/* ─────────────────────────────── NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  padding: 2rem 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.6s, padding 0.4s, border-color 0.6s;
+  border-bottom: 1px solid transparent;
+}
+nav.lit {
+  background: rgba(5,4,3,0.92);
+  backdrop-filter: blur(16px);
+  padding: 1.2rem 3.5rem;
+  border-bottom-color: var(--border);
+}
+.nav-logo {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+.nav-logo-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--shell);
+}
+.nav-logo-en {
+  font-family: 'Cinzel', serif;
+  font-size: 0.46rem;
+  letter-spacing: 0.55em;
+  color: var(--gold);
+}
+.nav-links {
+  display: flex;
+  gap: 2.8rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.32em;
+  color: var(--shell-dim);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.28em;
+  color: var(--void);
+  background: var(--gold);
+  padding: 0.7rem 1.6rem;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.nav-cta:hover { background: var(--gold-hi); }
+
+/* ─────────────────────────────── OPENING */
+.opening {
+  height: 100vh;
+  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Radial gold glow behind title */
+.opening::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(ellipse, rgba(200,168,75,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ★ 写真差し込みエリア (hero bg) */
+.opening-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #080502 0%, #0F0906 50%, #050302 100%);
+  z-index: 0;
+}
+
+.opening-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.opening-pre {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.55em;
+  color: var(--gold);
+  opacity: 0;
+  animation: fadeIn 0.8s 0.6s forwards;
+  margin-bottom: 2.5rem;
+}
+
+.opening-title-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(4.5rem, 10vw, 9rem);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--shell);
+  line-height: 1;
+  text-shadow: 0 0 80px rgba(200,168,75,0.25);
+  opacity: 0;
+  animation: riseIn 1.2s 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+  display: block;
+}
+
+.opening-rule {
+  width: 1px;
+  height: 0;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  margin: 2rem auto;
+  animation: growDown 0.8s 1.8s forwards;
+}
+
+.opening-title-en {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.55rem, 1vw, 0.8rem);
+  letter-spacing: 0.7em;
+  color: var(--gold);
+  opacity: 0;
+  animation: fadeIn 0.8s 2.2s forwards;
+  display: block;
+}
+
+.opening-scroll {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: 0;
+  animation: fadeIn 0.8s 2.8s forwards;
+  z-index: 2;
+}
+.opening-scroll span {
+  font-family: 'Cinzel', serif;
+  font-size: 0.45rem;
+  letter-spacing: 0.5em;
+  color: var(--shell-dim);
+}
+.scroll-stem {
+  width: 1px;
+  height: 48px;
+  background: rgba(240,235,226,0.1);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-stem::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0;
+  width: 100%; height: 100%;
+  background: var(--gold);
+  animation: drip 2.4s 3.2s infinite ease-in-out;
+}
+
+/* ─────────────────────────────── TICKER */
+.ticker {
+  background: var(--lacquer);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: inline-flex;
+  animation: march 30s linear infinite;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 2.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.38em;
+  color: var(--shell-dim);
+}
+.ticker-gem {
+  width: 4px; height: 4px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+.ticker-item.hi { color: rgba(200,168,75,0.55); }
+
+/* ─────────────────────────────── STATEMENT */
+.statement {
+  padding: 7rem 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.statement-year {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(6rem, 14vw, 14rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(200,168,75,0.15);
+  line-height: 1;
+  user-select: none;
+  position: relative;
+}
+.statement-text {}
+.statement-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.45em;
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+.statement-headline {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--shell);
+  margin-bottom: 2rem;
+}
+.statement-body {
+  font-size: 0.95rem;
+  line-height: 2.2;
+  color: var(--shell-mid);
+  max-width: 38rem;
+  margin-bottom: 3rem;
+}
+.statement-stats {
+  display: flex;
+  gap: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+.stat { display: flex; flex-direction: column; gap: 0.3rem; }
+.stat-n {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-l {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.62rem;
+  font-weight: 200;
+  color: var(--shell-dim);
+  letter-spacing: 0.1em;
+}
+
+/* ─────────────────────────────── WORKS */
+.works {
+  padding: 5rem 3.5rem 7rem;
+}
+.works-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.works-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.48em;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+.works-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--shell);
+}
+.works-link {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.32em;
+  color: var(--shell-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: color 0.3s, gap 0.3s;
+  padding-bottom: 0.5rem;
+}
+.works-link:hover { color: var(--gold); gap: 0.9rem; }
+.works-link::after { content: '→'; font-size: 0.9rem; }
+
+/* Asymmetric 12-col grid */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.wc { position: relative; overflow: hidden; cursor: none; background: var(--lacquer); }
+.wc:nth-child(1) { grid-column: 1/5; }
+.wc:nth-child(2) { grid-column: 5/8; }
+.wc:nth-child(3) { grid-column: 8/13; }
+.wc:nth-child(4) { grid-column: 1/7; }
+.wc:nth-child(5) { grid-column: 7/10; }
+.wc:nth-child(6) { grid-column: 10/13; }
+
+/* ★ 写真差し込みエリア */
+.wc-img {
+  width: 100%;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.25,0.1,0.25,1);
+}
+.wc:nth-child(1) .wc-img { aspect-ratio: 4/3;  background: linear-gradient(145deg,#080502,#1A1008,#0C0804); }
+.wc:nth-child(2) .wc-img { aspect-ratio: 3/4;  background: linear-gradient(165deg,#100806,#200E08,#0A0604); }
+.wc:nth-child(3) .wc-img { aspect-ratio: 3/4;  background: linear-gradient(130deg,#060402,#180C06,#0E0604); }
+.wc:nth-child(4) .wc-img { aspect-ratio: 16/7; background: linear-gradient(110deg,#0C0806,#201408,#100A04); }
+.wc:nth-child(5) .wc-img { aspect-ratio: 3/4;  background: linear-gradient(155deg,#080602,#1A1008,#0C0806); }
+.wc:nth-child(6) .wc-img { aspect-ratio: 3/4;  background: linear-gradient(140deg,#0A0602,#160C06,#0E0804); }
+
+.wc:hover .wc-img { transform: scale(1.06); }
+
+/* Diagonal shimmer on hover */
+.wc::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    108deg,
+    transparent 20%,
+    rgba(200,168,75,0.06) 38%,
+    rgba(200,168,75,0.18) 50%,
+    rgba(200,168,75,0.06) 62%,
+    transparent 78%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.75s cubic-bezier(0.25,0.1,0.25,1);
+  z-index: 2;
+  pointer-events: none;
+}
+.wc:hover::before { transform: translateX(120%); }
+
+.wc-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(5,4,3,0);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+  transition: background 0.4s;
+  z-index: 3;
+}
+.wc:hover .wc-overlay { background: rgba(5,4,3,0.55); }
+.wc-info {
+  transform: translateY(0.6rem);
+  opacity: 0;
+  transition: all 0.4s;
+}
+.wc:hover .wc-info { transform: translateY(0); opacity: 1; }
+.wc-name {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--shell);
+  display: block;
+}
+.wc-meta {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  display: block;
+  margin-top: 0.3rem;
+}
+
+/* ─────────────────────────────── PROCESS */
+.process {
+  padding: 8rem 3.5rem;
+  background: var(--lacquer);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.process-top {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+  margin-bottom: 6rem;
+}
+.process-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  color: var(--shell);
+}
+.process-intro {
+  font-size: 0.95rem;
+  line-height: 2.3;
+  color: var(--shell-mid);
+  padding-top: 0.5rem;
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  position: relative;
+}
+/* Gold connecting line */
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 1.2rem;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  background: var(--border);
+  z-index: 0;
+}
+.process-line-fill {
+  position: absolute;
+  top: 1.2rem;
+  left: 1rem;
+  height: 1px;
+  width: 0;
+  background: linear-gradient(to right, var(--gold), rgba(200,168,75,0.4));
+  z-index: 1;
+  transition: width 1.4s cubic-bezier(0.25,0.1,0.25,1);
+}
+.process-steps.animated .process-line-fill { width: calc(100% - 2rem); }
+
+.step {
+  padding: 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+.step-dot {
+  width: 10px; height: 10px;
+  border: 1px solid var(--gold-dim);
+  background: var(--lacquer);
+  border-radius: 50%;
+  margin-bottom: 2.5rem;
+  transition: border-color 0.6s, background 0.6s;
+}
+.process-steps.animated .step-dot {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+.step-num {
+  font-family: 'Cinzel', serif;
+  font-style: italic;
+  font-size: 0.62rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.step-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+.step-body {
+  font-size: 0.84rem;
+  line-height: 2.1;
+  color: var(--shell-mid);
+}
+
+/* ─────────────────────────────── ABOUT */
+.about {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: 80vh;
+}
+/* ★ 写真差し込みエリア */
+.about-img {
+  position: relative;
+  overflow: hidden;
+}
+.about-img-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(175deg, #0C0806 0%, #1A1008 50%, #080502 100%);
+}
+/* Lacquer sheen */
+.about-img-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    112deg,
+    transparent 30%,
+    rgba(200,168,75,0.06) 46%,
+    rgba(200,168,75,0.14) 52%,
+    rgba(200,168,75,0.06) 58%,
+    transparent 72%
+  );
+}
+.about-content {
+  padding: 7rem 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+}
+.about-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.48em;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.about-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1.45;
+  color: var(--shell);
+  margin-bottom: 2.5rem;
+}
+.about-body {
+  font-size: 0.94rem;
+  line-height: 2.3;
+  color: var(--shell-mid);
+  margin-bottom: 3.5rem;
+}
+.about-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.88rem;
+  font-weight: 200;
+  line-height: 2.4;
+  color: rgba(240,235,226,0.35);
+  margin-bottom: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.about-cta {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  border: 1px solid var(--gold-line);
+  padding: 1rem 2.2rem;
+  text-decoration: none;
+  width: fit-content;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+.about-cta:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--void);
+}
+
+/* ─────────────────────────────── CONTACT */
+.contact {
+  padding: 10rem 3.5rem;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+}
+.contact::before {
+  content: '';
+  position: absolute;
+  top: 6rem; left: 50%;
+  transform: translateX(-50%);
+  width: 1px; height: 3rem;
+  background: linear-gradient(to bottom, var(--border), transparent);
+}
+.contact-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.48em;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 1.5rem;
+}
+.contact-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--shell);
+  margin-bottom: 1.5rem;
+}
+.contact-sub {
+  font-size: 0.94rem;
+  font-style: italic;
+  line-height: 2;
+  color: var(--shell-mid);
+  margin-bottom: 4.5rem;
+}
+.contact-form {
+  display: grid;
+  gap: 1.8rem;
+  text-align: left;
+}
+.cf-row { display: flex; flex-direction: column; gap: 0.5rem; }
+.cf-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.48rem;
+  letter-spacing: 0.38em;
+  color: var(--gold);
+}
+.cf-field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 0;
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.95rem;
+  color: var(--shell);
+  outline: none;
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+.cf-field::placeholder { color: var(--shell-dim); }
+.cf-field:focus { border-bottom-color: var(--gold); }
+.cf-area { resize: none; height: 80px; }
+.cf-submit {
+  background: var(--gold);
+  color: var(--void);
+  border: none;
+  padding: 1.1rem 0;
+  width: 100%;
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.42em;
+  cursor: none;
+  transition: background 0.3s;
+  margin-top: 0.5rem;
+}
+.cf-submit:hover { background: var(--gold-hi); }
+
+/* ─────────────────────────────── FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--lacquer);
+}
+.f-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: rgba(240,235,226,0.55);
+}
+.f-nav { display: flex; gap: 2.5rem; list-style: none; }
+.f-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 0.46rem;
+  letter-spacing: 0.3em;
+  color: var(--shell-dim);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.f-nav a:hover { color: var(--gold); }
+.f-copy {
+  font-family: 'Cinzel', serif;
+  font-size: 0.44rem;
+  letter-spacing: 0.18em;
+  color: rgba(240,235,226,0.18);
+}
+
+/* ─────────────────────────────── ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes growDown {
+  from { height: 0; }
+  to   { height: 3rem; }
+}
+@keyframes drip {
+  0%   { top: -100%; }
+  100% { top: 200%; }
+}
+@keyframes march {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Scroll reveal */
+.sr {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.25,0.1,0.25,1),
+              transform 0.9s cubic-bezier(0.25,0.1,0.25,1);
+}
+.sr.in { opacity: 1; transform: translateY(0); }
+.sd1 { transition-delay: 0.1s; }
+.sd2 { transition-delay: 0.22s; }
+.sd3 { transition-delay: 0.34s; }
+.sd4 { transition-delay: 0.46s; }
+</style>
+</head>
+<body>
+
+<!-- Grain texture overlay -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-ja">蒔絵堂</span>
+    <span class="nav-logo-en">MAKIE · DO</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">Atelier</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Inquire</a>
+</nav>
+
+<!-- ─── OPENING ─── -->
+<section class="opening">
+  <!-- ★ 写真差し込みエリア -->
+  <div class="opening-bg" id="heroBg"></div>
+  <div class="opening-content">
+    <p class="opening-pre">Established 1952 &nbsp;·&nbsp; Kyoto, Japan</p>
+    <span class="opening-title-ja">蒔絵堂</span>
+    <div class="opening-rule"></div>
+    <span class="opening-title-en">Lacquerware &nbsp;·&nbsp; Since Showa</span>
+  </div>
+  <div class="opening-scroll">
+    <div class="scroll-stem"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ─── TICKER ─── -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-gem"></span>漆芸</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Lacquerware</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>蒔絵</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Makie</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>螺鈿</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Raden</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>京都</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Kyoto</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>伝統工芸</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Traditional Craft</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="ticker-gem"></span>漆芸</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Lacquerware</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>蒔絵</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Makie</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>螺鈿</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Raden</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>京都</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Kyoto</span>
+    <span class="ticker-item"><span class="ticker-gem"></span>伝統工芸</span>
+    <span class="ticker-item hi"><span class="ticker-gem"></span>Traditional Craft</span>
+  </div>
+</div>
+
+<!-- ─── STATEMENT ─── -->
+<section class="statement">
+  <div class="statement-year sr">1952</div>
+  <div class="statement-text">
+    <p class="statement-eyebrow sr">Founded</p>
+    <p class="statement-headline sr sd1">
+      "Three generations have learned<br>
+      to speak the language of lacquer."
+    </p>
+    <p class="statement-body sr sd2">
+      Every object begins as raw wood. Forty layers of lacquer follow — each one applied by hand, each one sanded back before the next. The process takes months. The result lasts centuries.
+    </p>
+    <div class="statement-stats sr sd3">
+      <div class="stat">
+        <span class="stat-n">70+</span>
+        <span class="stat-l">年の歴史</span>
+      </div>
+      <div class="stat">
+        <span class="stat-n">3rd</span>
+        <span class="stat-l">代目職人</span>
+      </div>
+      <div class="stat">
+        <span class="stat-n">14</span>
+        <span class="stat-l">か国へ納品</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WORKS ─── -->
+<section id="works">
+  <div class="works">
+    <div class="works-header">
+      <div>
+        <p class="works-eyebrow sr">Selected Works</p>
+        <h2 class="works-title sr sd1">作品一覧</h2>
+      </div>
+      <a href="#" class="works-link sr">View All</a>
+    </div>
+    <div class="works-grid sr sd1">
+      <div class="wc">
+        <!-- ★ 写真差し込みエリア -->
+        <div class="wc-img"></div>
+        <div class="wc-overlay"><div class="wc-info">
+          <span class="wc-name">秋草蒔絵 盆</span>
+          <span class="wc-meta">Makie Tray &nbsp;·&nbsp; ¥85,000</span>
+        </div></div>
+      </div>
+      <div class="wc">
+        <div class="wc-img"></div>
+        <div class="wc-overlay"><div class="wc-info">
+          <span class="wc-name">螺鈿 菓子器</span>
+          <span class="wc-meta">Raden Box &nbsp;·&nbsp; ¥120,000</span>
+        </div></div>
+      </div>
+      <div class="wc">
+        <div class="wc-img"></div>
+        <div class="wc-overlay"><div class="wc-info">
+          <span class="wc-name">溜塗 椀</span>
+          <span class="wc-meta">Lacquer Bowl &nbsp;·&nbsp; ¥42,000</span>
+        </div></div>
+      </div>
+      <div class="wc">
+        <div class="wc-img"></div>
+        <div class="wc-overlay"><div class="wc-info">
+          <span class="wc-name">朱塗 重箱</span>
+          <span class="wc-meta">Jubako &nbsp;·&nbsp; ¥98,000</span>
+        </div></div>
+      </div>
+      <div class="wc">
+        <div class="wc-img"></div>
+        <div class="wc-overlay"><div class="wc-info">
+          <span class="wc-name">金箔 文箱</span>
+          <span class="wc-meta">Document Box &nbsp;·&nbsp; ¥68,000</span>
+        </div></div>
+      </div>
+      <div class="wc">
+        <div class="wc-img"></div>
+        <div class="wc-overlay"><div class="wc-info">
+          <span class="wc-name">蒔絵 香合</span>
+          <span class="wc-meta">Incense Case &nbsp;·&nbsp; ¥35,000</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROCESS ─── -->
+<section class="process" id="process">
+  <div class="process-top">
+    <h2 class="process-title sr">The Art<br>of Forty<br>Layers</h2>
+    <p class="process-intro sr sd1">
+      Lacquerware is not made — it is grown. Layer by layer, the wood is transformed into something that belongs to a different category of time. Each piece passes through the same four gates before it can be called finished.
+    </p>
+  </div>
+  <div class="process-steps" id="processSteps">
+    <div class="process-line-fill" id="processLine"></div>
+    <div class="step sr">
+      <div class="step-dot"></div>
+      <p class="step-num">I</p>
+      <h3 class="step-title">木地作り</h3>
+      <p class="step-body">素材の木を選び、削り出す。木目と対話しながら、最適な形を引き出します。</p>
+    </div>
+    <div class="step sr sd1">
+      <div class="step-dot"></div>
+      <p class="step-num">II</p>
+      <h3 class="step-title">下地塗り</h3>
+      <p class="step-body">生漆を何層にも重ね、木地を固めます。乾燥に数週間。急ぐことはできません。</p>
+    </div>
+    <div class="step sr sd2">
+      <div class="step-dot"></div>
+      <p class="step-num">III</p>
+      <h3 class="step-title">中・上塗り</h3>
+      <p class="step-body">砥ぎと塗りを繰り返し、深みある艶を作ります。ここが最も時間を要します。</p>
+    </div>
+    <div class="step sr sd3">
+      <div class="step-dot"></div>
+      <p class="step-num">IV</p>
+      <h3 class="step-title">蒔絵・仕上げ</h3>
+      <p class="step-body">金粉や螺鈿で文様を描き、最後の艶出しで完成。一点として同じものはありません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section class="about" id="about">
+  <div class="about-img">
+    <!-- ★ 写真差し込みエリア -->
+    <div class="about-img-bg"></div>
+  </div>
+  <div class="about-content">
+    <p class="about-eyebrow sr">Atelier</p>
+    <h2 class="about-title sr sd1">Where Silence<br>Becomes Surface</h2>
+    <p class="about-body sr sd2">
+      Founded in Kyoto's Higashiyama district in 1952, Makie-Do has passed through three generations of lacquer masters. We do not hurry. We do not scale. We make objects that outlast the people who make them.
+    </p>
+    <p class="about-ja sr sd3">
+      1952年創業。初代から三代にわたり、京都・東山の工房で漆芸を継承しています。国内外の美術館や個人コレクターへの納品実績多数。
+    </p>
+    <a href="#contact" class="about-cta sr sd3">Request a Consultation</a>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section class="contact" id="contact">
+  <span class="contact-eyebrow sr">Contact</span>
+  <h2 class="contact-title sr sd1">Begin a Conversation</h2>
+  <p class="contact-sub sr sd2">
+    For acquisitions, commissions, and press enquiries.<br>
+    We respond within two working days.
+  </p>
+  <form class="contact-form sr sd2" onsubmit="return false;">
+    <div class="cf-row">
+      <label class="cf-label">Name</label>
+      <input type="text" class="cf-field" placeholder="Your full name">
+    </div>
+    <div class="cf-row">
+      <label class="cf-label">Email</label>
+      <input type="email" class="cf-field" placeholder="your@email.com">
+    </div>
+    <div class="cf-row">
+      <label class="cf-label">Message</label>
+      <textarea class="cf-field cf-area" placeholder="Tell us about your interest or enquiry…"></textarea>
+    </div>
+    <button type="submit" class="cf-submit">Send Enquiry</button>
+  </form>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <span class="f-logo">蒔絵堂</span>
+  <ul class="f-nav">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">Atelier</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <span class="f-copy">© 2025 MAKIE-DO &nbsp;·&nbsp; All Rights Reserved</span>
+</footer>
+
+<script>
+/* ── Custom cursor ── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  if (cur) { cur.style.left = mx + 'px'; cur.style.top = my + 'px'; }
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  if (ring) { ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; }
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+/* ── NAV lit state ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('lit', window.scrollY > 80);
+}, { passive: true });
+
+/* ── Hero parallax ── */
+const heroBg = document.getElementById('heroBg');
+window.addEventListener('scroll', () => {
+  if (window.scrollY < window.innerHeight && heroBg) {
+    heroBg.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+  }
+}, { passive: true });
+
+/* ── Scroll reveal ── */
+const srs = document.querySelectorAll('.sr');
+const sro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+srs.forEach(el => sro.observe(el));
+
+/* ── Process line animation ── */
+const pSteps = document.getElementById('processSteps');
+const pLine  = document.getElementById('processLine');
+const pObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      pSteps.classList.add('animated');
+      pObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+if (pSteps) pObs.observe(pSteps);
+</script>
+</body>
+</html>

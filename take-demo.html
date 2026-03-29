@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>青竹舎 — 竹工芸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Zen+Old+Mincho:wght@400;500;600;900&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --cream:  #F5F0E6;
+  --paper:  #EDE7D8;
+  --green:  #3A5730;
+  --green2: #506B46;
+  --brown:  #5C3D1A;
+  --dark:   #161410;
+  --sand:   #B8A882;
+  --grey:   #7A7060;
+  --border: rgba(22,20,16,0.08);
+}
+
+body {
+  background: var(--cream);
+  color: var(--dark);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ══ NAV ══ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  padding: 1.8rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.5s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(245,240,230,0.93);
+  backdrop-filter: blur(12px);
+  padding: 1.1rem 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+.logo-ja {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--dark);
+}
+.logo-en {
+  font-size: 0.52rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+.nav-r {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--dark); }
+.nav-btn {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--green);
+  padding: 0.72rem 1.5rem;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.nav-btn:hover { background: var(--green2); }
+
+
+/* ══ HERO ══ */
+.hero {
+  height: 100vh;
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  position: relative;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10rem 2.5rem 4rem;
+  position: relative;
+  z-index: 2;
+}
+.hero-eyebrow {
+  font-size: 0.56rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  writing-mode: vertical-rl;
+  height: 18rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.6s forwards;
+}
+.hero-sub {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--sand);
+  letter-spacing: 0.06em;
+  margin-top: 2rem;
+  line-height: 1.9;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.9s forwards;
+}
+
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+/* ★ 写真差し込みエリア */
+.hero-img {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #1A2E12 0%, #2D4A22 40%, #3D5C2E 70%, #1A2A10 100%);
+  transform: scale(1.05);
+}
+.hero-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left, transparent 60%, rgba(245,240,230,0.12) 100%);
+}
+.hero-badge {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeUp 0.9s 1.2s forwards;
+}
+.hero-badge-inner {
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(245,240,230,0.25);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.hero-badge span:first-child {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.6rem;
+  font-style: italic;
+  color: rgba(245,240,230,0.8);
+  line-height: 1;
+}
+.hero-badge span:last-child {
+  font-size: 0.48rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(245,240,230,0.4);
+}
+
+/* scroll hint */
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+  right: 3rem;
+  writing-mode: vertical-rl;
+  font-size: 0.52rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(245,240,230,0.35);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeUp 0.9s 1.5s forwards;
+}
+.hero-scroll::before {
+  content: '';
+  width: 1px;
+  height: 50px;
+  background: rgba(245,240,230,0.2);
+  display: block;
+}
+
+
+/* ══ STICKY LAYOUT ══ */
+.sticky-wrap {
+  display: grid;
+  grid-template-columns: 48% 52%;
+}
+
+.sticky-col {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ★ 写真差し込みエリア（複数）*/
+.sticky-img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.25,0.1,0.25,1);
+}
+.sticky-img.active { opacity: 1; }
+.sticky-img-1 { background: linear-gradient(175deg, #2A4520 0%, #3D5C2E 50%, #1A2E14 100%); }
+.sticky-img-2 { background: linear-gradient(140deg, #1A2E12 20%, #5C3D1A 80%); }
+.sticky-img-3 { background: linear-gradient(160deg, #3D5C2E 0%, #2A4520 60%, #1A1A0E 100%); }
+.sticky-img-4 { background: linear-gradient(120deg, #1A2A10 0%, #2E3D20 50%, #3D5C2E 100%); }
+
+.sticky-label {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  z-index: 2;
+}
+.sticky-label-text {
+  font-size: 0.52rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(245,240,230,0.35);
+  writing-mode: vertical-rl;
+}
+
+.scroll-col {
+  padding: 0;
+}
+
+.scroll-section {
+  min-height: 100vh;
+  padding: 7rem 4rem 7rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 1px solid var(--border);
+}
+.scroll-section:first-child { border-top: none; }
+
+.sec-num {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size: 0.65rem;
+  color: var(--sand);
+  letter-spacing: 0.12em;
+  margin-bottom: 2.5rem;
+}
+.sec-eyebrow {
+  font-size: 0.56rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1.2rem;
+}
+.sec-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  margin-bottom: 2.2rem;
+}
+.sec-body {
+  font-size: 0.85rem;
+  line-height: 2.2;
+  color: var(--grey);
+  max-width: 34rem;
+  margin-bottom: 2.5rem;
+}
+.sec-detail {
+  display: flex;
+  gap: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.detail-item {}
+.detail-val {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--green);
+  line-height: 1;
+}
+.detail-lbl {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--sand);
+  margin-top: 0.4rem;
+}
+
+.sec-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+  width: fit-content;
+}
+
+/* Works in scroll section */
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+/* ★ 写真差し込みエリア */
+.mini-card {
+  aspect-ratio: 4/3;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.mini-card-bg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.5s;
+}
+.mini-card:hover .mini-card-bg { transform: scale(1.05); }
+.mini-card:nth-child(1) .mini-card-bg { background: linear-gradient(140deg, #2D4A22, #3D5C2E); }
+.mini-card:nth-child(2) .mini-card-bg { background: linear-gradient(160deg, #1A2E12, #2D4A22); }
+.mini-card:nth-child(3) .mini-card-bg { background: linear-gradient(120deg, #3D5C2E, #1A2E12); }
+.mini-card:nth-child(4) .mini-card-bg { background: linear-gradient(180deg, #2A4520, #3D5C2E); }
+.mini-label {
+  position: absolute;
+  bottom: 0.8rem;
+  left: 0.8rem;
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 0.72rem;
+  color: rgba(245,240,230,0.8);
+}
+
+
+/* ══ FULL-BLEED BANNER ══ */
+.banner {
+  height: 55vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ★ 写真差し込みエリア */
+.banner-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #1A2E12 0%, #2D4A22 50%, #3D5C2E 100%);
+}
+.banner-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.banner-ja {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 900;
+  color: rgba(245,240,230,0.9);
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 1rem;
+}
+.banner-en {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(245,240,230,0.4);
+  letter-spacing: 0.1em;
+}
+
+
+/* ══ CONTACT ══ */
+.contact {
+  padding: 9rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: start;
+}
+.contact-left .sec-title { font-size: clamp(1.6rem, 2.2vw, 2.2rem); }
+.contact-left p {
+  font-size: 0.84rem;
+  line-height: 2.1;
+  color: var(--grey);
+  margin-top: 1.5rem;
+}
+.contact-right {}
+.form-row { margin-bottom: 1.5rem; }
+.form-lbl {
+  display: block;
+  font-size: 0.56rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--sand);
+  margin-bottom: 0.5rem;
+}
+.form-field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 0;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--dark);
+  outline: none;
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+.form-field:focus { border-bottom-color: var(--green); }
+.form-area { resize: none; height: 80px; }
+.form-submit {
+  background: var(--green);
+  color: var(--cream);
+  border: none;
+  padding: 1.05rem 2.5rem;
+  font-family: inherit;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.3s, transform 0.3s;
+}
+.form-submit:hover { background: var(--green2); transform: translateY(-2px); }
+
+
+/* ══ FOOTER ══ */
+footer {
+  background: var(--dark);
+  padding: 2.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: rgba(245,240,230,0.7);
+}
+.footer-copy {
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  color: rgba(245,240,230,0.2);
+}
+
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.85s cubic-bezier(0.25,0.1,0.25,1),
+              transform 0.85s cubic-bezier(0.25,0.1,0.25,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: 0.12s; }
+.d2 { transition-delay: 0.24s; }
+.d3 { transition-delay: 0.36s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <span class="logo-ja">青竹舎</span>
+    <span class="logo-en">Aotakesha · Bamboo Craft</span>
+  </a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#works">作品</a></li>
+      <li><a href="#craft">工芸について</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+    <a href="#contact" class="nav-btn">制作依頼</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Oita · Since 1948</p>
+    <h1 class="hero-title">竹が<br>持つ<br>命を<br>形に</h1>
+    <p class="hero-sub">Shaping the life<br>within bamboo.</p>
+  </div>
+  <div class="hero-right">
+    <!-- ★ 写真差し込みエリア -->
+    <div class="hero-img" id="heroParallax"></div>
+    <div class="hero-badge">
+      <div class="hero-badge-inner">
+        <span>76</span>
+        <span>Years</span>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </div>
+</section>
+
+<!-- STICKY LAYOUT -->
+<div class="sticky-wrap">
+  <!-- LEFT: sticky image -->
+  <div class="sticky-col" id="stickyCol">
+    <!-- ★ 写真差し込みエリア（4枚切り替え） -->
+    <div class="sticky-img sticky-img-1 active" data-index="0"></div>
+    <div class="sticky-img sticky-img-2" data-index="1"></div>
+    <div class="sticky-img sticky-img-3" data-index="2"></div>
+    <div class="sticky-img sticky-img-4" data-index="3"></div>
+    <div class="sticky-label">
+      <p class="sticky-label-text">Aotakesha · 青竹舎</p>
+    </div>
+  </div>
+
+  <!-- RIGHT: scrolling sections -->
+  <div class="scroll-col">
+    <!-- Section 1: Philosophy -->
+    <div class="scroll-section" data-sticky-index="0">
+      <p class="sec-num reveal">— 01</p>
+      <p class="sec-eyebrow reveal d1">Philosophy</p>
+      <h2 class="sec-title reveal d1">竹は、生きている素材</h2>
+      <p class="sec-body reveal d2">
+        大分・別府に生まれた竹細工の伝統は、1200年以上の歴史を持ちます。私たちは山から竹を選ぶところから始め、乾燥・割り・編みと、すべての工程を手で行います。竹は使えば使うほど艶が増し、色が深まる。生きた素材との対話が、私たちの仕事です。
+      </p>
+      <div class="sec-detail reveal d3">
+        <div class="detail-item">
+          <p class="detail-val">76</p>
+          <p class="detail-lbl">年の歴史</p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-val">4</p>
+          <p class="detail-lbl">代目職人</p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-val">8</p>
+          <p class="detail-lbl">か国へ輸出</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Works -->
+    <div class="scroll-section" data-sticky-index="1" id="works">
+      <p class="sec-num reveal">— 02</p>
+      <p class="sec-eyebrow reveal d1">Works</p>
+      <h2 class="sec-title reveal d1">代表作品</h2>
+      <div class="mini-grid reveal d2">
+        <div class="mini-card">
+          <!-- ★ 写真差し込みエリア -->
+          <div class="mini-card-bg"></div>
+          <p class="mini-label">花籠</p>
+        </div>
+        <div class="mini-card">
+          <!-- ★ 写真差し込みエリア -->
+          <div class="mini-card-bg"></div>
+          <p class="mini-label">茶托</p>
+        </div>
+        <div class="mini-card">
+          <!-- ★ 写真差し込みエリア -->
+          <div class="mini-card-bg"></div>
+          <p class="mini-label">盛籠</p>
+        </div>
+        <div class="mini-card">
+          <!-- ★ 写真差し込みエリア -->
+          <div class="mini-card-bg"></div>
+          <p class="mini-label">行李</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Craft -->
+    <div class="scroll-section" data-sticky-index="2" id="craft">
+      <p class="sec-num reveal">— 03</p>
+      <span class="sec-tag reveal d1">Traditional Technique</span>
+      <h2 class="sec-title reveal d1">胡麻竹・白竹・<br>染竹を使い分ける</h2>
+      <p class="sec-body reveal d2">
+        竹の種類は仕上がりに大きく影響します。胡麻竹は斑点模様が特徴的で工芸品に、白竹は清潔感があり日用品に、染竹は鮮やかな色彩で現代的な作品に。竹を知ることが、良い作品への第一歩です。
+      </p>
+    </div>
+
+    <!-- Section 4: Contact intro -->
+    <div class="scroll-section" data-sticky-index="3">
+      <p class="sec-num reveal">— 04</p>
+      <p class="sec-eyebrow reveal d1">Order & Contact</p>
+      <h2 class="sec-title reveal d1">オーダーメイド<br>承ります</h2>
+      <p class="sec-body reveal d2">
+        ご用途・サイズ・予算に合わせたオーダーメイド制作を承っております。法人様の記念品・贈答品のご相談もお気軽にどうぞ。
+      </p>
+      <a href="#contact" class="nav-btn reveal d3" style="display:inline-block;width:fit-content;margin-top:1rem;">お問い合わせはこちら</a>
+    </div>
+  </div>
+</div>
+
+<!-- FULL-BLEED BANNER -->
+<div class="banner">
+  <!-- ★ 写真差し込みエリア -->
+  <div class="banner-bg"></div>
+  <div class="banner-text">
+    <span class="banner-ja">伝えることが、続けること</span>
+    <span class="banner-en">To pass it on is to keep it alive.</span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-left">
+    <p class="sec-eyebrow reveal">Contact</p>
+    <h2 class="sec-title reveal d1">お問い合わせ</h2>
+    <p class="reveal d2">
+      作品のご購入・オーダーメイド・取材などのお問い合わせはこちらからどうぞ。2営業日以内にご返信いたします。
+    </p>
+  </div>
+  <div class="contact-right reveal d1">
+    <form onsubmit="return false;">
+      <div class="form-row">
+        <label class="form-lbl">お名前</label>
+        <input type="text" class="form-field" placeholder="山田 太郎">
+      </div>
+      <div class="form-row">
+        <label class="form-lbl">メールアドレス</label>
+        <input type="email" class="form-field" placeholder="your@email.com">
+      </div>
+      <div class="form-row">
+        <label class="form-lbl">お問い合わせ内容</label>
+        <textarea class="form-field form-area" placeholder="ご質問・ご要望をお書きください"></textarea>
+      </div>
+      <button type="submit" class="form-submit">送信する</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">青竹舎</p>
+  <p class="footer-copy">© 2025 青竹舎 Aotakesha. All rights reserved.</p>
+</footer>
+
+<script>
+/* NAV */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* Reveal */
+const reveals = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => ro.observe(el));
+
+/* Sticky image switcher */
+const sections = document.querySelectorAll('[data-sticky-index]');
+const imgs = document.querySelectorAll('.sticky-img');
+const stickyObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = parseInt(e.target.dataset.stickyIndex);
+      imgs.forEach((img, i) => img.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.5 });
+sections.forEach(s => stickyObs.observe(s));
+
+/* Hero parallax */
+const hp = document.getElementById('heroParallax');
+window.addEventListener('scroll', () => {
+  if (window.scrollY < window.innerHeight && hp) {
+    hp.style.transform = `scale(1.05) translateY(${window.scrollY * 0.25}px)`;
+  }
+}, { passive: true });
+</script>
+</body>
+</html>

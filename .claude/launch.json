@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "quietmade",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "8765", "/Users/marika/Desktop/quietmade"],
+      "port": 8765
+    },
+    {
+      "name": "here-app",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Users/marika/here-app && npm run dev -- -p 3001"],
+      "port": 3001
+    }
+  ]
+}

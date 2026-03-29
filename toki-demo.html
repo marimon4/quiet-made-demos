@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>土と輪 — 陶器工房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Serif+JP:wght@200;300;400;500&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white:  #FAFAF8;
+  --fog:    #F0EDE8;
+  --clay:   #A0877A;
+  --clay2:  #C0A090;
+  --terra:  #8A5A48;
+  --dark:   #1C1A18;
+  --grey:   #7A7570;
+  --lgrey:  #B0ABA5;
+  --border: rgba(28,26,24,0.07);
+}
+
+body {
+  background: var(--white);
+  color: var(--dark);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ══ NAV ══ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  padding: 1.8rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.5s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(250,250,248,0.93);
+  backdrop-filter: blur(14px);
+  padding: 1.1rem 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+.logo-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--dark);
+}
+.logo-sep { color: var(--lgrey); font-size: 0.8rem; }
+.logo-en {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--clay);
+}
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-center a {
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-center a:hover { color: var(--dark); }
+.nav-cta {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--terra);
+  padding: 0.7rem 1.5rem;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.nav-cta:hover { background: var(--clay); }
+
+
+/* ══ HERO — Full-bleed image, text at bottom ══ */
+.hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+/* ★ 写真差し込みエリア */
+.hero-img {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(165deg, #2A1810 0%, #5C3828 40%, #8A5A48 70%, #3A2018 100%);
+  transform: scale(1.06);
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(28,26,24,0.75) 0%, rgba(28,26,24,0.2) 50%, transparent 100%);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 3.5rem 4rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  gap: 3rem;
+}
+.hero-text-left {}
+.hero-eyebrow {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(250,250,248,0.5);
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s forwards;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(3rem, 7vw, 7rem);
+  font-weight: 400;
+  line-height: 0.95;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+  opacity: 0;
+  animation: slideUp 1s 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-title-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 200;
+  letter-spacing: 0.18em;
+  color: rgba(250,250,248,0.55);
+  opacity: 0;
+  animation: fadeUp 0.9s 1s forwards;
+}
+.hero-text-right {
+  text-align: right;
+  opacity: 0;
+  animation: fadeUp 0.9s 1.2s forwards;
+}
+.hero-desc {
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: rgba(250,250,248,0.5);
+  max-width: 22rem;
+  text-align: right;
+  margin-bottom: 1.5rem;
+}
+.hero-btn {
+  display: inline-block;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--white);
+  border: 1px solid rgba(250,250,248,0.35);
+  padding: 0.8rem 1.8rem;
+  text-decoration: none;
+  transition: background 0.3s, border-color 0.3s;
+}
+.hero-btn:hover { background: rgba(250,250,248,0.1); border-color: rgba(250,250,248,0.6); }
+
+/* scroll indicator */
+.hero-scroll-ind {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.6s forwards;
+}
+.hero-scroll-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(250,250,248,0.4);
+  animation: breathe 2s 2s infinite;
+}
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: rgba(250,250,248,0.15);
+  overflow: hidden;
+  position: relative;
+}
+.hero-scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--clay2);
+  animation: drip 2s 2s infinite;
+}
+
+
+/* ══ INTRO STRIP ══ */
+.intro {
+  padding: 5rem 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 5rem;
+  align-items: start;
+  border-bottom: 1px solid var(--border);
+}
+.intro-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--clay);
+  padding-top: 0.3rem;
+}
+.intro-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  font-weight: 200;
+  line-height: 2;
+  letter-spacing: 0.03em;
+  color: var(--dark);
+}
+.intro-text em {
+  font-style: normal;
+  color: var(--terra);
+}
+
+
+/* ══ HORIZONTAL GALLERY ══ */
+.gallery-section {
+  padding: 5rem 0 5rem 3.5rem;
+}
+.gallery-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-right: 3.5rem;
+  margin-bottom: 3rem;
+}
+.g-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 0.7rem;
+}
+.g-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+}
+.g-link {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s, gap 0.3s;
+  padding-bottom: 0.5rem;
+}
+.g-link:hover { color: var(--dark); gap: 0.8rem; }
+.g-link::after { content: '→'; }
+
+/* Horizontal scroll track */
+.gallery-track {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 1.5rem;
+  cursor: grab;
+  user-select: none;
+}
+.gallery-track:active { cursor: grabbing; }
+.gallery-track::-webkit-scrollbar { height: 2px; }
+.gallery-track::-webkit-scrollbar-track { background: var(--fog); }
+.gallery-track::-webkit-scrollbar-thumb { background: var(--clay2); }
+
+.g-card {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+.g-card:nth-child(odd)  { width: 340px; }
+.g-card:nth-child(even) { width: 260px; }
+
+/* ★ 写真差し込みエリア */
+.g-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25,0.1,0.25,1);
+}
+.g-card:hover .g-img { transform: scale(1.04); }
+.g-card:nth-child(1) .g-img { background: linear-gradient(155deg, #2A1810, #8A5A48); }
+.g-card:nth-child(2) .g-img { background: linear-gradient(175deg, #5C3828, #A08070); }
+.g-card:nth-child(3) .g-img { background: linear-gradient(135deg, #1C1A18, #5C3828); }
+.g-card:nth-child(4) .g-img { background: linear-gradient(160deg, #3A2018, #8A5A48); }
+.g-card:nth-child(5) .g-img { background: linear-gradient(145deg, #8A5A48, #5C3828); }
+.g-card:nth-child(6) .g-img { background: linear-gradient(165deg, #2A1810, #A08070); }
+.g-card:nth-child(7) .g-img { background: linear-gradient(150deg, #5C3828, #2A1810); }
+
+.g-info {
+  padding: 1rem 0 0;
+}
+.g-name {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--dark);
+}
+.g-price {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--clay);
+  margin-top: 0.2rem;
+}
+
+/* drag hint */
+.drag-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  padding-right: 3.5rem;
+}
+.drag-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.drag-progress {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: var(--clay);
+  width: 20%;
+  transition: width 0.2s;
+}
+.drag-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--lgrey);
+  white-space: nowrap;
+}
+
+
+/* ══ ABOUT ══ */
+.about {
+  padding: 7rem 3.5rem;
+  background: var(--fog);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+.about-img-wrap { position: relative; }
+/* ★ 写真差し込みエリア */
+.about-img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  display: block;
+}
+.about-img-bg { background: linear-gradient(180deg, #5C3828 0%, #3A2018 60%, #1C1A18 100%); }
+.about-img-frame {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  right: -2rem;
+  bottom: -2rem;
+  border: 1px solid rgba(28,26,24,0.08);
+  z-index: -1;
+}
+.about-text {}
+.about-eyebrow {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 1.2rem;
+}
+.about-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  line-height: 1.3;
+  margin-bottom: 2rem;
+}
+.about-title em { font-style: italic; color: var(--terra); }
+.about-body {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 200;
+  line-height: 2.4;
+  color: var(--grey);
+  margin-bottom: 3rem;
+}
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+.stat-val {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--terra);
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  color: var(--lgrey);
+  margin-top: 0.4rem;
+}
+
+
+/* ══ CONTACT ══ */
+.contact {
+  padding: 8rem 3.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+.c-eyebrow {
+  font-size: 0.56rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 1rem;
+  display: block;
+}
+.c-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.c-title em { font-style: italic; color: var(--terra); }
+.c-body {
+  font-size: 0.84rem;
+  line-height: 2.1;
+  color: var(--grey);
+  margin-bottom: 4rem;
+}
+.c-form {
+  display: grid;
+  gap: 1.8rem;
+  text-align: left;
+}
+.c-row { display: flex; flex-direction: column; gap: 0.4rem; }
+.c-lbl {
+  font-size: 0.54rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+.c-field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 0;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--dark);
+  outline: none;
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+.c-field:focus { border-bottom-color: var(--clay); }
+.c-area { resize: none; height: 80px; }
+.c-submit {
+  background: var(--terra);
+  color: var(--white);
+  border: none;
+  padding: 1.1rem 3rem;
+  font-family: inherit;
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+.c-submit:hover { background: var(--clay); transform: translateY(-2px); }
+
+
+/* ══ FOOTER ══ */
+footer {
+  background: var(--dark);
+  padding: 2.5rem 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.f-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: rgba(250,250,248,0.65);
+}
+.f-copy {
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  color: rgba(250,250,248,0.2);
+}
+
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(45px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes drip {
+  0%   { top: -100%; }
+  100% { top: 200%; }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.3); }
+}
+.rv {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.85s cubic-bezier(0.25,0.1,0.25,1),
+              transform 0.85s cubic-bezier(0.25,0.1,0.25,1);
+}
+.rv.visible { opacity: 1; transform: translateY(0); }
+.rd1 { transition-delay: 0.12s; }
+.rd2 { transition-delay: 0.24s; }
+.rd3 { transition-delay: 0.36s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <span class="logo-ja">土と輪</span>
+    <span class="logo-sep">—</span>
+    <span class="logo-en">Tsuchi to Wa</span>
+  </a>
+  <ul class="nav-center">
+    <li><a href="#gallery">作品</a></li>
+    <li><a href="#about">工房</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">制作依頼</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- ★ 写真差し込みエリア -->
+  <div class="hero-img" id="heroParallax"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-text-left">
+      <p class="hero-eyebrow">Mashiko · Ceramics · Since 1979</p>
+      <h1 class="hero-title">Earth &<br>Wheel.</h1>
+      <p class="hero-title-ja">益子焼、四十五年</p>
+    </div>
+    <div class="hero-text-right">
+      <p class="hero-desc">土を捏ね、轆轤を回し、窯で焼く。機械では出せない手の痕跡を、すべての作品に残します。</p>
+      <a href="#gallery" class="hero-btn">作品を見る</a>
+    </div>
+  </div>
+  <div class="hero-scroll-ind">
+    <div class="hero-scroll-dot"></div>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<div class="intro">
+  <p class="intro-label rv">Philosophy</p>
+  <p class="intro-text rv rd1">
+    益子の土は、<em>鉄分が多く素朴な表情</em>を持っています。釉薬をかけすぎず、土の色を活かす。轆轤の跡を消さず、<em>手の動きをそのまま形に</em>する。それが私たちのやり方です。
+  </p>
+</div>
+
+<!-- HORIZONTAL GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-head">
+    <div>
+      <p class="g-label rv">Works</p>
+      <h2 class="g-title rv rd1">作品一覧</h2>
+    </div>
+    <a href="#" class="g-link rv">すべて見る</a>
+  </div>
+
+  <div class="gallery-track" id="galleryTrack">
+    <div class="g-card">
+      <!-- ★ 写真差し込みエリア -->
+      <div class="g-img"></div>
+      <div class="g-info">
+        <p class="g-name">飴釉 湯のみ</p>
+        <p class="g-price">¥5,800</p>
+      </div>
+    </div>
+    <div class="g-card">
+      <div class="g-img"></div>
+      <div class="g-info">
+        <p class="g-name">粉引 大皿</p>
+        <p class="g-price">¥28,000</p>
+      </div>
+    </div>
+    <div class="g-card">
+      <div class="g-img"></div>
+      <div class="g-info">
+        <p class="g-name">黒釉 花器</p>
+        <p class="g-price">¥22,000</p>
+      </div>
+    </div>
+    <div class="g-card">
+      <div class="g-img"></div>
+      <div class="g-info">
+        <p class="g-name">灰釉 急須</p>
+        <p class="g-price">¥38,000</p>
+      </div>
+    </div>
+    <div class="g-card">
+      <div class="g-img"></div>
+      <div class="g-info">
+        <p class="g-name">土灰 碗</p>
+        <p class="g-price">¥12,000</p>
+      </div>
+    </div>
+    <div class="g-card">
+      <div class="g-img"></div>
+      <div class="g-info">
+        <p class="g-name">鉄絵 平皿</p>
+        <p class="g-price">¥8,500</p>
+      </div>
+    </div>
+    <div class="g-card">
+      <div class="g-img"></div>
+      <div class="g-info">
+        <p class="g-name">白磁 一輪挿し</p>
+        <p class="g-price">¥15,000</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="drag-hint">
+    <div class="drag-line"><div class="drag-progress" id="dragProgress"></div></div>
+    <span class="drag-label">← Drag to explore →</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-img-wrap rv">
+    <!-- ★ 写真差し込みエリア -->
+    <div class="about-img about-img-bg"></div>
+    <div class="about-img-frame"></div>
+  </div>
+  <div class="about-text">
+    <p class="about-eyebrow rv">About</p>
+    <h2 class="about-title rv rd1">益子の土が<br>持つ<em>表情</em></h2>
+    <p class="about-body rv rd2">
+      1979年、栃木県益子町に開窯。益子焼の伝統技法を基盤としながら、現代の食卓に馴染む器を制作しています。すべて手轆轤による一点制作。同じ形は一つとしてありません。
+    </p>
+    <div class="about-stats rv rd3">
+      <div>
+        <p class="stat-val">45</p>
+        <p class="stat-lbl">年の歴史</p>
+      </div>
+      <div>
+        <p class="stat-val">3</p>
+        <p class="stat-lbl">代目陶芸家</p>
+      </div>
+      <div>
+        <p class="stat-val">6</p>
+        <p class="stat-lbl">か国へ輸出</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <span class="c-eyebrow rv">Contact</span>
+  <h2 class="c-title rv rd1">作品との<br><em>出会いを</em></h2>
+  <p class="c-body rv rd2">
+    作品のご購入・オーダーメイド・取材などのお問い合わせはこちらからどうぞ。
+  </p>
+  <form class="c-form rv rd2" onsubmit="return false;">
+    <div class="c-row">
+      <label class="c-lbl">お名前</label>
+      <input type="text" class="c-field" placeholder="山田 太郎">
+    </div>
+    <div class="c-row">
+      <label class="c-lbl">メールアドレス</label>
+      <input type="email" class="c-field" placeholder="your@email.com">
+    </div>
+    <div class="c-row">
+      <label class="c-lbl">お問い合わせ内容</label>
+      <textarea class="c-field c-area" placeholder="ご質問・ご要望をお書きください"></textarea>
+    </div>
+    <button type="submit" class="c-submit">送信する</button>
+  </form>
+</section>
+
+<footer>
+  <p class="f-logo">土と輪</p>
+  <p class="f-copy">© 2025 土と輪 Tsuchi to Wa. All rights reserved.</p>
+</footer>
+
+<script>
+/* NAV */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* Reveal */
+const rvs = document.querySelectorAll('.rv');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+rvs.forEach(el => ro.observe(el));
+
+/* Hero parallax */
+const hp = document.getElementById('heroParallax');
+window.addEventListener('scroll', () => {
+  if (window.scrollY < window.innerHeight && hp) {
+    hp.style.transform = `scale(1.06) translateY(${window.scrollY * 0.25}px)`;
+  }
+}, { passive: true });
+
+/* Gallery drag scroll + progress */
+const track = document.getElementById('galleryTrack');
+const progress = document.getElementById('dragProgress');
+let isDown = false, startX, scrollLeft;
+
+track.addEventListener('mousedown', e => {
+  isDown = true;
+  track.style.cursor = 'grabbing';
+  startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft;
+});
+track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
+track.addEventListener('mousemove', e => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  const walk = (x - startX) * 1.5;
+  track.scrollLeft = scrollLeft - walk;
+});
+track.addEventListener('scroll', () => {
+  const pct = track.scrollLeft / (track.scrollWidth - track.clientWidth) * 100;
+  if (progress) progress.style.width = Math.max(10, pct) + '%';
+});
+</script>
+</body>
+</html>
