@@ -20,9 +20,14 @@ CREDENTIALS_PATH = os.path.join(os.path.dirname(__file__), "credentials.json")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 # 送信者情報（フォームに入力する自社情報）
-SENDER_NAME = "Marika Kotani"
+SENDER_LAST_NAME = "小谷"
+SENDER_FIRST_NAME = "麻梨香"
+SENDER_LAST_KANA = "こたに"
+SENDER_FIRST_KANA = "まりか"
+SENDER_NAME = f"{SENDER_LAST_NAME}　{SENDER_FIRST_NAME}"
 SENDER_COMPANY = "Quiet Made"
-SENDER_EMAIL = "hello@quiet-made.jp"
+SENDER_EMAIL = "revarise18@gmail.com"
+SENDER_PHONE = "08039316960"
 
 # 営業お断りキーワード
 NO_SALES_KEYWORDS = [
@@ -213,18 +218,111 @@ def preview_and_confirm(workshop_name, message):
 def fill_and_submit_form(page, workshop_name, product, sales_message):
     """フォームのフィールドを検出して入力・送信"""
 
-    # ── 名前フィールド ──
-    name_selectors = [
-        'input[name*="name" i]', 'input[placeholder*="名前" i]',
-        'input[placeholder*="氏名" i]', 'input[placeholder*="お名前" i]',
-        'input[placeholder*="name" i]', 'input[id*="name" i]',
-        'input[class*="name" i]',
+    # ── 姓フィールド ──
+    last_name_selectors = [
+        'input[name*="last" i]', 'input[name*="sei" i]', 'input[name*="family" i]',
+        'input[placeholder*="姓" i]', 'input[placeholder*="せい" i]',
+        'input[placeholder*="名字" i]', 'input[id*="last" i]', 'input[id*="sei" i]',
     ]
-    for sel in name_selectors:
+    filled_last = False
+    for sel in last_name_selectors:
         try:
             el = page.locator(sel).first
             if el.is_visible():
-                el.fill(SENDER_NAME)
+                el.fill(SENDER_LAST_NAME)
+                filled_last = True
+                break
+        except Exception:
+            continue
+
+    # ── 名フィールド ──
+    first_name_selectors = [
+        'input[name*="first" i]', 'input[name*="mei" i]', 'input[name*="given" i]',
+        'input[placeholder*="名" i]', 'input[placeholder*="めい" i]',
+        'input[id*="first" i]', 'input[id*="mei" i]',
+    ]
+    for sel in first_name_selectors:
+        try:
+            el = page.locator(sel).first
+            if el.is_visible():
+                el.fill(SENDER_FIRST_NAME)
+                break
+        except Exception:
+            continue
+
+    # ── フルネームフィールド（姓名分割なしの場合） ──
+    if not filled_last:
+        name_selectors = [
+            'input[name*="name" i]', 'input[placeholder*="名前" i]',
+            'input[placeholder*="氏名" i]', 'input[placeholder*="お名前" i]',
+            'input[placeholder*="name" i]', 'input[id*="name" i]',
+            'input[class*="name" i]',
+        ]
+        for sel in name_selectors:
+            try:
+                el = page.locator(sel).first
+                if el.is_visible():
+                    el.fill(SENDER_NAME)
+                    break
+            except Exception:
+                continue
+
+    # ── ふりがな（姓） ──
+    kana_last_selectors = [
+        'input[name*="kana_last" i]', 'input[name*="furigana_last" i]',
+        'input[placeholder*="せい" i]', 'input[placeholder*="セイ" i]',
+        'input[id*="kana_last" i]', 'input[id*="furigana_sei" i]',
+    ]
+    for sel in kana_last_selectors:
+        try:
+            el = page.locator(sel).first
+            if el.is_visible():
+                el.fill(SENDER_LAST_KANA)
+                break
+        except Exception:
+            continue
+
+    # ── ふりがな（名） ──
+    kana_first_selectors = [
+        'input[name*="kana_first" i]', 'input[name*="furigana_first" i]',
+        'input[placeholder*="めい" i]', 'input[placeholder*="メイ" i]',
+        'input[id*="kana_first" i]', 'input[id*="furigana_mei" i]',
+    ]
+    for sel in kana_first_selectors:
+        try:
+            el = page.locator(sel).first
+            if el.is_visible():
+                el.fill(SENDER_FIRST_KANA)
+                break
+        except Exception:
+            continue
+
+    # ── ふりがな（フルネーム） ──
+    kana_full_selectors = [
+        'input[name*="kana" i]', 'input[name*="furigana" i]', 'input[name*="yomi" i]',
+        'input[placeholder*="ふりがな" i]', 'input[placeholder*="フリガナ" i]',
+        'input[placeholder*="よみがな" i]', 'input[id*="kana" i]', 'input[id*="furigana" i]',
+    ]
+    for sel in kana_full_selectors:
+        try:
+            el = page.locator(sel).first
+            if el.is_visible():
+                el.fill(f"{SENDER_LAST_KANA}　{SENDER_FIRST_KANA}")
+                break
+        except Exception:
+            continue
+
+    # ── 電話番号フィールド ──
+    phone_selectors = [
+        'input[type="tel"]', 'input[name*="phone" i]', 'input[name*="tel" i]',
+        'input[placeholder*="電話" i]', 'input[placeholder*="phone" i]',
+        'input[placeholder*="tel" i]', 'input[id*="phone" i]', 'input[id*="tel" i]',
+    ]
+    for sel in phone_selectors:
+        try:
+            el = page.locator(sel).first
+            if el.is_visible():
+                el.fill(SENDER_PHONE)
                 break
         except Exception:
             continue
