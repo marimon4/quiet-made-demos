@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>花 — @chenglou/pretext demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #060608;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+
+  <script type="module">
+    import { prepareWithSegments, layoutNextLine } from 'https://esm.sh/@chenglou/pretext@0.0.3';
+
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const W = canvas.width;
+    const H = canvas.height;
+
+    const TEXT = [
+      'Cherry blossoms fall like snow across quiet garden paths, ',
+      'each petal carrying the weight of spring. ',
+      'In Japan, the practice of hanami draws people beneath the blooms ',
+      'to eat, to drink, to watch the petals drift. ',
+      'There is a Japanese word — mono no aware — for the bittersweet ',
+      'awareness of impermanence, the gentle sadness of passing things. ',
+      'The cherry tree blooms for one week, sometimes less if wind ',
+      'and rain arrive early. Photographers crowd the riverbanks. ',
+      'Children chase fallen petals across the stone paths. ',
+      'The older ones sit quietly and remember other springs, ',
+      'other blossoms, other years when the light fell just this way. ',
+      'To build something is to accept that it will change. ',
+      'The blossom is beautiful precisely because it falls. ',
+      'Make it anyway. Ship it anyway. ',
+      'Sakura petals spiral down through shafts of morning light ',
+      'over the old wooden bridges of Kyoto. ',
+      'A single camellia floats on the surface of a stone basin. ',
+      'The gardener sweeps and the petals return. ',
+      'Nothing stays, and that is the whole point. ',
+      'Build in public. Fall in public. Bloom again. ',
+    ].join('');
+
+    const FONT_SIZE = 14;
+    const LINE_H   = FONT_SIZE * 1.78;
+    const FONT     = `${FONT_SIZE}px Georgia, 'Times New Roman', serif`;
+    const MARGIN   = 32;
+
+    const prepared = prepareWithSegments(TEXT, FONT);
+
+    // ─── 花びら一枚を描く ───────────────────────────────────────
+    function drawPetal(ctx, r) {
+      const pw = r * 0.44;
+      const ph = r * 0.88;
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      // 左辺
+      ctx.bezierCurveTo(-pw * 0.85, -ph * 0.12, -pw * 0.95, -ph * 0.50, -pw * 0.28, -ph * 0.86);
+      // 先端 左切れ込み
+      ctx.bezierCurveTo(-pw * 0.14,  -ph * 1.02, -pw * 0.04, -ph * 0.96, 0, -ph * 0.92);
+      // 先端 右切れ込み
+      ctx.bezierCurveTo( pw * 0.04,  -ph * 0.96,  pw * 0.14, -ph * 1.02,  pw * 0.28, -ph * 0.86);
+      // 右辺
+      ctx.bezierCurveTo( pw * 0.95, -ph * 0.50,  pw * 0.85, -ph * 0.12, 0, 0);
+      ctx.closePath();
+
+      // 花びらグラデーション（根元=白ピンク → 先端=深いローズ）
+      const g = ctx.createLinearGradient(0, 0, 0, -ph);
+      g.addColorStop(0,    'rgba(255, 242, 250, 0.96)');
+      g.addColorStop(0.30, 'rgba(255, 205, 228, 0.92)');
+      g.addColorStop(0.70, 'rgba(240, 165, 200, 0.88)');
+      g.addColorStop(1,    'rgba(218, 135, 175, 0.82)');
+      ctx.fillStyle = g;
+      ctx.fill();
+
+      // 極細のエッジ
+      ctx.strokeStyle = 'rgba(255, 190, 220, 0.22)';
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+    }
+
+    function drawVeins(ctx, r) {
+      const ph = r * 0.88;
+      // 中心脈
+      ctx.beginPath();
+      ctx.moveTo(0, -ph * 0.06);
+      ctx.quadraticCurveTo(pw(r) * 0.05, -ph * 0.5, 0, -ph * 0.88);
+      ctx.strokeStyle = 'rgba(255, 225, 240, 0.45)';
+      ctx.lineWidth = 0.75;
+      ctx.stroke();
+      // 側脈
+      for (const s of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(s * pw(r) * 0.05, -ph * 0.30);
+        ctx.quadraticCurveTo(s * pw(r) * 0.48, -ph * 0.54, s * pw(r) * 0.65, -ph * 0.70);
+        ctx.strokeStyle = 'rgba(255, 218, 235, 0.28)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+
+    const pw = r => r * 0.44;
+
+    // ─── 花クラス ───────────────────────────────────────────────
+    class Flower {
+      constructor(initOnScreen) {
+        this.reset(initOnScreen);
+      }
+
+      reset(initOnScreen) {
+        this.r  = Math.random() * 46 + 38;
+        this.x  = MARGIN + this.r + Math.random() * (W - MARGIN * 2 - this.r * 2);
+        this.y  = initOnScreen
+          ? Math.random() * (H + 80) - 40
+          : H + this.r + Math.random() * 280;
+        this.vx    = (Math.random() - 0.5) * 0.20;
+        this.vy    = -(Math.random() * 0.13 + 0.05);
+        this.rot   = Math.random() * Math.PI * 2;
+        this.rotV  = (Math.random() - 0.5) * 0.0025;
+        this.phase = Math.random() * Math.PI * 2;
+        // 雄しべの長さを事前生成（フレームごとにランダム化しない）
+        this.stamenLen = Array.from({ length: 18 }, () => Math.random());
+      }
+
+      update(t) {
+        this.x += this.vx + Math.sin(t * 0.00031 + this.phase) * 0.15;
+        this.y += this.vy;
+        if (this.y < -this.r * 3) this.reset(false);
+      }
+
+      draw(ctx) {
+        const r = this.r;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rot);
+
+        // ── 5枚の花びら ──
+        for (let i = 0; i < 5; i++) {
+          ctx.save();
+          ctx.rotate((i / 5) * Math.PI * 2);
+
+          // 花全体のグロー（暗背景で映える）
+          ctx.shadowColor = 'rgba(255, 175, 210, 0.55)';
+          ctx.shadowBlur  = r * 0.45;
+          ctx.globalAlpha = 0.93;
+          drawPetal(ctx, r);
+
+          // 葉脈はグローなしで繊細に
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 1;
+          drawVeins(ctx, r);
+
+          ctx.restore();
+        }
+
+        // ── 雄しべ（花糸＋葯）──
+        ctx.shadowBlur = 0;
+        const sc = 18;
+        for (let i = 0; i < sc; i++) {
+          const angle = (i / sc) * Math.PI * 2 + Math.PI / sc;
+          const len   = r * (0.20 + this.stamenLen[i] * 0.14);
+          const tx = Math.cos(angle) * len;
+          const ty = Math.sin(angle) * len;
+
+          // 花糸
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(tx, ty);
+          ctx.strokeStyle = 'rgba(255, 248, 210, 0.70)';
+          ctx.lineWidth   = 0.65;
+          ctx.globalAlpha = 0.72;
+          ctx.stroke();
+
+          // 葯（先端）
+          ctx.beginPath();
+          ctx.arc(tx, ty, r * 0.022, 0, Math.PI * 2);
+          ctx.fillStyle   = 'rgba(255, 228, 100, 0.95)';
+          ctx.globalAlpha = 0.88;
+          ctx.fill();
+        }
+
+        // ── 花芯 ──
+        const cg = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 0.13);
+        cg.addColorStop(0, 'rgba(255, 255, 235, 1.0)');
+        cg.addColorStop(1, 'rgba(255, 215, 100, 0.9)');
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 0.13, 0, Math.PI * 2);
+        ctx.fillStyle   = cg;
+        ctx.shadowColor = 'rgba(255, 230, 80, 0.5)';
+        ctx.shadowBlur  = r * 0.18;
+        ctx.globalAlpha = 1;
+        ctx.fill();
+
+        ctx.restore();
+      }
+    }
+
+    const flowers = Array.from({ length: 7 }, (_, i) => new Flower(i < 4));
+
+    // ─── 行スロット計算（最大空き幅を選ぶ）────────────────────────
+    function getSlot(lineY) {
+      const pad    = LINE_H * 0.45;
+      const blocks = [];
+
+      for (const f of flowers) {
+        const dy = Math.abs(lineY + LINE_H * 0.5 - f.y);
+        if (dy >= f.r + pad) continue;
+        const chord = Math.sqrt(Math.max(0, (f.r + pad) ** 2 - dy ** 2));
+        blocks.push([f.x - chord - 7, f.x + chord + 7]);
+      }
+
+      const left = MARGIN, right = W - MARGIN;
+      if (!blocks.length) return { xStart: left, width: right - left };
+
+      blocks.sort((a, b) => a[0] - b[0]);
+      const m = [blocks[0].slice()];
+      for (let i = 1; i < blocks.length; i++) {
+        const last = m[m.length - 1];
+        blocks[i][0] <= last[1] ? (last[1] = Math.max(last[1], blocks[i][1])) : m.push(blocks[i].slice());
+      }
+
+      const cands = [
+        { xStart: left,     width: Math.max(0, m[0][0] - left) },
+        ...m.slice(0, -1).map((b, i) => ({ xStart: b[1], width: Math.max(0, m[i+1][0] - b[1]) })),
+        { xStart: m[m.length-1][1], width: Math.max(0, right - m[m.length-1][1]) },
+      ];
+      return cands.reduce((a, b) => b.width > a.width ? b : a);
+    }
+
+    // ─── アニメーションループ ────────────────────────────────────
+    function animate(t) {
+      // 黒背景
+      ctx.fillStyle = '#060608';
+      ctx.fillRect(0, 0, W, H);
+
+      // 花を更新・描画
+      for (const f of flowers) {
+        f.update(t);
+        f.draw(ctx);
+      }
+
+      // pretext でテキストを花の周りにリアルタイム流し込み
+      ctx.shadowBlur = 0;
+      ctx.fillStyle  = 'rgba(255, 255, 255, 0.82)';
+      ctx.font       = FONT;
+      ctx.textBaseline = 'top';
+
+      let cursor = { segmentIndex: 0, graphemeIndex: 0 };
+
+      for (let y = MARGIN; y < H; y += LINE_H) {
+        const { xStart, width } = getSlot(y);
+        if (width < FONT_SIZE * 3) continue;
+
+        let line = layoutNextLine(prepared, cursor, width);
+        if (!line) {
+          cursor = { segmentIndex: 0, graphemeIndex: 0 };
+          line   = layoutNextLine(prepared, cursor, width);
+          if (!line) continue;
+        }
+
+        ctx.fillText(line.text, xStart, y);
+        cursor = line.end;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+
+    window.addEventListener('resize', () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>

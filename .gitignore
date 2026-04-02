@@ -1,0 +1,7 @@
+.env
+.env.*
+.env.local
+x_pipeline/.env
+x_pipeline/buzz_cache.json
+x_pipeline/analysis_result.json
+x_pipeline/output/

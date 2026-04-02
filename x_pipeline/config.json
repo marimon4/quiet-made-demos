@@ -1,0 +1,19 @@
+{
+  "keywords": [
+    "Claude", "Claude Code",
+    "#buildinpublic", "#個人開発",
+    "AI 副業", "AI マネタイズ",
+    "Indie Hacker", "SaaS"
+  ],
+  "posts_per_run": 5,
+  "axes": [
+    "Claude Tips",
+    "海外翻訳",
+    "マネタイズ",
+    "個人開発リアル"
+  ],
+  "input_file": "buzz_input.txt",
+  "cache_file": "buzz_cache.json",
+  "analysis_file": "analysis_result.json",
+  "output_dir": "output"
+}
