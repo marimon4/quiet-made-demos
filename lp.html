@@ -1698,15 +1698,67 @@ footer {
 
 
 <!-- DEMOS -->
-<section class="cta" id="demos" style="background: var(--washi); color: var(--ink)">
-  <p class="cta-label" style="color: var(--stone)">Portfolio</p>
-  <h2 class="cta-title" style="color: var(--ink)">
-    実際に作ったサイトを<br><em>見てください。</em>
-  </h2>
-  <p class="cta-body" style="color: var(--ink)">
-    6つの工房を想定したデモサイトを公開しています。藍染、竹細工、陶芸、漆器、木工、香——それぞれの世界観に合わせた設計で作っています。
-  </p>
-  <a href="/demos.html" class="btn-primary" style="display:inline-block;margin-top:1.5rem;text-decoration:none">デモサイトを見る</a>
+<section id="demos" style="background:var(--washi);padding:7rem 4rem">
+  <div style="max-width:1100px;margin:0 auto">
+    <p style="font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--stone);margin-bottom:1rem">Portfolio</p>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--ink);margin-bottom:1rem">
+      実際に作ったサイトを<br><em>見てください。</em>
+    </h2>
+    <p style="font-size:0.95rem;color:var(--stone);margin-bottom:3.5rem;max-width:560px;line-height:1.8">
+      6つの工房を想定したデモサイトを公開しています。それぞれの世界観に合わせた設計で作っています。
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+
+      <a href="some-demo.html" target="_blank" style="display:block;text-decoration:none;color:var(--ink)">
+        <div style="overflow:hidden;border-radius:4px;margin-bottom:0.8rem;aspect-ratio:16/10">
+          <img src="demo-thumbs/aonami.png" alt="青波染織デモサイト" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <p style="font-size:0.8rem;letter-spacing:0.1em;color:var(--stone)">藍染・のれん</p>
+        <p style="font-size:1rem;margin-top:0.2rem">青波染織</p>
+      </a>
+
+      <a href="take-zoom.html" target="_blank" style="display:block;text-decoration:none;color:var(--ink)">
+        <div style="overflow:hidden;border-radius:4px;margin-bottom:0.8rem;aspect-ratio:16/10">
+          <img src="demo-thumbs/aotakesha.png" alt="青竹舎デモサイト" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <p style="font-size:0.8rem;letter-spacing:0.1em;color:var(--stone)">別府竹細工・籠・照明</p>
+        <p style="font-size:1rem;margin-top:0.2rem">青竹舎</p>
+      </a>
+
+      <a href="https://giving-takeaways-942890.framer.app/contact" target="_blank" style="display:block;text-decoration:none;color:var(--ink)">
+        <div style="overflow:hidden;border-radius:4px;margin-bottom:0.8rem;aspect-ratio:16/10">
+          <img src="demo-thumbs/seikagama.png" alt="清火窯デモサイト" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <p style="font-size:0.8rem;letter-spacing:0.1em;color:var(--stone)">陶芸・茶碗・器</p>
+        <p style="font-size:1rem;margin-top:0.2rem">清火窯</p>
+      </a>
+
+      <a href="https://rich-lily-668402.framer.app" target="_blank" style="display:block;text-decoration:none;color:var(--ink)">
+        <div style="overflow:hidden;border-radius:4px;margin-bottom:0.8rem;aspect-ratio:16/10">
+          <img src="demo-thumbs/shinkoku.png" alt="深黒工房デモサイト" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <p style="font-size:0.8rem;letter-spacing:0.1em;color:var(--stone)">漆器・金継ぎ・蒔絵</p>
+        <p style="font-size:1rem;margin-top:0.2rem">深黒工房</p>
+      </a>
+
+      <a href="https://clear-usability-804809.framer.app" target="_blank" style="display:block;text-decoration:none;color:var(--ink)">
+        <div style="overflow:hidden;border-radius:4px;margin-bottom:0.8rem;aspect-ratio:16/10">
+          <img src="demo-thumbs/mokume.png" alt="MOKUMEデモサイト" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <p style="font-size:0.8rem;letter-spacing:0.1em;color:var(--stone)">木工・器・カトラリー</p>
+        <p style="font-size:1rem;margin-top:0.2rem">MOKUME</p>
+      </a>
+
+      <a href="shirakage/index.html" target="_blank" style="display:block;text-decoration:none;color:var(--ink)">
+        <div style="overflow:hidden;border-radius:4px;margin-bottom:0.8rem;aspect-ratio:16/10">
+          <img src="demo-thumbs/shirakage.png" alt="白影香房デモサイト" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <p style="font-size:0.8rem;letter-spacing:0.1em;color:var(--stone)">香・香皿・しつらえ</p>
+        <p style="font-size:1rem;margin-top:0.2rem">白影香房</p>
+      </a>
+
+    </div>
+  </div>
 </section>
 
 <!-- CTA -->
