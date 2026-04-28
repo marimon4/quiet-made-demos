@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENSŌ — Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #0a0c0f; color: #f2efe8; font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.8rem 2.5rem; }
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.15em; color: #f2efe8; text-decoration: none; }
+.nav-links { display: flex; gap: 0; list-style: none; border: 1px solid rgba(242,239,232,0.2); }
+.nav-links a { display: block; padding: 0.5rem 1.2rem; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,239,232,0.6); text-decoration: none; transition: all 0.2s; border-right: 1px solid rgba(242,239,232,0.2); }
+.nav-links li:last-child a { border-right: none; }
+.nav-links a:hover, .nav-links a.active { background: #f2efe8; color: #0a0c0f; }
+.hero { height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+.hero-img { position: absolute; inset: 0; background: url('hero-product.png') center center / cover no-repeat; animation: slowZoom 20s ease-out forwards; }
+@keyframes slowZoom { from { transform: scale(1.05); } to { transform: scale(1.0); } }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,12,15,0.2) 0%, rgba(10,12,15,0.0) 35%, rgba(10,12,15,0.6) 75%, rgba(10,12,15,0.96) 100%); }
+.hero-content { position: relative; z-index: 2; padding: 0 2.5rem 3rem; display: flex; justify-content: space-between; align-items: flex-end; }
+.hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(242,239,232,0.5); margin-bottom: 0.8rem; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+.hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem, 12vw, 11rem); line-height: 0.88; letter-spacing: 0.02em; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
+.hero-right { text-align: right; max-width: 260px; opacity: 0; animation: fadeUp 0.8s ease 0.9s forwards; }
+.hero-desc { font-size: 0.82rem; line-height: 1.85; color: rgba(242,239,232,0.65); margin-bottom: 1.5rem; }
+.hero-cta { display: inline-block; padding: 0.7rem 1.8rem; background: #f2efe8; color: #0a0c0f; text-decoration: none; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 400; transition: all 0.25s; }
+.hero-cta:hover { background: transparent; color: #f2efe8; outline: 1px solid rgba(242,239,232,0.6); }
+.scroll-ind { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeUp 0.8s ease 1.2s forwards; }
+.scroll-ind span { font-size: 0.52rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(242,239,232,0.35); }
+.scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(242,239,232,0.4), transparent); animation: scrollPulse 2s ease infinite; }
+@keyframes scrollPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+.video-section { padding: 6rem 2.5rem 3rem; }
+.section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(242,239,232,0.1); }
+.section-num { font-family: 'Bebas Neue', sans-serif; font-size: 4.5rem; line-height: 1; color: rgba(242,239,232,0.05); letter-spacing: 0.05em; }
+.section-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.08em; }
+.section-sub { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(242,239,232,0.35); }
+.video-wrap { position: relative; aspect-ratio: 16/9; background: #060809; overflow: hidden; }
+.video-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-meta { display: flex; justify-content: space-between; padding: 0.9rem 0; font-size: 0.65rem; color: rgba(242,239,232,0.3); letter-spacing: 0.1em; text-transform: uppercase; }
+.contact-section { margin: 0 2.5rem 4rem; padding: 4rem 3rem; background: #f2efe8; color: #0a0c0f; display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+.contact-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.92; letter-spacing: 0.04em; }
+.contact-right { text-align: right; }
+.contact-desc { font-size: 0.8rem; line-height: 1.85; color: rgba(10,12,15,0.55); margin-bottom: 2rem; max-width: 240px; }
+.contact-link { display: inline-block; padding: 0.75rem 2rem; border: 1.5px solid #0a0c0f; color: #0a0c0f; text-decoration: none; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 400; transition: all 0.3s; }
+.contact-link:hover { background: #0a0c0f; color: #f2efe8; }
+footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(242,239,232,0.07); }
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.15em; color: rgba(242,239,232,0.25); }
+.footer-copy { font-size: 0.58rem; letter-spacing: 0.1em; color: rgba(242,239,232,0.18); text-transform: uppercase; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.9s ease, transform 0.9s ease; }
+.reveal.on { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#" class="nav-logo">ENSŌ</a>
+  <ul class="nav-links">
+    <li><a href="matcha.html">Matcha</a></li>
+    <li><a href="product.html" class="active">Product</a></li>
+    <li><a href="game.html">Game</a></li>
+    <li><a href="design.html">Design</a></li>
+  </ul>
+</nav>
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Koto fragments, soft electronics, and negative space for tea, ceramics, fragrance, and craft films.</p>
+      <h1 class="hero-title">MUSIC<br>FOR<br>MATERIALS.</h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-desc">Quiet ambient textures designed for paper, ceramic, linen, wood, tea, and slow product moments.</p>
+      <a href="#demo" class="hero-cta">Play Product Demo</a>
+    </div>
+  </div>
+  <div class="scroll-ind"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+<section class="video-section" id="demo">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <span class="section-title">PRODUCT FILM DEMO</span>
+    <span class="section-sub">Brand Film · Ceramics · Craft</span>
+  </div>
+  <div class="video-wrap reveal">
+    <video controls preload="metadata"><source src="videos/product.mp4" type="video/mp4"></video>
+  </div>
+  <div class="video-meta reveal">
+    <span>Koto · Cinematic Ambient · Negative Space</span>
+    <span>ENSŌ — Premium Brands</span>
+  </div>
+</section>
+<div class="contact-section reveal">
+  <div class="contact-title">SOUND AS<br>INTENTIONAL<br>AS YOUR<br>CRAFT.</div>
+  <div class="contact-right">
+    <p class="contact-desc">Custom licensing and bespoke composition for brands with a point of view.</p>
+    <a href="mailto:info@quietmade.jp" class="contact-link">Request a Demo</a>
+  </div>
+</div>
+<footer>
+  <span class="footer-logo">ENSŌ</span>
+  <span class="footer-copy">© 2026 Revarise Inc. All rights reserved.</span>
+</footer>
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
