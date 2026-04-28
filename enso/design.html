@@ -51,6 +51,19 @@ footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; al
 @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
 .reveal { opacity:0; transform:translateY(28px); transition:opacity 0.9s ease, transform 0.9s ease; }
 .reveal.on { opacity:1; transform:translateY(0); }
+.tracks-section { padding: 2rem 2.5rem 5rem; }
+.track-list { display: flex; flex-direction: column; }
+.track-row { display: grid; grid-template-columns: 2.5rem 1fr auto; align-items: center; gap: 1.5rem; padding: 1.2rem 0; border-bottom: 1px solid rgba(242,239,232,0.07); cursor: pointer; transition: padding-left 0.3s ease; }
+.track-row:first-child { border-top: 1px solid rgba(242,239,232,0.07); }
+.track-row:hover { padding-left: 0.8rem; }
+.track-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: rgba(242,239,232,0.12); letter-spacing: 0.05em; transition: color 0.2s; }
+.track-row:hover .track-num { color: rgba(242,239,232,0.4); }
+.track-name { font-size: 0.95rem; letter-spacing: 0.01em; margin-bottom: 0.2rem; }
+.track-desc { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(242,239,232,0.3); }
+.track-play { width: 32px; height: 32px; border: 1px solid rgba(242,239,232,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; color: #f2efe8; cursor: pointer; transition: all 0.2s; }
+.track-play:hover { background: #f2efe8; color: #0a0c0f; border-color: #f2efe8; }
+.track-play svg { width: 9px; margin-left: 2px; }
+audio { display: none; }
 </style>
 </head>
 <body>
@@ -92,6 +105,28 @@ footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; al
     <span>ENSŌ — Design & Product</span>
   </div>
 </section>
+<section class="tracks-section">
+  <div class="track-list reveal">
+    <div class="track-row" onclick="toggleAudio('d1')">
+      <span class="track-num">01</span>
+      <div><div class="track-name">Rhythm for Objects</div><div class="track-desc">Dry plucked rhythm and clean minimal electronics for design films.</div></div>
+      <button class="track-play" aria-label="Play"><svg viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg></button>
+      <audio id="d1"><source src="audio/d1.mp3" type="audio/mpeg"></audio>
+    </div>
+    <div class="track-row" onclick="toggleAudio('d2')">
+      <span class="track-num">02</span>
+      <div><div class="track-name">Product Cut</div><div class="track-desc">Precise percussion for product campaigns and editorial movement.</div></div>
+      <button class="track-play" aria-label="Play"><svg viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg></button>
+      <audio id="d2"><source src="audio/d2.mp3" type="audio/mpeg"></audio>
+    </div>
+    <div class="track-row" onclick="toggleAudio('d3')">
+      <span class="track-num">03</span>
+      <div><div class="track-name">Line Tension</div><div class="track-desc">Shamisen-inspired rhythm for contemporary product visuals.</div></div>
+      <button class="track-play" aria-label="Play"><svg viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg></button>
+      <audio id="d3"><source src="audio/d3.mp3" type="audio/mpeg"></audio>
+    </div>
+  </div>
+</section>
 <div class="contact-section reveal">
   <div class="contact-title">SOUND THAT<br>CUTS AS<br>CLEANLY<br>AS FORM.</div>
   <div class="contact-right">
@@ -108,6 +143,13 @@ footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; al
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  let currentAudio = null;
+  function toggleAudio(id) {
+    const a = document.getElementById(id);
+    if (currentAudio && currentAudio !== a) { currentAudio.pause(); currentAudio.currentTime = 0; }
+    if (a.paused) { a.play().catch(()=>{}); currentAudio = a; } else { a.pause(); }
+  }
 </script>
 </body>
 </html>
