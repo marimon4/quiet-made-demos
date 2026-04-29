@@ -67,13 +67,18 @@ audio { display: none; }
 @media (max-width: 768px) {
   nav { padding: 1.2rem 1.5rem; }
   .nav-links a { padding: 0.45rem 0.75rem; font-size: 0.6rem; }
-  .hero { min-height: 100vh; height: auto; }
-  .hero-content { flex-direction: column !important; align-items: flex-start !important; padding: 0 1.5rem 2rem !important; gap: 1.2rem !important; }
+  .hero-content {
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    align-items: flex-start !important;
+    padding: 0 1.5rem 2.5rem !important;
+    gap: 1.5rem !important;
+  }
   .hero-left, .hero-right { max-width: 100% !important; width: 100% !important; text-align: left !important; }
   .hero-title { font-size: clamp(2.8rem, 13vw, 4.5rem) !important; }
   .hero-eyebrow { font-size: 0.55rem; }
   .hero-desc { font-size: 0.8rem; margin-bottom: 1rem; }
-  .hero-cta { width: 100%; text-align: center; box-sizing: border-box; }
+  .hero-cta { width: 100%; text-align: center; box-sizing: border-box; display: block; }
   .scroll-ind { display: none; }
   .video-section { padding: 4rem 1.5rem 2rem; }
   .section-header { flex-wrap: wrap; gap: 0.3rem; }
@@ -85,7 +90,7 @@ audio { display: none; }
   .contact-section { flex-direction: column !important; align-items: flex-start !important; margin: 0 1.5rem 3rem !important; padding: 2rem 1.5rem !important; gap: 1.5rem !important; }
   .contact-right { text-align: left !important; width: 100%; }
   .contact-desc { max-width: 100%; }
-  .contact-link { width: 100%; text-align: center; box-sizing: border-box; }
+  .contact-link { width: 100%; text-align: center; box-sizing: border-box; display: block; }
   footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; }
 }
 </style>
