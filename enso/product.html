@@ -64,6 +64,26 @@ footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; al
 .track-play:hover { background: #f2efe8; color: #0a0c0f; border-color: #f2efe8; }
 .track-play svg { width: 9px; margin-left: 2px; }
 audio { display: none; }
+
+@media (max-width: 768px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .nav-links a { padding: 0.45rem 0.8rem; font-size: 0.62rem; }
+  .hero-content { flex-direction: column; align-items: flex-start; padding: 0 1.5rem 2.5rem; gap: 1.5rem; }
+  .hero-left, .hero-right { max-width: 100%; text-align: left; }
+  .hero-right { text-align: left; }
+  .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); }
+  .hero-desc { font-size: 0.85rem; }
+  .video-section { padding: 5rem 1.5rem 2rem; }
+  .section-header { flex-wrap: wrap; gap: 0.5rem; }
+  .section-num { font-size: 3rem; }
+  .section-title { font-size: 1.6rem; }
+  .tracks-section { padding: 1.5rem 1.5rem 4rem; }
+  .track-row { gap: 1rem; }
+  .contact-section { flex-direction: column; align-items: flex-start; margin: 0 1.5rem 3rem; padding: 2.5rem 2rem; }
+  .contact-right { text-align: left; }
+  .contact-desc { max-width: 100%; }
+  footer { padding: 1.5rem; }
+}
 </style>
 </head>
 <body>
