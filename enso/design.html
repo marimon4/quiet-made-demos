@@ -64,25 +64,29 @@ footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; al
 .track-play:hover { background: #f2efe8; color: #0a0c0f; border-color: #f2efe8; }
 .track-play svg { width: 9px; margin-left: 2px; }
 audio { display: none; }
-
 @media (max-width: 768px) {
   nav { padding: 1.2rem 1.5rem; }
-  .nav-links a { padding: 0.45rem 0.8rem; font-size: 0.62rem; }
-  .hero-content { flex-direction: column; align-items: flex-start; padding: 0 1.5rem 2.5rem; gap: 1.5rem; }
-  .hero-left, .hero-right { max-width: 100%; text-align: left; }
-  .hero-right { text-align: left; }
-  .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); }
-  .hero-desc { font-size: 0.85rem; }
-  .video-section { padding: 5rem 1.5rem 2rem; }
-  .section-header { flex-wrap: wrap; gap: 0.5rem; }
-  .section-num { font-size: 3rem; }
-  .section-title { font-size: 1.6rem; }
-  .tracks-section { padding: 1.5rem 1.5rem 4rem; }
-  .track-row { gap: 1rem; }
-  .contact-section { flex-direction: column; align-items: flex-start; margin: 0 1.5rem 3rem; padding: 2.5rem 2rem; }
-  .contact-right { text-align: left; }
+  .nav-links a { padding: 0.45rem 0.75rem; font-size: 0.6rem; }
+  .hero { min-height: 100vh; height: auto; }
+  .hero-content { flex-direction: column !important; align-items: flex-start !important; padding: 0 1.5rem 2rem !important; gap: 1.2rem !important; }
+  .hero-left, .hero-right { max-width: 100% !important; width: 100% !important; text-align: left !important; }
+  .hero-title { font-size: clamp(2.8rem, 13vw, 4.5rem) !important; }
+  .hero-eyebrow { font-size: 0.55rem; }
+  .hero-desc { font-size: 0.8rem; margin-bottom: 1rem; }
+  .hero-cta { width: 100%; text-align: center; box-sizing: border-box; }
+  .scroll-ind { display: none; }
+  .video-section { padding: 4rem 1.5rem 2rem; }
+  .section-header { flex-wrap: wrap; gap: 0.3rem; }
+  .section-num { font-size: 2.5rem; }
+  .section-title { font-size: 1.4rem; }
+  .section-sub { width: 100%; }
+  .tracks-section { padding: 1.5rem 1.5rem 3rem; }
+  .track-name { font-size: 0.85rem; }
+  .contact-section { flex-direction: column !important; align-items: flex-start !important; margin: 0 1.5rem 3rem !important; padding: 2rem 1.5rem !important; gap: 1.5rem !important; }
+  .contact-right { text-align: left !important; width: 100%; }
   .contact-desc { max-width: 100%; }
-  footer { padding: 1.5rem; }
+  .contact-link { width: 100%; text-align: center; box-sizing: border-box; }
+  footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; }
 }
 </style>
 </head>
